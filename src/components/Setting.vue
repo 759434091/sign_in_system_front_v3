@@ -27,6 +27,8 @@
         },
         methods: {
             goBack() {
+                if ('' === this.backSetting)
+                    return this.$router.push('/index')
                 this.$router.push(this.backSetting)
                 this.$store.commit('backSetting', '')
             },
