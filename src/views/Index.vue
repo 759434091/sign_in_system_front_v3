@@ -47,15 +47,15 @@
             },
             ...mapState({
                 user: 'user',
-                defaultRole: 'defaultRole'
+                defaultRole: 'defaultRole',
+                week: 'week'
             }),
             ...mapGetters({isLogin: 'isLogin'})
         },
         data() {
             return {
                 date: new Date(),
-                timer: null,
-                week: 0
+                timer: null
             }
         },
         created() {
@@ -69,7 +69,8 @@
                     .then(res => {
                         if (!res.data.week)
                             return
-                        this.week = res.data.week
+
+                        this.$store.commit('setWeek', res.data.week)
                     })
                     .catch(err => {
                         console.error(err);

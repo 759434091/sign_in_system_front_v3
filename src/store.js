@@ -8,7 +8,9 @@ export default new Vuex.Store({
     state: {
         token: '',
         user: null,
-        defaultRole: ''
+        defaultRole: '',
+        week: 0,
+        dayMap: new Map([[1, 'mon'], [2, 'tue'], [3, 'wed'], [4, 'thu'], [5, 'fri'], [6, 'sat'], [7, 'sun']])
     },
     getters: {
         isLogin(state) {
@@ -25,6 +27,9 @@ export default new Vuex.Store({
         },
         setDefaultRole(state, defaultRole) {
             state.defaultRole = defaultRole
+        },
+        setWeek(state, week) {
+            state.week = week
         }
     },
     actions: {
@@ -42,12 +47,14 @@ export default new Vuex.Store({
             commit('setToken', hisState.token)
             commit('setUser', hisState.user)
             commit('setDefaultRole', hisState.defaultRole)
+            commit('setWeek', hisState.week)
             return hisState.user;
         },
         logout({state}) {
             state.token = ''
             state.user = null
             state.defaultRole = ''
+            state.week = 0
             localStorage.removeItem('state')
         }
     }

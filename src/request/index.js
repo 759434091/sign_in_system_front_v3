@@ -17,8 +17,17 @@ async function getWeek() {
     return await axios.get("/week")
 }
 
+async function getCourseTable() {
+    return await axios.get("/courses", {
+        params: {
+            getType: 'student'
+        }
+    })
+}
+
 export default {
     setAuthorizationValue,
     getToken,
-    getWeek
+    getWeek,
+    getCourseTable
 }

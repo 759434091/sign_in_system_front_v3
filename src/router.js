@@ -20,12 +20,12 @@ export default new Router({
                 {
                     path: 'student',
                     name: 'student',
-                    redirect: 'student/showCourseTable',
+                    redirect: 'student/courseTable',
                     children: [
                         {
-                            path: 'showCourseTable',
-                            name: 'showCourseTable',
-                            component: () => import('./components/student/ShowCourseTable.vue')
+                            path: 'courseTable',
+                            name: 'courseTable',
+                            component: () => import('./components/student/CourseTable.vue')
                         }
                     ],
                     component: () => import('./components/Student.vue')
