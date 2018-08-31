@@ -29,6 +29,29 @@ export default new Router({
                         }
                     ],
                     component: () => import('./components/Student.vue')
+                },
+                {
+                    path: 'administrator',
+                    name: 'administrator',
+                    children: [],
+                    component: () => import('./components/Administrator.vue')
+                },
+                {
+                    path: 'setting',
+                    name: 'setting',
+                    redirect: 'setting/passwordSetting',
+                    children: [
+                        {
+                            path: 'passwordSetting',
+                            name: 'passwordSetting',
+                            component: () => import('./components/setting/PasswordSetting.vue')
+                        },
+                        {
+                            path: 'roleSetting',
+                            name: 'roleSetting',
+                            component: () => import('./components/setting/RoleSetting.vue')
+                        }],
+                    component: () => import('./components/Setting.vue')
                 }
             ],
             // route level

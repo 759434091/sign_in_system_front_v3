@@ -6,12 +6,12 @@
                 <li class="idx-menu-brand">&emsp;Happy&nbsp;Sign&nbsp;In&emsp;</li>
                 <li class="idx-menu-datetime" v-html="this.formatDateTime"></li>
                 <li class="idx-menu-greeting" v-text="`${this.getGreetMsg()}`"></li>
-                <el-submenu class="idx-menu-setting" index="2">
+                <el-submenu class="idx-menu-setting" index="1">
                     <template slot="title">
                         <div v-html="`${this.userName}<i style='vertical-align: -2px' class='el-icon-setting'></i>`"></div>
                     </template>
-                    <el-menu-item index="2-1">个人中心</el-menu-item>
-                    <el-menu-item index="2-2" @click="logout">退出</el-menu-item>
+                    <el-menu-item index="1-1" @click="goSetting">个人中心</el-menu-item>
+                    <el-menu-item index="1-2" @click="logout">退出</el-menu-item>
                 </el-submenu>
             </el-menu>
         </el-header>
@@ -47,7 +47,7 @@
             },
             ...mapState({
                 user: 'user',
-                defaultRole: 'defaultRole',
+                role: 'role',
                 week: 'week'
             }),
             ...mapGetters({isLogin: 'isLogin'})
@@ -59,40 +59,46 @@
             }
         },
         created() {
+            const _this = this;
             this.$store.dispatch('getLocalStorageState').then(res => {
                 if (!res)
-                    this.$router.push('/')
-            })
+                    _this.$router.push('/')
 
-            if (this.isLogin) {
-                this.$request.getWeek()
-                    .then(res => {
-                        if (!res.data.week)
-                            return
+                if (_this.isLogin) {
+                    _this.$request.getWeek()
+                        .then(res => {
+                            if (!res.data.week)
+                                return
 
-                        this.$store.commit('setWeek', res.data.week)
-                    })
-                    .catch(err => {
-                        console.error(err);
-                    })
-                const _this = this;
-                this.timer = setInterval(function () {
-                    _this.date = new Date();
-                }, 1000);
-            }
-
-            switch (this.defaultRole) {
-                case 'STUDENT':
-                    return this.$router.push('/index/student')
-                default: {
-                    this.$message.warning("用户信息失效，请重新登录")
-                    return this.$router.push('/')
+                            _this.$store.commit('setWeek', res.data.week)
+                        })
+                        .catch(err => {
+                            console.error(err);
+                        })
+                    _this.timer = setInterval(() => _this.date = new Date(), 500);
                 }
-            }
+
+                _this.roleSwitchCase()
+            })
         },
         beforeDestroy() {
             if (this.timer)
                 clearInterval(this.timer)
+        },
+        watch: {
+            '$route'(to) {
+                if (to.fullPath !== '/index') {
+                    return
+                }
+
+                const _this = this
+                this.$store.dispatch('getLocalStorageState').then(res => {
+                    if (!res)
+                        _this.$router.push('/')
+
+                    _this.roleSwitchCase()
+                })
+            }
         },
         methods: {
             getGreetMsg() {
@@ -128,6 +134,22 @@
                 this.$store.dispatch('logout').then(() => {
                     _this.$router.push('/')
                 })
+            },
+            goSetting() {
+                this.$store.commit('backSetting', this.$route.path)
+                this.$router.push('/index/setting')
+            },
+            roleSwitchCase() {
+                switch (this.role) {
+                    case 'STUDENT':
+                        return this.$router.push('/index/student')
+                    case 'ADMINISTRATOR':
+                        return this.$router.push('/index/administrator')
+                    default: {
+                        this.$message.warning("用户信息失效，请重新登录")
+                        return this.$router.push('/')
+                    }
+                }
             }
         }
     }

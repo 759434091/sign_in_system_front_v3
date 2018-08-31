@@ -7,8 +7,9 @@ Vue.use(Vuex)
 export default new Vuex.Store({
     state: {
         token: '',
+        backSetting: '',
         user: null,
-        defaultRole: '',
+        role: '',
         week: 0,
         dayMap: new Map([[1, '一'], [2, '二'], [3, '三'], [4, '四'], [5, '五'], [6, '六'], [7, '日']])
     },
@@ -25,11 +26,14 @@ export default new Vuex.Store({
         setUser(state, user) {
             state.user = user
         },
-        setDefaultRole(state, defaultRole) {
-            state.defaultRole = defaultRole
+        setRole(state, role) {
+            state.role = role
         },
         setWeek(state, week) {
             state.week = week
+        },
+        backSetting(state, backSetting) {
+            state.backSetting = backSetting
         }
     },
     actions: {
@@ -39,22 +43,25 @@ export default new Vuex.Store({
             localStorage.setItem('state', JSON.stringify(state))
         },
         getLocalStorageState({commit, state}) {
-            if (state.token !== "" && state.user)
-                return state.user;
+            if (state.token !== '' && state.user)
+                return true
             const hisState = JSON.parse(localStorage.getItem('state'));
             if (!hisState)
-                return null
+                return false
+            const role = localStorage.getItem('role')
+            if (role)
+                commit('setRole', role)
             commit('setToken', hisState.token)
             commit('setUser', hisState.user)
-            commit('setDefaultRole', hisState.defaultRole)
             commit('setWeek', hisState.week)
-            return hisState.user;
+            return true
         },
         logout({state}) {
             state.token = ''
             state.user = null
             state.defaultRole = ''
             state.week = 0
+            state.role = ''
             localStorage.removeItem('state')
         }
     }
