@@ -15,10 +15,7 @@
 
 <script>
     export default {
-        name: 'Student',
-        props: {
-            msg: String
-        }
+        name: 'Student'
     }
 </script>
 

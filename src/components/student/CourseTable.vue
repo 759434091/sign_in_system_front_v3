@@ -51,22 +51,22 @@
                 </el-table-column>
             </el-table>
         </el-main>
-        <!--<coz-dialog :course="dialogCourse" :dialogVisible="dialogVisible" @closeDialog="closeDialog"/>-->
+        <coz-dialog :course="dialogCourse" :dialogVisible="dialogVisible" @closeDialog="closeDialog"/>
     </el-container>
 </template>
 
 <script>
     import {mapState} from 'vuex'
-    import CozDialog from './CozDialog'
 
     export default {
         name: "CourseTable",
-        components: {CozDialog},
+        components: {
+            CozDialog: () => import('./CozDialog')
+        },
         computed: {
             ...mapState({
                 week: 'week',
-                user: 'user',
-                dayMap: 'dayMap'
+                user: 'user'
             }),
             fortnight() {
                 return this.week % 2 === 1 ? 1 : 2
@@ -74,6 +74,7 @@
         },
         data() {
             return {
+                dayMap: new Map([[1, 'mon'], [2, 'tue'], [3, 'wed'], [4, 'thu'], [5, 'fri'], [6, 'sat'], [7, 'sun']]),
                 joinCourseList: [],
                 yearEtTerm: '2017-2018-2',
                 tableData: [],
@@ -182,7 +183,7 @@
                 this.dialogVisible = true
             },
             closeDialog() {
-                this.dialogCourse = {}
+                this.dialogCourse = null
                 this.dialogVisible = false
             }
         }

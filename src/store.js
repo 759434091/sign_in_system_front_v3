@@ -10,7 +10,7 @@ export default new Vuex.Store({
         user: null,
         defaultRole: '',
         week: 0,
-        dayMap: new Map([[1, 'mon'], [2, 'tue'], [3, 'wed'], [4, 'thu'], [5, 'fri'], [6, 'sat'], [7, 'sun']])
+        dayMap: new Map([[1, '一'], [2, '二'], [3, '三'], [4, '四'], [5, '五'], [6, '六'], [7, '日']])
     },
     getters: {
         isLogin(state) {

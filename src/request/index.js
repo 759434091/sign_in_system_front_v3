@@ -25,9 +25,18 @@ async function getCourseTable() {
     })
 }
 
+async function getHisSignIns(scId) {
+    return await axios.get(`/courses/${scId}/signIns`, {
+        params: {
+            queryType: 'student'
+        }
+    })
+}
+
 export default {
     setAuthorizationValue,
     getToken,
     getWeek,
-    getCourseTable
+    getCourseTable,
+    getHisSignIns
 }
