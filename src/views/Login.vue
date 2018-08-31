@@ -68,10 +68,12 @@
                             }
                             //todo find storage
 
-                            this.$store.commit('setToken', res.data.access_token)
-                            this.$store.commit('setUser', res.data.user)
-                            this.$router.push('/index')
-                            this.isLoginProcessing = false
+                            const _this = this;
+                            this.$store.commit('setDefaultRole', 'STUDENT')
+                            this.$store.dispatch('login', res.data).then(() => {
+                                _this.$router.push('/index')
+                                _this.isLoginProcessing = false
+                            })
                         })
                         .catch(err => {
                             console.error(err)

@@ -5,21 +5,36 @@ import Login from './views/Login.vue'
 Vue.use(Router)
 
 export default new Router({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes: [
-    {
-      path: '/',
-      name: 'login',
-      component: Login
-    },
-    {
-      path: '/index',
-      name: 'index',
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "about" */ './views/Index.vue')
-    }
-  ]
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes: [
+        {
+            path: '/',
+            name: 'login',
+            component: Login
+        },
+        {
+            path: '/index',
+            name: 'index',
+            children: [
+                {
+                    path: 'student',
+                    name: 'student',
+                    redirect: 'student/showCourseTable',
+                    children: [
+                        {
+                            path: 'showCourseTable',
+                            name: 'showCourseTable',
+                            component: () => import('./components/student/ShowCourseTable.vue')
+                        }
+                    ],
+                    component: () => import('./components/Student.vue')
+                }
+            ],
+            // route level
+            // this generates a separate chunk (about.[hash].js) for this route
+            // which is lazy-loaded when the route is visited.
+            component: () => import(/* webpackChunkName: "about" */ './views/Index.vue'),
+        }
+    ]
 })
