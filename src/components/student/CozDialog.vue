@@ -68,6 +68,7 @@
 
 <script>
     import {mapState} from 'vuex'
+    import courseUtils from '@/util/courseUtils.js'
 
     export default {
         name: 'CozDialog',
@@ -98,8 +99,7 @@
                 return sisSignInList
             },
             ...mapState({
-                user: 'user',
-                dayMap: 'dayMap'
+                user: 'user'
             })
         },
         data() {
@@ -115,7 +115,7 @@
                 if (this.course === null) {
                     return
                 }
-                this.$request.getHisSignIns(this.course.scId)
+                this.$request.student.getHisSignIns(this.course.scId)
                     .then(res => {
                         if (!res.data.success) {
                             console.error(res.data.message)
@@ -133,7 +133,7 @@
         },
         methods: {
             getScheduleTimeString(schedule) {
-                return `星期${this.dayMap.get(schedule.ssDayOfWeek)} 第 ${schedule.ssStartTime < 10 ? `0${schedule.ssStartTime}` : schedule.ssStartTime} ~ ${schedule.ssEndTime < 10 ? `0${schedule.ssEndTime}` : schedule.ssEndTime} 节`
+                return courseUtils.getScheduleTimeString(schedule)
             },
             closeDialog() {
                 this.active = 'showCozDtl'

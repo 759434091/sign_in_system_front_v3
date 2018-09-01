@@ -33,7 +33,14 @@ export default new Router({
                 {
                     path: 'administrator',
                     name: 'administrator',
-                    children: [],
+                    redirect: 'administrator/courseManage',
+                    children: [
+                        {
+                            path: 'courseManage',
+                            name: 'courseManage',
+                            component: () => import('./components/administrator/CourseManage.vue')
+                        }
+                    ],
                     component: () => import('./components/Administrator.vue')
                 },
                 {

@@ -5,7 +5,7 @@
                      active-text-color="#ffd04b" default-active="2">
                 <el-menu-item index="1" @click="goBack">返回</el-menu-item>
                 <el-menu-item index="2" @click="passwordSetting">修改密码</el-menu-item>
-                <el-menu-item index="3" @click="roleSetting">切换角色</el-menu-item>
+                <el-menu-item index="3" @click="roleSetting" v-if="user.suAuthorities.length > 1">切换角色</el-menu-item>
             </el-menu>
         </el-aside>
         <el-main class="idx-main">
@@ -22,6 +22,7 @@
         name: "Setting",
         computed: {
             ...mapState({
+                user: 'user',
                 backSetting: 'backSetting'
             })
         },

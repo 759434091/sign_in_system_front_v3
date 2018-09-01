@@ -1,6 +1,6 @@
-import axios from 'axios';
-
-axios.defaults.baseURL = 'https://api.xsix103.cn/sign_in_system/v3/'
+import axios from './axiosConfig'
+import student from './student'
+import administrator from './administrator'
 
 function setAuthorizationValue(token) {
     axios.defaults.headers.Authorization = `Bearer ${token}`
@@ -17,26 +17,10 @@ async function getWeek() {
     return await axios.get("/week")
 }
 
-async function getCourseTable() {
-    return await axios.get("/courses", {
-        params: {
-            getType: 'student'
-        }
-    })
-}
-
-async function getHisSignIns(scId) {
-    return await axios.get(`/courses/${scId}/signIns`, {
-        params: {
-            queryType: 'student'
-        }
-    })
-}
-
 export default {
     setAuthorizationValue,
     getToken,
     getWeek,
-    getCourseTable,
-    getHisSignIns
+    student,
+    administrator
 }

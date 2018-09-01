@@ -91,7 +91,7 @@
                 tempTableData[i] = {period: i + 1, mon: '', tue: '', wed: '', thu: '', fri: '', sat: '', sun: ''}
             }
 
-            this.$request.getCourseTable().then(res => {
+            this.$request.student.getCourseTable().then(res => {
                 if (!res.data.success) {
                     this.$message.error(res.data.message)
                     return
