@@ -1,5 +1,33 @@
 <template>
     <el-container>
+        <el-header>
+            <el-form :inline="true" size="mini" :model="selectForm">
+                <el-form-item label="年级">
+                    <el-select placeholder="年级" v-model="selectForm.scGrade">
+                        <el-option label="2016" value="2016"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="学院">
+                    <el-select placeholder="学院" v-model="selectForm.sdId"
+                               :filterable="true" :remote="true"
+                               :remote-method="remoteMethod" :loading="selectForm.sdLoading">
+                        <el-option v-for="val in selectForm.departmentList"
+                                   :key="val.sdId"
+                                   :label="val.sdName"
+                                   :value="val.sdId">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="课程名">
+                    <el-input v-model="selectForm.scName"></el-input>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="onSearch">
+                        确定
+                    </el-button>
+                </el-form-item>
+            </el-form>
+        </el-header>
         <el-main>
             <el-table :data="courseList">
                 <el-table-column prop="scId" label="课程序号"/>
@@ -59,6 +87,16 @@
                 </el-table-column>
             </el-table>
         </el-main>
+        <el-footer>
+            <el-pagination
+                    class="coz-manage-pagination"
+                    @current-change="handleCurrentChange"
+                    :current-page.sync="pagination.currentPage"
+                    :page-size="pagination.size"
+                    layout="total, prev, pager, next, jumper"
+                    :total="pagination.total">
+            </el-pagination>
+        </el-footer>
         <CourseDialog :dialogVisible="courseDialog.dialogVisible"
                       :course="courseDialog.course"
                       @closeDialog="closeCourse"/>
@@ -82,9 +120,20 @@
         components: {SupervisionsDialog, StudentDialog, CourseDialog},
         data() {
             return {
+                selectForm: {
+                    scGrade: '',
+                    sdLoading: false,
+                    sdId: '',
+                    scName: '',
+                    departmentList: []
+                },
+                pagination: {
+                    currentPage: 1,
+                    total: 0,
+                    size: 10
+                },
                 hasMonitor: null,
                 needMonitor: null,
-                page: 1,
                 courseList: [],
                 courseDialog: {
                     dialogVisible: false,
@@ -101,24 +150,58 @@
             }
         },
         created() {
-            this.$request.administrator
-                .getCourse(this.hasMonitor, this.needMonitor, this.page)
-                .then(res => {
-                    if (!res.data.success) {
-                        this.$message.error(res.data.message)
-                        return
-                    }
-
-                    const pageIntro = res.data.data
-                    this.page = pageIntro.pageNum
-                    this.courseList = pageIntro.list
-                })
-                .catch(err => {
-                    console.error(err)
-                    this.$message.error(err)
-                })
+            this.handleCurrentChange(1)
         },
         methods: {
+            remoteMethod(val) {
+                this.selectForm.sdLoading = true
+                this.$request.administrator
+                    .getDepartments(val)
+                    .then(res => {
+                        if (!res.data.success) {
+                            this.$message.error(res.data.message)
+                            return
+                        }
+
+                        this.selectForm.departmentList = res.data.sisDepartmentList
+                    })
+                    .catch(err => {
+                        console.error(err)
+                        this.$message.error(err)
+                    })
+                    .finally(() => {
+                        this.selectForm.sdLoading = false
+                    })
+            },
+            onSearch() {
+                this.handleCurrentChange(1)
+            },
+            handleCurrentChange(curPage) {
+                this.$request.administrator
+                    .getCourse(
+                        this.hasMonitor,
+                        this.needMonitor,
+                        curPage,
+                        '' === this.selectForm.sdId ? null : this.selectForm.sdId,
+                        '' === this.selectForm.scGrade ? null : this.selectForm.scGrade,
+                        '' === this.selectForm.scName ? null : this.selectForm.scName
+                    )
+                    .then(res => {
+                        if (!res.data.success) {
+                            this.$message.error(res.data.message)
+                            return
+                        }
+
+                        const pageIntro = res.data.data
+                        this.pagination.currentPage = pageIntro.pageNum
+                        this.pagination.total = pageIntro.total
+                        this.courseList = pageIntro.list
+                    })
+                    .catch(err => {
+                        console.error(err)
+                        this.$message.error(err)
+                    })
+            },
             getScheduleTimeString(schedule) {
                 return courseUtils.getScheduleTimeString(schedule)
             },
@@ -161,5 +244,7 @@
 </script>
 
 <style scoped>
-
+    .coz-manage-pagination {
+        float: right;
+    }
 </style>

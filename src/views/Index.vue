@@ -167,6 +167,7 @@
     }
 
     .idx-main {
+        height: calc(100vh - 24px - 60px);
         margin-right: 20px;
         padding: 10px 10%;
         background-color: transparent;
