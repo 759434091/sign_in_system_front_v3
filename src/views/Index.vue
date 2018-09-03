@@ -8,7 +8,7 @@
                 <li class="idx-menu-greeting" v-text="`${this.getGreetMsg()}`"></li>
                 <el-submenu class="idx-menu-setting" index="1">
                     <template slot="title">
-                        <div v-html="`${this.userName}<i style='vertical-align: -2px' class='el-icon-setting'></i>`"></div>
+                        {{this.userName}}
                     </template>
                     <el-menu-item index="1-1" @click="goSetting">个人中心</el-menu-item>
                     <el-menu-item index="1-2" @click="logout">退出</el-menu-item>

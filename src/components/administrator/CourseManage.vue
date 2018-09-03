@@ -1,9 +1,10 @@
 <template>
     <el-container>
         <el-header>
-            <el-form :inline="true" size="mini" :model="selectForm">
+            <el-form class="coz-manage-form" :inline="true" size="mini" :model="selectForm">
                 <el-form-item label="年级">
                     <el-select placeholder="年级" v-model="selectForm.scGrade">
+                        <el-option label="不指定" value=""></el-option>
                         <el-option label="2016" value="2016"></el-option>
                     </el-select>
                 </el-form-item>
@@ -11,6 +12,7 @@
                     <el-select placeholder="学院" v-model="selectForm.sdId"
                                :filterable="true" :remote="true"
                                :remote-method="remoteMethod" :loading="selectForm.sdLoading">
+                        <el-option label="不指定" value=""></el-option>
                         <el-option v-for="val in selectForm.departmentList"
                                    :key="val.sdId"
                                    :label="val.sdName"
@@ -21,9 +23,18 @@
                 <el-form-item label="课程名">
                     <el-input v-model="selectForm.scName"></el-input>
                 </el-form-item>
+                <el-form-item class="coz-manage-form-remember" label="记住我选择">
+                    <el-switch v-model="selectForm.remember" :width="30">
+                    </el-switch>
+                </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="onSearch">
                         确定
+                    </el-button>
+                </el-form-item>
+                <el-form-item label="丨">
+                    <el-button type="info" @click="showBatchOption">
+                        批量操作
                     </el-button>
                 </el-form-item>
             </el-form>
@@ -121,6 +132,7 @@
         data() {
             return {
                 selectForm: {
+                    remember: false,
                     scGrade: '',
                     sdLoading: false,
                     sdId: '',
@@ -150,6 +162,9 @@
             }
         },
         created() {
+            const rememberForm = JSON.parse(localStorage.getItem('cozManagerForm'))
+            if (rememberForm)
+                this.selectForm = rememberForm
             this.handleCurrentChange(1)
         },
         methods: {
@@ -174,6 +189,8 @@
                     })
             },
             onSearch() {
+                if (this.selectForm.remember)
+                    localStorage.setItem('cozManagerForm', JSON.stringify(this.selectForm))
                 this.handleCurrentChange(1)
             },
             handleCurrentChange(curPage) {
@@ -238,13 +255,24 @@
             closeSupervision() {
                 this.supervisionsDialog.scId = ''
                 this.supervisionsDialog.dialogVisible = false
+            },
+            showBatchOption() {
+
             }
         }
     }
 </script>
 
-<style scoped>
+<style>
     .coz-manage-pagination {
         float: right;
+    }
+
+    .coz-manage-form .el-form-item__content {
+        width: 100px;
+    }
+
+    .coz-manage-form-remember .el-form-item__content {
+        width: 40px;
     }
 </style>
