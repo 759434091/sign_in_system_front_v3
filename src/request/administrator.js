@@ -1,7 +1,7 @@
 import axios from "./axiosConfig"
 
 async function getCourse(hasMonitor, needMonitor, page,
-                         sdId, scGrade, scName) {
+                         sdId, scGrade, scId, scName) {
     return axios.get('/courses', {
         params: {
             getType: 'administrator',
@@ -10,6 +10,7 @@ async function getCourse(hasMonitor, needMonitor, page,
             page,
             sdId: '' === sdId ? null : sdId,
             scGrade: '' === scGrade ? null : scGrade,
+            scId: '' === scId ? null : scId,
             scName: '' === scName ? null : scName
         }
     })

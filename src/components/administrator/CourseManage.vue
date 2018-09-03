@@ -153,6 +153,7 @@
                     scGrade: '',
                     sdLoading: false,
                     sdId: '',
+                    scId: '',
                     scName: '',
                     departmentList: []
                 },
