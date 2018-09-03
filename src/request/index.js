@@ -18,6 +18,7 @@ async function getWeek() {
 }
 
 export default {
+    axios: axios,
     setAuthorizationValue,
     getToken,
     getWeek,

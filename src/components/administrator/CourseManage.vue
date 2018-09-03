@@ -41,11 +41,17 @@
                             批量督导<i class="el-icon-arrow-down el-icon--right"></i>
                         </el-button>
                         <el-dropdown-menu slot="dropdown">
-                            <el-dropdown-item @click.native="batchSupervisions(true)">
-                                发起督导
+                            <el-dropdown-item @click.native="batchSelectionSupervisions(true)">
+                                发起督导（选中项）
+                            </el-dropdown-item>
+                            <el-dropdown-item @click.native="batchSelectionSupervisions(false)">
+                                取消督导（选中项）
+                            </el-dropdown-item>
+                            <el-dropdown-item @click.native="batchSupervisions(true)" :divided="true">
+                                发起督导（搜索条件）
                             </el-dropdown-item>
                             <el-dropdown-item @click.native="batchSupervisions(false)">
-                                取消督导
+                                取消督导（搜索条件）
                             </el-dropdown-item>
                         </el-dropdown-menu>
                     </el-dropdown>
@@ -53,7 +59,11 @@
             </el-form>
         </el-header>
         <el-main>
-            <el-table :data="courseList">
+            <el-table :data="courseList"
+                      @selection-change="handleSelectionChange">
+                <el-table-column type="selection"
+                                 width="55">
+                </el-table-column>
                 <el-table-column prop="scId" label="课程序号"/>
                 <el-table-column prop="scName" label="课程名字"/>
                 <el-table-column label="任课老师">
@@ -118,10 +128,12 @@
         <el-footer>
             <el-pagination
                     class="coz-manage-pagination"
+                    @size-change="handleSizeChange"
                     @current-change="handleCurrentChange"
                     :current-page.sync="pagination.currentPage"
                     :page-size="pagination.size"
-                    layout="total, prev, pager, next, jumper"
+                    :page-sizes="[10, 30, 50, 100, 200]"
+                    layout="total, sizes, prev, pager, next, jumper"
                     :total="pagination.total">
             </el-pagination>
         </el-footer>
@@ -176,7 +188,8 @@
                 supervisionsDialog: {
                     dialogVisible: false,
                     scId: ''
-                }
+                },
+                selectionList: []
             }
         },
         created() {
@@ -211,12 +224,13 @@
                     localStorage.setItem('cozManagerForm', JSON.stringify(this.selectForm))
                 this.handleCurrentChange(1)
             },
-            handleCurrentChange(curPage) {
+            handleCurrentChange(page) {
                 this.$request.administrator
                     .getCourse(
+                        page,
+                        this.pagination.size,
                         this.hasMonitor,
                         this.needMonitor,
-                        curPage,
                         '' === this.selectForm.sdId ? null : this.selectForm.sdId,
                         '' === this.selectForm.scGrade ? null : this.selectForm.scGrade,
                         '' === this.selectForm.scId ? null : this.selectForm.scId,
@@ -300,10 +314,63 @@
                 this
                     .$confirm(`将会对搜索结果${status ? '发起督导' : '取消督导'}，总${this.pagination.total}条，请认真检查`, '发起督导')
                     .then(() => {
-                        //todo batch suv
+                        this.$request.administrator
+                            .batchSupervisions(
+                                status,
+                                this.hasMonitor,
+                                this.needMonitor,
+                                '' === this.selectForm.sdId ? null : this.selectForm.sdId,
+                                '' === this.selectForm.scGrade ? null : this.selectForm.scGrade,
+                                '' === this.selectForm.scId ? null : this.selectForm.scId,
+                                '' === this.selectForm.scName ? null : this.selectForm.scName
+                            )
+                            .then(res => {
+                                if (!res.data.success) {
+                                    this.$message(res.data.message)
+                                    return
+                                }
+
+                                this.$message.success('操作成功')
+                            })
+                            .catch(err => {
+                                console.log(err)
+                                this.$message.error(err.response.data.message)
+                            })
                     })
                     .catch(() => {
                     })
+            },
+            handleSelectionChange(selectionList) {
+                this.selectionList = selectionList
+            },
+            batchSelectionSupervisions(status) {
+                const scIdList = this.selectionList.map(course => course.scId)
+                if (scIdList.length <= 0) {
+                    this.$message.warning('没有选中任何项')
+                    return
+                }
+                this.$confirm(`将会对选中结果${status ? '发起督导' : '取消督导'}，总${scIdList.length}条，请认真检查`, '发起督导')
+                    .then(() => {
+                        this.$request.administrator.batchSelectionSupervisions(status, scIdList)
+                            .then(res => {
+                                if (!res.data.success) {
+                                    this.$message(res.data.message)
+                                    return
+                                }
+
+                                this.$message.success('操作成功')
+                            })
+                            .catch(err => {
+                                console.log(err)
+                                this.$message.error(err.response.data.message)
+                            })
+                    })
+                    .catch(() => {
+                    })
+            },
+            handleSizeChange(size) {
+                this.pagination.size = size
+                this.onSearch()
             }
         }
     }
