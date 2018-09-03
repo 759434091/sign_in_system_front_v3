@@ -219,6 +219,7 @@
                         curPage,
                         '' === this.selectForm.sdId ? null : this.selectForm.sdId,
                         '' === this.selectForm.scGrade ? null : this.selectForm.scGrade,
+                        '' === this.selectForm.scId ? null : this.selectForm.scId,
                         '' === this.selectForm.scName ? null : this.selectForm.scName
                     )
                     .then(res => {
