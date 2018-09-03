@@ -91,47 +91,54 @@
                 tempTableData[i] = {period: i + 1, mon: '', tue: '', wed: '', thu: '', fri: '', sat: '', sun: ''}
             }
 
-            this.$request.student.getCourseTable().then(res => {
-                if (!res.data.success) {
-                    this.$message.error(res.data.message)
-                    return
-                }
+            this.$request.student.getCourseTable()
+                .then(res => {
+                    if (!res.data.success) {
+                        this.$message.error(res.data.message)
+                        return
+                    }
 
-                this.joinCourseList = res.data.array;
-                const courseList = this.joinCourseList.map(joinCourse => joinCourse.sisCourse)
-                for (let i = 0; i < courseList.length; i++) {
-                    const course = courseList[i];
-                    const scheduleList = course.sisScheduleList
-                    for (let j = 0; j < scheduleList.length; j++) {
-                        const schedule = scheduleList[j];
+                    this.joinCourseList = res.data.array;
+                    const courseList = this.joinCourseList.map(joinCourse => joinCourse.sisCourse)
+                    for (let i = 0; i < courseList.length; i++) {
+                        const course = courseList[i];
+                        const scheduleList = course.sisScheduleList
+                        for (let j = 0; j < scheduleList.length; j++) {
+                            const schedule = scheduleList[j];
 
-                        if (this.yearEtTerm !== schedule.ssYearEtTerm ||
-                            this.week < schedule.ssStartWeek ||
-                            this.week > schedule.ssEndWeek ||
-                            (schedule.ssFortnight !== 0 && schedule.ssFortnight !== this.fortnight)) {
-                            continue;
-                        }
-
-                        for (let k = schedule.ssStartTime; k <= schedule.ssEndTime; k++) {
-                            // 跨行数
-                            if (k === schedule.ssStartTime) {
-                                this.rowSpanMap.set(`${k - 1}_${schedule.ssDayOfWeek}`,
-                                    [schedule.ssEndTime - schedule.ssStartTime + 1, 1])
-                            } else {
-                                this.rowSpanMap.set(`${k - 1}_${schedule.ssDayOfWeek}`,
-                                    [0, 0])
+                            if (this.yearEtTerm !== schedule.ssYearEtTerm ||
+                                this.week < schedule.ssStartWeek ||
+                                this.week > schedule.ssEndWeek ||
+                                (schedule.ssFortnight !== 0 && schedule.ssFortnight !== this.fortnight)) {
+                                continue;
                             }
-                            // 课程插入tempTable
-                            tempTableData[k - 1][this.dayMap.get(schedule.ssDayOfWeek)] = course
+
+                            for (let k = schedule.ssStartTime; k <= schedule.ssEndTime; k++) {
+                                // 跨行数
+                                if (k === schedule.ssStartTime) {
+                                    this.rowSpanMap.set(`${k - 1}_${schedule.ssDayOfWeek}`,
+                                        [schedule.ssEndTime - schedule.ssStartTime + 1, 1])
+                                } else {
+                                    this.rowSpanMap.set(`${k - 1}_${schedule.ssDayOfWeek}`,
+                                        [0, 0])
+                                }
+                                // 课程插入tempTable
+                                tempTableData[k - 1][this.dayMap.get(schedule.ssDayOfWeek)] = course
+                            }
                         }
                     }
-                }
-                this.tableData = tempTableData
+                    this.tableData = tempTableData
 
-            }).catch(err => {
-                console.error(err)
-                this.$message.error(err)
-            })
+                })
+                .catch(err => {
+                    if (!err.response || !err.response.data)
+                        return
+                    if (!err.response.data.message) {
+                        this.$message.error(err.response.data)
+                        return
+                    }
+                    this.$message.error(err.response.data.message)
+                })
         },
         mounted() {
             this.$refs.courseTable.$el.getElementsByClassName('el-table__body')[0].setAttribute('cellspacing', '5')

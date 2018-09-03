@@ -14,10 +14,15 @@
                     return Promise.reject()
                 return response
             }, function (error) {
-                debugger
+                if (null == error.response) {
+                    _this.$message.error('服务器无反应, 请稍后再试')
+                    return Promise.reject(error)
+                }
+
                 if (401 === error.response.status) {
                     _this.$message.error('登录信息过期, 请重新登录')
                     _this.$router.push("/")
+                    error.response = null
                     return Promise.reject(error)
                 }
                 return Promise.reject(error)

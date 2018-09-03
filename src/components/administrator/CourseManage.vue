@@ -212,7 +212,12 @@
                         this.selectForm.departmentList = res.data.sisDepartmentList
                     })
                     .catch(err => {
-                        console.error(err)
+                        if (!err.response || !err.response.data)
+                            return
+                        if (!err.response.data.message) {
+                            this.$message.error(err.response.data)
+                            return
+                        }
                         this.$message.error(err.response.data.message)
                     })
                     .finally(() => {
@@ -248,7 +253,12 @@
                         this.courseList = pageIntro.list
                     })
                     .catch(err => {
-                        console.error(err)
+                        if (!err.response || !err.response.data)
+                            return
+                        if (!err.response.data.message) {
+                            this.$message.error(err.response.data)
+                            return
+                        }
                         this.$message.error(err.response.data.message)
                     })
             },
@@ -303,7 +313,12 @@
                                 this.handleCurrentChange(this.pagination.currentPage)
                             })
                             .catch(err => {
-                                console.log(err)
+                                if (!err.response || !err.response.data)
+                                    return
+                                if (!err.response.data.message) {
+                                    this.$message.error(err.response.data)
+                                    return
+                                }
                                 this.$message.error(err.response.data.message)
                             })
                     })
@@ -333,7 +348,12 @@
                                 this.$message.success('操作成功')
                             })
                             .catch(err => {
-                                console.log(err)
+                                if (!err.response || !err.response.data)
+                                    return
+                                if (!err.response.data.message) {
+                                    this.$message.error(err.response.data)
+                                    return
+                                }
                                 this.$message.error(err.response.data.message)
                             })
                     })
@@ -361,7 +381,12 @@
                                 this.$message.success('操作成功')
                             })
                             .catch(err => {
-                                console.log(err)
+                                if (!err.response || !err.response.data)
+                                    return
+                                if (!err.response.data.message) {
+                                    this.$message.error(err.response.data)
+                                    return
+                                }
                                 this.$message.error(err.response.data.message)
                             })
                     })

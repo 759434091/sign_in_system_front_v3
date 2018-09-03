@@ -126,8 +126,13 @@
                         this.hisScheduleList = res.data.course.sisScheduleList
                     })
                     .catch(err => {
-                        console.error(err)
-                        this.$message.error(err)
+                        if (!err.response || !err.response.data)
+                            return
+                        if (!err.response.data.message) {
+                            this.$message.error(err.response.data)
+                            return
+                        }
+                        this.$message.error(err.response.data.message)
                     })
             }
         },
