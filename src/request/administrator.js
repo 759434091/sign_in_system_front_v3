@@ -22,13 +22,20 @@ async function getSupervision(scId) {
 async function getDepartments(sdName) {
     return await axios.get('/departments', {
         params: {
-            sdName
+            sdName: '' === sdName.trim() ? '' : sdName
         }
+    })
+}
+
+async function modifyScNeedMonitor(scId, scNeedMonitor) {
+    return await axios.put(`/courses/${scId}/sc-need-monitor`, {
+        scNeedMonitor
     })
 }
 
 export default {
     getCourse,
     getSupervision,
-    getDepartments
+    getDepartments,
+    modifyScNeedMonitor
 }

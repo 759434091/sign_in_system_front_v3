@@ -11,6 +11,7 @@
                 <el-form-item label="学院">
                     <el-select placeholder="学院" v-model="selectForm.sdId"
                                :filterable="true" :remote="true"
+                               @focus="remoteMethod(selectForm.sdId)"
                                :remote-method="remoteMethod" :loading="selectForm.sdLoading">
                         <el-option label="不指定" value=""></el-option>
                         <el-option v-for="val in selectForm.departmentList"
@@ -20,12 +21,14 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="课程名">
+                <el-form-item label="课程序号">
+                    <el-input v-model="selectForm.scId"></el-input>
+                </el-form-item>
+                <el-form-item label="课程名字">
                     <el-input v-model="selectForm.scName"></el-input>
                 </el-form-item>
-                <el-form-item class="coz-manage-form-remember" label="记住我选择">
-                    <el-switch v-model="selectForm.remember" :width="30">
-                    </el-switch>
+                <el-form-item class="coz-manage-form-remember" label="记住">
+                    <el-checkbox v-model="selectForm.remember"></el-checkbox>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="onSearch">
@@ -33,9 +36,19 @@
                     </el-button>
                 </el-form-item>
                 <el-form-item label="丨">
-                    <el-button type="info" @click="showBatchOption">
-                        批量操作
-                    </el-button>
+                    <el-dropdown>
+                        <el-button type="info">
+                            批量督导<i class="el-icon-arrow-down el-icon--right"></i>
+                        </el-button>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item @click.native="batchSupervisions(true)">
+                                发起督导
+                            </el-dropdown-item>
+                            <el-dropdown-item @click.native="batchSupervisions(false)">
+                                取消督导
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
                 </el-form-item>
             </el-form>
         </el-header>
@@ -87,6 +100,10 @@
                                 <el-dropdown-item @click.native="showSupervision(scope.row.scId)">
                                     历史督导
                                 </el-dropdown-item>
+                                <el-dropdown-item
+                                        @click.native="modifyScNeedMonitor(scope.row.scId, !scope.row.scNeedMonitor)"
+                                        :divided="true"
+                                        v-text="scope.row.scNeedMonitor?'取消督导':'发起督导'"></el-dropdown-item>
                                 <!--
                                                                 <el-dropdown-item @click.native="">查看历史签到</el-dropdown-item>
                                                                 <el-dropdown-item @click.native="" divided>管理督导</el-dropdown-item>
@@ -182,7 +199,7 @@
                     })
                     .catch(err => {
                         console.error(err)
-                        this.$message.error(err)
+                        this.$message.error(err.response.data.message)
                     })
                     .finally(() => {
                         this.selectForm.sdLoading = false
@@ -216,7 +233,7 @@
                     })
                     .catch(err => {
                         console.error(err)
-                        this.$message.error(err)
+                        this.$message.error(err.response.data.message)
                     })
             },
             getScheduleTimeString(schedule) {
@@ -256,8 +273,35 @@
                 this.supervisionsDialog.scId = ''
                 this.supervisionsDialog.dialogVisible = false
             },
-            showBatchOption() {
+            modifyScNeedMonitor(scId, status) {
+                this.$confirm(`将对课程 ${scId} ${status ? '发起督导' : '取消督导'}，请确认`, status ? '发起督导' : '取消督导',)
+                    .then(() => {
+                        this.$request.administrator.modifyScNeedMonitor(scId, status)
+                            .then(res => {
+                                if (!res.data.success) {
+                                    this.$message.error(res.data.message)
+                                    return
+                                }
 
+                                this.$message.success('操作成功')
+                                this.handleCurrentChange(this.pagination.currentPage)
+                            })
+                            .catch(err => {
+                                console.log(err)
+                                this.$message.error(err.response.data.message)
+                            })
+                    })
+                    .catch(() => {
+                    })
+            },
+            batchSupervisions(status) {
+                this
+                    .$confirm(`将会对搜索结果${status ? '发起督导' : '取消督导'}，总${this.pagination.total}条，请认真检查`, '发起督导')
+                    .then(() => {
+                        //todo batch suv
+                    })
+                    .catch(() => {
+                    })
             }
         }
     }
@@ -273,6 +317,6 @@
     }
 
     .coz-manage-form-remember .el-form-item__content {
-        width: 40px;
+        width: 20px;
     }
 </style>
