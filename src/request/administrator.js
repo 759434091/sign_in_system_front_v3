@@ -77,8 +77,20 @@ async function revokeMonitor(suId) {
     return await axios.delete(`/monitors/${suId}`)
 }
 
+async function getStudents(page, pageSize, suId, suName) {
+    return await axios.get('/students', {
+        params: {
+            page,
+            pageSize,
+            suId: '' === suId ? null : suId,
+            suName: '' === suName ? null : suName
+        }
+    })
+}
+
 export default {
     getCourse,
+    getStudents,
     batchSupervisions,
     getSupervision,
     getDepartments,

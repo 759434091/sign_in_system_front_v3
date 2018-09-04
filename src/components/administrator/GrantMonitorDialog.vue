@@ -5,7 +5,12 @@
                :before-close="closeDialog">
         <el-form :model="newMonitorForm">
             <el-form-item label="学号">
-                <el-input v-model="newMonitorForm.suId"></el-input>
+                <el-autocomplete v-model="newMonitorForm.suId"
+                                 placeholder="请输入学号"
+                                 :fetch-suggestions="querySearchAsync"
+                                 @select="handleSelect">
+
+                </el-autocomplete>
             </el-form-item>
             <el-form-item label="姓名">
                 <el-input v-model="newMonitorForm.suName"></el-input>
@@ -30,7 +35,8 @@
                 newMonitorForm: {
                     suId: '',
                     suName: ''
-                }
+                },
+                suggestList: []
             }
         },
         methods: {
@@ -59,6 +65,26 @@
                 this.newMonitorForm.suId = ''
                 this.newMonitorForm.suName = ''
                 this.$emit('closeDialog')
+            },
+            querySearchAsync(val, callback) {
+                if ('' === val)
+                    return
+                debugger
+                this.$request.administrator.getStudents(1, 10, val, '')
+                    .then(res => {
+                        debugger
+                        if (!res.data.success)
+                            return
+
+                        this.suggestList = res.data.data.list
+                        callback(this.suggestList)
+                    })
+                    .catch(() => {
+                        debugger
+                    })
+            },
+            handleSelect() {
+
             }
         }
     }
