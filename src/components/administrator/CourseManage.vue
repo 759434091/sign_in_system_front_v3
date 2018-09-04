@@ -32,7 +32,7 @@
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="onSearch">
-                        确定
+                        搜索
                     </el-button>
                 </el-form-item>
                 <el-form-item label="丨">
@@ -244,6 +244,9 @@
                     .then(res => {
                         if (!res.data.success) {
                             this.$message.error(res.data.message)
+                            this.pagination.currentPage = 1
+                            this.pagination.total = 0
+                            this.courseList = []
                             return
                         }
 
@@ -369,7 +372,7 @@
                     this.$message.warning('没有选中任何项')
                     return
                 }
-                this.$confirm(`将会对选中结果${status ? '发起督导' : '取消督导'}，总${scIdList.length}条，请认真检查`, '发起督导')
+                this.$confirm(`将会对选中结果${status ? '发起督导' : '取消督导'}，总${scIdList.length}条，请认真检查`, `${status ? '发起督导' : '取消督导'}`)
                     .then(() => {
                         this.$request.administrator.batchSelectionSupervisions(status, scIdList)
                             .then(res => {

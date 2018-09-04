@@ -1,6 +1,6 @@
 import axios from "./axiosConfig"
 
-export async function getCourse(page, pageSize, hasMonitor, needMonitor, sdId, scGrade, scId, scName) {
+async function getCourse(page, pageSize, hasMonitor, needMonitor, sdId, scGrade, scId, scName) {
     return axios.get('/courses', {
         params: {
             getType: 'administrator',
@@ -16,8 +16,8 @@ export async function getCourse(page, pageSize, hasMonitor, needMonitor, sdId, s
     })
 }
 
-export async function batchSupervisions(monitorStatus, hasMonitor, needMonitor,
-                                        sdId, scGrade, scId, scName) {
+async function batchSupervisions(monitorStatus, hasMonitor, needMonitor,
+                                 sdId, scGrade, scId, scName) {
     return axios.put('/courses/sc-need-monitor', null, {
         params: {
             monitorStatus,
@@ -31,7 +31,7 @@ export async function batchSupervisions(monitorStatus, hasMonitor, needMonitor,
     })
 }
 
-export async function batchSelectionSupervisions(monitorStatus, scIdList) {
+async function batchSelectionSupervisions(monitorStatus, scIdList) {
     return axios.put('/courses/sc-need-monitor', scIdList, {
         params: {
             monitorStatus
@@ -39,11 +39,11 @@ export async function batchSelectionSupervisions(monitorStatus, scIdList) {
     })
 }
 
-export async function getSupervision(scId) {
+async function getSupervision(scId) {
     return await axios.get(`/courses/${scId}/supervisions`)
 }
 
-export async function getDepartments(sdName) {
+async function getDepartments(sdName) {
     return await axios.get('/departments', {
         params: {
             sdName: '' === sdName.trim() ? '' : sdName
@@ -51,10 +51,30 @@ export async function getDepartments(sdName) {
     })
 }
 
-export async function modifyScNeedMonitor(scId, scNeedMonitor) {
+async function modifyScNeedMonitor(scId, scNeedMonitor) {
     return await axios.put(`/courses/${scId}/sc-need-monitor`, {
         scNeedMonitor
     })
+}
+
+async function getMonitors(page, pageSize, suId, suName, ordByLackNum) {
+    return await axios.get('/monitors', {
+        params: {
+            page,
+            pageSize,
+            suId: '' === suId ? null : suId,
+            suName: '' === suName ? null : suName,
+            ordByLackNum
+        }
+    })
+}
+
+async function grantMonitor(suId) {
+    return await axios.post(`/monitors/${suId}`)
+}
+
+async function revokeMonitor(suId) {
+    return await axios.delete(`/monitors/${suId}`)
 }
 
 export default {
@@ -63,5 +83,8 @@ export default {
     getSupervision,
     getDepartments,
     modifyScNeedMonitor,
-    batchSelectionSupervisions
+    batchSelectionSupervisions,
+    getMonitors,
+    grantMonitor,
+    revokeMonitor
 }

@@ -39,6 +39,11 @@ export default new Router({
                             path: 'courseManage',
                             name: 'courseManage',
                             component: () => import('./components/administrator/CourseManage.vue')
+                        },
+                        {
+                            path: 'monitorManage',
+                            name: 'monitorManage',
+                            component: () => import('./components/administrator/MonitorManage.vue')
                         }
                     ],
                     component: () => import('./components/Administrator.vue')
