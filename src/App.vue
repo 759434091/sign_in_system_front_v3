@@ -33,7 +33,7 @@
 
 <style>
     html {
-        min-width: 1024px;
+        min-width: 1440px;
         background-color: #fcfcfc;
     }
 </style>

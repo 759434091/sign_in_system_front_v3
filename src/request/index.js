@@ -17,11 +17,19 @@ async function getWeek() {
     return await axios.get("/week")
 }
 
+async function modifyPassword(suId, oldPassword, newPassword) {
+    const formData = new FormData()
+    formData.append('oldPassword', oldPassword)
+    formData.append('newPassword', newPassword)
+    return await axios.post(`/users/${suId}`, formData)
+}
+
 export default {
     axios: axios,
     setAuthorizationValue,
     getToken,
     getWeek,
+    modifyPassword,
     student,
     administrator
 }

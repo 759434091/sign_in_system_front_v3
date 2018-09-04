@@ -23,17 +23,30 @@
 </template>
 
 <script>
+    import {mapState} from 'vuex'
+
     export default {
         name: "PasswordSetting",
+        computed: {
+            ...mapState({
+                user: 'user'
+            })
+        },
         data() {
             const _this = this
             const newPwdValidator = (rule, value, callback) => {
-                if (_this.modifyPwdForm.oldPassword === _this.modifyPwdForm.newPassword)
+                if (_this.modifyPwdForm.oldPassword === _this.modifyPwdForm.newPassword) {
                     callback(new Error('新密码不能和旧密码相同'));
+                    return
+                }
+                callback()
             }
             const ensurePwdValidator = (rule, value, callback) => {
-                if (_this.modifyPwdForm.ensurePassword !== _this.modifyPwdForm.newPassword)
+                if (_this.modifyPwdForm.ensurePassword !== _this.modifyPwdForm.newPassword) {
                     callback(new Error('确认密码不一致'));
+                    return;
+                }
+                callback()
             }
             return {
                 modifyPwdFormRules: {
@@ -58,12 +71,34 @@
         },
         methods: {
             onSure() {
-                this.$refs.modifyPwdForm.validate((valid) => {
+                this.$refs['modifyPwdForm']
+                    .validate(valid => {
                         if (!valid) {
                             return
                         }
-                    }
-                )
+
+                        this.$request.modifyPassword(this.user.suId, this.modifyPwdForm.oldPassword, this.modifyPwdForm.newPassword)
+                            .then(res => {
+                                if (!res.data.success) {
+                                    this.$message.error(res.data.message)
+                                    return;
+                                }
+
+                                this.$message.success('修改成功, 请重新登录')
+                                this.$store.dispatch('logout').then(() => {
+                                    this.$router.push('/')
+                                })
+                            })
+                            .catch(err => {
+                                if (!err.response || !err.response.data)
+                                    return
+                                if (!err.response.data.message) {
+                                    this.$message.error(err.response.data)
+                                    return
+                                }
+                                this.$message.error(err.response.data.message)
+                            })
+                    })
             }
         }
     }

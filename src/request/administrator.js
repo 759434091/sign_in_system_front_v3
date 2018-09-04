@@ -88,6 +88,10 @@ async function getStudents(page, pageSize, suId, suName) {
     })
 }
 
+async function createSignIn(ssId) {
+    return await axios.post(`/schedules/${ssId}/signIns`)
+}
+
 export default {
     getCourse,
     getStudents,
@@ -98,5 +102,6 @@ export default {
     batchSelectionSupervisions,
     getMonitors,
     grantMonitor,
-    revokeMonitor
+    revokeMonitor,
+    createSignIn
 }

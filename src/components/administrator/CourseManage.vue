@@ -114,6 +114,10 @@
                                         @click.native="modifyScNeedMonitor(scope.row.scId, !scope.row.scNeedMonitor)"
                                         :divided="true"
                                         v-text="scope.row.scNeedMonitor?'取消督导':'发起督导'"></el-dropdown-item>
+                                <el-dropdown-item @click.native="showCreateSignIn(scope.row)">
+                                    发起签到
+                                </el-dropdown-item>
+
                                 <!--
                                                                 <el-dropdown-item @click.native="">查看历史签到</el-dropdown-item>
                                                                 <el-dropdown-item @click.native="" divided>管理督导</el-dropdown-item>
@@ -146,6 +150,9 @@
         <SupervisionsDialog :dialogVisible="supervisionsDialog.dialogVisible"
                             :scId="supervisionsDialog.scId"
                             @closeDialog="closeSupervision"/>
+        <CreateSignInDialog :dialogVisible="createSignInDialog.dialogVisible"
+                            :course="createSignInDialog.course"
+                            @closeDialog="closeCreateSignInDialog"/>
     </el-container>
 </template>
 
@@ -154,10 +161,11 @@
     import StudentDialog from "./StudentDialog";
     import CourseDialog from "./CourseDialog";
     import SupervisionsDialog from "./SupervisionsDialog";
+    import CreateSignInDialog from "./CreateSignInDialog";
 
     export default {
         name: "CourseManage",
-        components: {SupervisionsDialog, StudentDialog, CourseDialog},
+        components: {CreateSignInDialog, SupervisionsDialog, StudentDialog, CourseDialog},
         data() {
             return {
                 selectForm: {
@@ -189,6 +197,10 @@
                     dialogVisible: false,
                     scId: ''
                 },
+                createSignInDialog: {
+                    dialogVisible: false,
+                    course: null
+                },
                 selectionList: []
             }
         },
@@ -199,6 +211,14 @@
             this.handleCurrentChange(1)
         },
         methods: {
+            showCreateSignIn(course) {
+                this.createSignInDialog.course = course
+                this.createSignInDialog.dialogVisible = true
+            },
+            closeCreateSignInDialog() {
+                this.createSignInDialog.course = null
+                this.createSignInDialog.dialogVisible = false
+            },
             remoteMethod(val) {
                 this.selectForm.sdLoading = true
                 this.$request.administrator

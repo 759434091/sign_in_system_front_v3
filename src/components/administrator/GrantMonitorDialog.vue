@@ -7,13 +7,16 @@
             <el-form-item label="学号">
                 <el-autocomplete v-model="newMonitorForm.suId"
                                  placeholder="请输入学号"
-                                 :fetch-suggestions="querySearchAsync"
-                                 @select="handleSelect">
-
+                                 :fetch-suggestions="queryBySuId"
+                                 @select="handleSuIdSelect">
                 </el-autocomplete>
             </el-form-item>
             <el-form-item label="姓名">
-                <el-input v-model="newMonitorForm.suName"></el-input>
+                <el-autocomplete v-model="newMonitorForm.suName"
+                                 placeholder="请输入学号"
+                                 :fetch-suggestions="queryBySuName"
+                                 @select="handleSuNameSelect">
+                </el-autocomplete>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="doGrant">
@@ -66,25 +69,43 @@
                 this.newMonitorForm.suName = ''
                 this.$emit('closeDialog')
             },
-            querySearchAsync(val, callback) {
+            queryBySuId(val, callback) {
                 if ('' === val)
                     return
-                debugger
-                this.$request.administrator.getStudents(1, 10, val, '')
+                this.$request.administrator.getStudents(1, 10, val, null)
                     .then(res => {
-                        debugger
                         if (!res.data.success)
                             return
 
                         this.suggestList = res.data.data.list
+                        this.suggestList.forEach(user => user.value = `${user.suId} ${user.suName}`)
                         callback(this.suggestList)
                     })
                     .catch(() => {
-                        debugger
                     })
             },
-            handleSelect() {
+            handleSuIdSelect(user) {
+                this.newMonitorForm.suId = user.suId
+                this.newMonitorForm.suName = user.suName
+            },
+            queryBySuName(val, callback) {
+                if ('' === val)
+                    return
+                this.$request.administrator.getStudents(1, 10, null, val)
+                    .then(res => {
+                        if (!res.data.success)
+                            return
 
+                        this.suggestList = res.data.data.list
+                        this.suggestList.forEach(user => user.value = `${user.suId} ${user.suName}`)
+                        callback(this.suggestList)
+                    })
+                    .catch(() => {
+                    })
+            },
+            handleSuNameSelect(user) {
+                this.newMonitorForm.suId = user.suId
+                this.newMonitorForm.suName = user.suName
             }
         }
     }
