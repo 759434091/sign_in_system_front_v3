@@ -11,6 +11,7 @@
                         {{this.userName}}
                     </template>
                     <el-menu-item index="1-1" @click="goSetting">个人中心</el-menu-item>
+                    <el-menu-item index="1-1" @click="clearStorage">清除缓存</el-menu-item>
                     <el-menu-item index="1-2" @click="logout">退出</el-menu-item>
                 </el-submenu>
             </el-menu>
@@ -146,11 +147,18 @@
                         return this.$router.push('/index/student')
                     case 'ADMINISTRATOR':
                         return this.$router.push('/index/administrator')
+                    case 'TEACHER':
+                        return this.$router.push('/index/teacher')
                     default: {
                         this.$message.warning("用户信息失效，请重新登录")
                         return this.$router.push('/')
                     }
                 }
+            },
+            clearStorage() {
+                localStorage.clear()
+                this.$message.success('清除成功，请重新登陆')
+                this.$router.push("/")
             }
         }
     }

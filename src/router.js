@@ -31,6 +31,19 @@ export default new Router({
                     component: () => import('./components/Student.vue')
                 },
                 {
+                    path: 'teacher',
+                    name: 'teacher',
+                    redirect: 'teacher/courseTable',
+                    children: [
+                        {
+                            path: 'courseTable',
+                            name: 'tchCourseTable',
+                            component: () => import('./components/teacher/CourseTable.vue')
+                        }
+                    ],
+                    component: () => import('./components/Teacher.vue')
+                },
+                {
                     path: 'administrator',
                     name: 'administrator',
                     redirect: 'administrator/courseManage',
