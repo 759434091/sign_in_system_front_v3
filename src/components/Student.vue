@@ -2,7 +2,7 @@
     <el-container class="idx-second-container">
         <el-aside class="idx-el-aside" width="300px">
             <el-menu class="idx-second-menu" background-color="#828A92" text-color="#fff"
-                     active-text-color="#ffd04b" default-active="1">
+                     active-text-color="#ffd04b" :default-active="activeIndex">
                 <el-menu-item index="1" @click="courseTable">查看课表</el-menu-item>
             </el-menu>
         </el-aside>
@@ -16,6 +16,36 @@
 <script>
     export default {
         name: 'Student',
+        data() {
+            return {
+                activeIndex: ''
+            }
+        },
+        created() {
+            switch (this.$route.name) {
+                case 'courseTable': {
+                    this.activeIndex = "1"
+                    return
+                }
+                default: {
+                    this.$router.push('/index/student/courseTable')
+                }
+            }
+        },
+        watch: {
+            '$route'(to) {
+                const name = to.name
+                switch (name) {
+                    case 'courseTable': {
+                        this.activeIndex = "1"
+                        return
+                    }
+                    default: {
+                        this.$router.push('/index/student/courseTable')
+                    }
+                }
+            }
+        },
         methods: {
             courseTable() {
                 this.$router.push('/index/student/courseTable')

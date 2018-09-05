@@ -53,9 +53,9 @@
                     <el-main>
                         <el-table :data="historyList">
                             <el-table-column label="周" prop="ssiWeek"></el-table-column>
-                            <el-table-column label="状态" prop="ssidStatus">
+                            <el-table-column label="状态" prop="sisSignInDetail.ssidStatus">
                                 <template slot-scope="scope">
-                                    <span v-text="codeMap.get(scope.row.signInStatusCode)"></span>
+                                    <span v-text="codeMap.get(scope.row.sisSignInDetail.ssidStatus)"></span>
                                 </template>
                             </el-table-column>
                         </el-table>
@@ -77,6 +77,9 @@
             dialogVisible: Boolean,
         },
         computed: {
+            ...mapState({
+                user: 'user'
+            }),
             teacherList() {
                 return this.course
                     .sisJoinCourseList
@@ -97,14 +100,11 @@
                     delete sisSignIn.sisSignInDetailList
                 })
                 return sisSignInList
-            },
-            ...mapState({
-                user: 'user'
-            })
+            }
         },
         data() {
             return {
-                codeMap: new Map([[undefined, '进行中'], [null, '进行中'], [false, '缺勤'], [true, '到勤']]),
+                codeMap: new Map([[false, '缺勤'], [true, '到勤']]),
                 selectSchIdx: 0,
                 active: 'showCozDtl',
                 hisScheduleList: []

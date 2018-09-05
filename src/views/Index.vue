@@ -11,8 +11,8 @@
                         {{this.userName}}
                     </template>
                     <el-menu-item index="1-1" @click="goSetting">个人中心</el-menu-item>
-                    <el-menu-item index="1-1" @click="clearStorage">清除缓存</el-menu-item>
-                    <el-menu-item index="1-2" @click="logout">退出</el-menu-item>
+                    <el-menu-item index="1-2" @click="clearStorage">清除缓存</el-menu-item>
+                    <el-menu-item index="1-3" @click="logout">退出</el-menu-item>
                 </el-submenu>
             </el-menu>
         </el-header>

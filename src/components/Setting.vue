@@ -2,7 +2,7 @@
     <el-container class="idx-second-container">
         <el-aside class="idx-el-aside" width="300px">
             <el-menu class="idx-second-menu" background-color="#828A92" text-color="#fff"
-                     active-text-color="#ffd04b" default-active="2">
+                     active-text-color="#ffd04b" :default-active="activeIndex">
                 <el-menu-item index="1" @click="goBack">返回</el-menu-item>
                 <el-menu-item index="2" @click="passwordSetting">修改密码</el-menu-item>
                 <el-menu-item index="3" @click="roleSetting" v-if="user.suAuthorities.length > 1">切换角色</el-menu-item>
@@ -20,6 +20,44 @@
 
     export default {
         name: "Setting",
+        data() {
+            return {
+                activeIndex: ''
+            }
+        },
+        created() {
+            switch (this.$route.name) {
+                case 'passwordSetting': {
+                    this.activeIndex = "2"
+                    return
+                }
+                case 'roleSetting': {
+                    this.activeIndex = "3"
+                    return
+                }
+                default: {
+                    this.$router.push('/index/setting/passwordSetting')
+                }
+            }
+        },
+        watch: {
+            '$route'(to) {
+                const name = to.name
+                switch (name) {
+                    case 'passwordSetting': {
+                        this.activeIndex = "2"
+                        return
+                    }
+                    case 'roleSetting': {
+                        this.activeIndex = "3"
+                        return
+                    }
+                    default: {
+                        this.$router.push('/index/setting/passwordSetting')
+                    }
+                }
+            }
+        },
         computed: {
             ...mapState({
                 user: 'user',

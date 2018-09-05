@@ -33,7 +33,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="onSure">
+                    <el-button type="primary" @click="onSure" :loading="loading">
                         确定
                     </el-button>
                 </el-form-item>
@@ -170,9 +170,14 @@
                 })
             },
             onSure() {
+                this.loading = true
                 const ssId = this.selectForm.ssId;
                 const week = this.selectForm.week;
                 this.signIn = this.scheduleWithSignInList.find(schedule => schedule.ssId = ssId).sisSignInList.find(e => e.ssiWeek === week)
+                const _this = this
+                setTimeout(() => {
+                    _this.loading = false
+                }, 300)
             }
         }
     }

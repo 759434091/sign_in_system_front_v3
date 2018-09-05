@@ -1,6 +1,30 @@
 <template>
     <el-container>
-        <el-header></el-header>
+        <el-header>
+            <el-form :inline="true" size="mini" :model="selectForm">
+                <el-form-item label="学年度学期">
+                    <el-select v-model="selectForm.yearEtTerm">
+                        <el-option v-for="val in getYearEtTerm()"
+                                   :key="val"
+                                   :label="val"
+                                   :value="val"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="周">
+                    <el-select v-model="selectForm.week">
+                        <el-option v-for="val in getWeek()"
+                                   :key="val"
+                                   :label="val"
+                                   :value="val"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="reDraw" :loading="loading">
+                        确定
+                    </el-button>
+                </el-form-item>
+            </el-form>
+        </el-header>
         <el-main>
             <el-table ref="courseTable"
                       class="course-table"
@@ -69,14 +93,18 @@
                 user: 'user'
             }),
             fortnight() {
-                return this.week % 2 === 1 ? 1 : 2
+                return this.selectForm.week % 2 === 1 ? 1 : 2
             }
         },
         data() {
             return {
                 dayMap: new Map([[1, 'mon'], [2, 'tue'], [3, 'wed'], [4, 'thu'], [5, 'fri'], [6, 'sat'], [7, 'sun']]),
                 joinCourseList: [],
-                yearEtTerm: '2017-2018-2',
+                selectForm: {
+                    yearEtTerm: '2017-2018-2',
+                    week: '1'
+                },
+                loading: false,
                 tableData: [],
                 colorMap: new Map(),
                 rowSpanMap: new Map(),
@@ -86,11 +114,19 @@
             }
         },
         created() {
-            const tempTableData = []
-            for (let i = 0; i < 12; i++) {
-                tempTableData[i] = {period: i + 1, mon: '', tue: '', wed: '', thu: '', fri: '', sat: '', sun: ''}
-            }
-
+            const date = new Date()
+            const year = date.getFullYear()
+            const term = date.getMonth() >= 9 && date.getMonth() <= 12 || date.getMonth() >= 1 && date.getMonth() <= 2 ? '1' : '2'
+            this.selectForm.yearEtTerm = year + '-' + (year + 1) + '-' + term
+            this.$request.getWeek()
+                .then(res => {
+                    if (!res.data.week)
+                        return
+                    this.selectForm.week = res.data.week.toString()
+                })
+                .catch(() => {
+                })
+            this.loading = true
             this.$request.student.getCourseTable()
                 .then(res => {
                     if (!res.data.success) {
@@ -99,36 +135,7 @@
                     }
 
                     this.joinCourseList = res.data.array;
-                    const courseList = this.joinCourseList.map(joinCourse => joinCourse.sisCourse)
-                    for (let i = 0; i < courseList.length; i++) {
-                        const course = courseList[i];
-                        const scheduleList = course.sisScheduleList
-                        for (let j = 0; j < scheduleList.length; j++) {
-                            const schedule = scheduleList[j];
-
-                            if (this.yearEtTerm !== schedule.ssYearEtTerm ||
-                                this.week < schedule.ssStartWeek ||
-                                this.week > schedule.ssEndWeek ||
-                                (schedule.ssFortnight !== 0 && schedule.ssFortnight !== this.fortnight)) {
-                                continue;
-                            }
-
-                            for (let k = schedule.ssStartTime; k <= schedule.ssEndTime; k++) {
-                                // 跨行数
-                                if (k === schedule.ssStartTime) {
-                                    this.rowSpanMap.set(`${k - 1}_${schedule.ssDayOfWeek}`,
-                                        [schedule.ssEndTime - schedule.ssStartTime + 1, 1])
-                                } else {
-                                    this.rowSpanMap.set(`${k - 1}_${schedule.ssDayOfWeek}`,
-                                        [0, 0])
-                                }
-                                // 课程插入tempTable
-                                tempTableData[k - 1][this.dayMap.get(schedule.ssDayOfWeek)] = course
-                            }
-                        }
-                    }
-                    this.tableData = tempTableData
-
+                    this.reDraw()
                 })
                 .catch(err => {
                     if (!err.response || !err.response.data)
@@ -139,12 +146,52 @@
                     }
                     this.$message.error(err.response.data.message)
                 })
+                .finally(() => {
+                    this.loading = false
+                })
         },
         mounted() {
             this.$refs.courseTable.$el.getElementsByClassName('el-table__body')[0].setAttribute('cellspacing', '5')
             this.$refs.courseTable.$el.getElementsByClassName('el-table__header')[0].setAttribute('cellspacing', '5')
         },
         methods: {
+            reDraw() {
+                this.loading = true
+                const tempTableData = []
+                for (let i = 0; i < 12; i++) {
+                    tempTableData[i] = {period: i + 1, mon: '', tue: '', wed: '', thu: '', fri: '', sat: '', sun: ''}
+                }
+                const courseList = this.joinCourseList.map(joinCourse => joinCourse.sisCourse)
+                for (let i = 0; i < courseList.length; i++) {
+                    const course = courseList[i];
+                    const scheduleList = course.sisScheduleList
+                    for (let j = 0; j < scheduleList.length; j++) {
+                        const schedule = scheduleList[j];
+
+                        if (this.selectForm.yearEtTerm !== schedule.ssYearEtTerm ||
+                            this.selectForm.week < schedule.ssStartWeek ||
+                            this.selectForm.week > schedule.ssEndWeek ||
+                            (schedule.ssFortnight !== 0 && schedule.ssFortnight !== this.fortnight)) {
+                            continue;
+                        }
+
+                        for (let k = schedule.ssStartTime; k <= schedule.ssEndTime; k++) {
+                            // 跨行数
+                            if (k === schedule.ssStartTime) {
+                                this.rowSpanMap.set(`${k - 1}_${schedule.ssDayOfWeek}`,
+                                    [schedule.ssEndTime - schedule.ssStartTime + 1, 1])
+                            } else {
+                                this.rowSpanMap.set(`${k - 1}_${schedule.ssDayOfWeek}`,
+                                    [0, 0])
+                            }
+                            // 课程插入tempTable
+                            tempTableData[k - 1][this.dayMap.get(schedule.ssDayOfWeek)] = course
+                        }
+                    }
+                }
+                this.tableData = tempTableData
+                this.loading = false
+            },
             spanMethod({rowIndex, columnIndex}) {
                 let rowSpan = this.rowSpanMap.get(`${rowIndex}_${columnIndex}`)
                 if (rowSpan) {
@@ -162,7 +209,7 @@
                 }
                 let color = this.colorMap.get(name)
                 if (color == null) {
-                    color = colorList[this.nextColor++]
+                    color = colorList[++this.nextColor % 7]
                     this.colorMap.set(name, color)
                     return {
                         backgroundColor: color,
@@ -192,6 +239,21 @@
             closeDialog() {
                 this.dialogCourse = null
                 this.dialogVisible = false
+            },
+            getYearEtTerm() {
+                const list = []
+                for (let i = 2014; i < 2020; i++) {
+                    list.push(i + '-' + (i + 1) + '-' + 1)
+                    list.push(i + '-' + (i + 1) + '-' + 2)
+                }
+                return list
+            },
+            getWeek() {
+                const list = []
+                for (let i = 1; i <= 22; i++) {
+                    list.push(i.toString())
+                }
+                return list
             }
         }
     }
