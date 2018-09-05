@@ -157,7 +157,7 @@
             },
             clearStorage() {
                 localStorage.clear()
-                this.$message.success('清除成功，请重新登陆')
+                this.$message.success('清除成功，请重新登录')
                 this.$router.push("/")
             }
         }

@@ -1,5 +1,8 @@
 <template>
     <el-dialog title="发起签到"
+               width="500px"
+               :close-on-click-modal="false"
+               :close-on-press-escape="false"
                :visible="dialogVisible"
                :before-close="closeDialog">
         <el-form v-if="null != course" label-width="80px" label-position="right">
@@ -11,7 +14,7 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="createSignIn">
+                <el-button type="primary" @click="createSignIn" :loading="loading">
                     确定
                 </el-button>
             </el-form-item>
@@ -30,11 +33,14 @@
         },
         data() {
             return {
-                ssId: ''
+                ssId: '',
+                loading: false
             }
         },
         methods: {
             closeDialog() {
+                if (this.loading)
+                    return false
                 this.$emit('closeDialog')
                 this.ssId = ''
             },
@@ -44,17 +50,24 @@
             createSignIn() {
                 if ('' === this.ssId)
                     return
+                this.loading = true
                 this.$request.administrator.createSignIn(this.ssId)
                     .then(res => {
                         if (!res.data.success) {
-
-                            this.$message(res.data.message)
+                            if (res.data.message)
+                                this.$message.error(res.data.message)
+                            else
+                                this.$message.error('签到已存在')
+                            this.loading = false
                             return
                         }
 
-                        debugger
+                        this.$message.success('发起成功')
+                        this.loading = false
+                        this.closeDialog()
                     })
                     .catch(err => {
+                        this.loading = false
                         if (!err.response || !err.response.data)
                             return
                         if (!err.response.data.message) {

@@ -1,6 +1,8 @@
 <template>
     <el-dialog title="新增督导员"
                width="400px"
+               :close-on-click-modal="false"
+               :close-on-press-escape="false"
                :visible="dialogVisible"
                :before-close="closeDialog">
         <el-form :model="newMonitorForm">
@@ -19,7 +21,7 @@
                 </el-autocomplete>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="doGrant">
+                <el-button type="primary" @click="doGrant" :loading="loading">
                     确定
                 </el-button>
             </el-form-item>
@@ -39,11 +41,13 @@
                     suId: '',
                     suName: ''
                 },
-                suggestList: []
+                suggestList: [],
+                loading: false
             }
         },
         methods: {
             doGrant() {
+                this.loading = true
                 this.$request.administrator.grantMonitor(this.newMonitorForm.suId)
                     .then(res => {
                         if (!res.data.success) {
@@ -63,8 +67,13 @@
                         }
                         this.$message.error(err.response.data.message)
                     })
+                    .finally(() => {
+                        this.loading = false
+                    })
             },
             closeDialog() {
+                if (this.loading)
+                    return false
                 this.newMonitorForm.suId = ''
                 this.newMonitorForm.suName = ''
                 this.$emit('closeDialog')

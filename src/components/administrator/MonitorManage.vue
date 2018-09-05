@@ -55,7 +55,7 @@
 </template>
 
 <script>
-    import GrantMonitorDialog from './GrantMonitorDialog'
+    import GrantMonitorDialog from '@/components/dialog/GrantMonitorDialog'
 
     export default {
         name: "MonitorManage",

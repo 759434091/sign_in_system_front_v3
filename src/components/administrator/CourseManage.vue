@@ -158,10 +158,10 @@
 
 <script>
     import courseUtils from '@/util/courseUtils'
-    import StudentDialog from "./StudentDialog";
-    import CourseDialog from "./CourseDialog";
-    import SupervisionsDialog from "./SupervisionsDialog";
-    import CreateSignInDialog from "./CreateSignInDialog";
+    import StudentDialog from "@/components/dialog/StudentDialog";
+    import CourseDialog from "@/components/dialog/CourseDialog";
+    import SupervisionsDialog from "@/components/dialog/SupervisionsDialog";
+    import CreateSignInDialog from "@/components/dialog/CreateSignInDialog";
 
     export default {
         name: "CourseManage",

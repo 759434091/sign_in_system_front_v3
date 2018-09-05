@@ -1,6 +1,7 @@
 import axios from './axiosConfig'
 import student from './student'
 import administrator from './administrator'
+import teacher from './teacher'
 
 function setAuthorizationValue(token) {
     axios.defaults.headers.Authorization = `Bearer ${token}`
@@ -31,5 +32,6 @@ export default {
     getWeek,
     modifyPassword,
     student,
-    administrator
+    administrator,
+    teacher
 }
