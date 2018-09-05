@@ -92,6 +92,14 @@ async function createSignIn(ssId) {
     return await axios.post(`/schedules/${ssId}/signIns`)
 }
 
+async function getSignIns(scId) {
+    return await axios.get(`/courses/${scId}/signIns`, {
+        params: {
+            queryType: 'administrator'
+        }
+    })
+}
+
 export default {
     getCourse,
     getStudents,
@@ -103,5 +111,6 @@ export default {
     getMonitors,
     grantMonitor,
     revokeMonitor,
-    createSignIn
+    createSignIn,
+    getSignIns
 }

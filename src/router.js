@@ -39,6 +39,11 @@ export default new Router({
                             path: 'courseTable',
                             name: 'tchCourseTable',
                             component: () => import('./components/teacher/CourseTable.vue')
+                        },
+                        {
+                            path: 'historySignIn',
+                            name: 'historySignIn',
+                            component: () => import('./components/teacher/HistorySignIn.vue')
                         }
                     ],
                     component: () => import('./components/Teacher.vue')

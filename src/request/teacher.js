@@ -8,6 +8,15 @@ async function getCourseTable() {
     })
 }
 
+async function getSignIns(scId) {
+    return await axios.get(`/courses/${scId}/signIns`, {
+        params: {
+            queryType: 'teacher'
+        }
+    })
+}
+
 export default {
-    getCourseTable
+    getCourseTable,
+    getSignIns
 }

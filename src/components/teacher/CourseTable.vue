@@ -30,6 +30,9 @@
                     </template>
                 </el-table-column>
                 <el-table-column label="到勤率" prop="scAttRate" width="70">
+                    <template slot-scope="scope">
+                        <div v-text="null == scope.row.scAttRate ? '无' : scope.row.scAttRate"></div>
+                    </template>
                 </el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">
