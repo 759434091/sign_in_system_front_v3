@@ -33,7 +33,7 @@
                     <el-checkbox v-model="selectForm.remember"></el-checkbox>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="onSearch" :loading="loading">
+                    <el-button type="primary" @click="onSearch" :loading="loading" :disabled="loading">
                         搜索
                     </el-button>
                 </el-form-item>

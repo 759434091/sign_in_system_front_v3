@@ -5,6 +5,7 @@
                      active-text-color="#ffd04b" :default-active="activeIndex">
                 <el-menu-item index="1" @click="courseManage">全校课程</el-menu-item>
                 <el-menu-item index="2" @click="monitorManage">督导员管理</el-menu-item>
+                <el-menu-item index="3" @click="studentManage">学生管理</el-menu-item>
             </el-menu>
         </el-aside>
         <el-main class="idx-main">
@@ -32,6 +33,10 @@
                     this.activeIndex = '2'
                     return
                 }
+                case 'studentManage': {
+                    this.activeIndex = '3'
+                    return
+                }
                 default: {
                     this.$router.push('/index/administrator/courseManage')
                 }
@@ -49,6 +54,10 @@
                         this.activeIndex = '2'
                         return
                     }
+                    case 'studentManage': {
+                        this.activeIndex = '3'
+                        return
+                    }
                     default: {
                         this.$router.push('/index/administrator/courseManage')
                     }
@@ -61,6 +70,9 @@
             },
             monitorManage() {
                 this.$router.push('/index/administrator/monitorManage')
+            },
+            studentManage() {
+                this.$router.push('/index/administrator/studentManage')
             }
         }
     }

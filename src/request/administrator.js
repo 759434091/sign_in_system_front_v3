@@ -77,13 +77,14 @@ async function revokeMonitor(suId) {
     return await axios.delete(`/monitors/${suId}`)
 }
 
-async function getStudents(page, pageSize, suId, suName) {
+async function getStudents(page, pageSize, suId, suName, orderByCozLackNum) {
     return await axios.get('/students', {
         params: {
             page,
             pageSize,
             suId: '' === suId ? null : suId,
-            suName: '' === suName ? null : suName
+            suName: '' === suName ? null : suName,
+            orderByCozLackNum
         }
     })
 }

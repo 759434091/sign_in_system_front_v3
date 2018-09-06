@@ -12,7 +12,7 @@
                     <el-checkbox v-model="selectForm.ordByLackNum"></el-checkbox>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="onSearch">
+                    <el-button type="primary" @click="onSearch" :loading="loading" :disabled="loading">
                         搜索
                     </el-button>
                 </el-form-item>
@@ -30,6 +30,7 @@
         </el-header>
         <el-main>
             <el-table :data="monitorList"
+                      v-loading="loading"
                       @selection-change="handleSelectionChange">
                 <el-table-column type="selection" width="55"></el-table-column>
                 <el-table-column prop="suId" label="学号"></el-table-column>
@@ -64,6 +65,7 @@
         },
         data() {
             return {
+                loading: false,
                 selectForm: {
                     suId: '',
                     suName: '',
@@ -96,6 +98,7 @@
                 this.onSearch()
             },
             handleCurrentChange(page) {
+                this.loading = true
                 this.$request.administrator
                     .getMonitors(
                         page,
@@ -126,6 +129,9 @@
                             return
                         }
                         this.$message.error(err.response.data.message)
+                    })
+                    .finally(() => {
+                        this.loading = false
                     })
             },
             onSearch() {

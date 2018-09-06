@@ -10,7 +10,8 @@
                     <el-input type="password" v-model="loginForm.suPassword" @keyup.enter.native="onSubmit"/>
                 </el-form-item>
                 <el-form-item>
-                    <el-button class="login-form-button" type="primary" @click="onSubmit" :loading="isLoginProcessing">
+                    <el-button class="login-form-button" type="primary" @click="onSubmit" :loading="isLoginProcessing"
+                               :disabled="isLoginProcessing">
                         登录
                     </el-button>
                 </el-form-item>
