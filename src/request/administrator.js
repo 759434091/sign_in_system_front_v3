@@ -100,6 +100,10 @@ async function getSignIns(scId) {
     })
 }
 
+async function modifyScheduleLocation(ssId, slId) {
+    return await axios.put(`/schedules/${ssId}/locations/${slId}`)
+}
+
 export default {
     getCourse,
     getStudents,
@@ -112,5 +116,6 @@ export default {
     grantMonitor,
     revokeMonitor,
     createSignIn,
-    getSignIns
+    getSignIns,
+    modifyScheduleLocation
 }

@@ -7,14 +7,14 @@
                :before-close="closeDialog">
         <el-form v-if="null != course" label-width="80px" label-position="right">
             <el-form-item label="上课时间">
-                <el-select v-model="ssId" @handle-select="handleSelect">
+                <el-select v-model="ssId" @change="handleSelect">
                     <el-option v-for="val in course.sisScheduleList"
                                :key="val.ssId" :label="`${getScheduleTimeString(val)}`" :value="val.ssId">
                     </el-option>
                 </el-select>
             </el-form-item>
             <el-form-item label="地点">
-                <span v-text="getLocation"></span>
+                <span v-text="getLocation()"></span>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="createSignIn" :loading="loading">
@@ -22,11 +22,15 @@
                 </el-button>
             </el-form-item>
         </el-form>
+        <ModifyScheduleLocationDialog :dialogVisible="modifyScheduleLocationDialog.dialogVisible"
+                                      :schedule="modifyScheduleLocationDialog.schedule"
+                                      @closeDialog="closeModifyScheduleLocationDialog"/>
     </el-dialog>
 </template>
 
 <script>
-    import courseUtils from "@/util/courseUtils";
+    import courseUtils from '@/util/courseUtils';
+    import ModifyScheduleLocationDialog from './ModifyScheduleLocationDialog'
 
     export default {
         name: "CreateSignInDialog",
@@ -34,12 +38,17 @@
             dialogVisible: Boolean,
             course: Object
         },
+        components: {ModifyScheduleLocationDialog},
         data() {
             return {
                 ssId: '',
                 loading: false,
                 schedule: null,
-                location: null
+                location: null,
+                modifyScheduleLocationDialog: {
+                    dialogVisible: false,
+                    schedule: null
+                }
             }
         },
         methods: {
@@ -48,6 +57,9 @@
                     return false
                 this.$emit('closeDialog')
                 this.ssId = ''
+                this.loading = false
+                this.schedule = null
+                this.location = null
             },
             getScheduleTimeString(schedule) {
                 return courseUtils.getScheduleTimeString(schedule)
@@ -55,8 +67,13 @@
             createSignIn() {
                 if ('' === this.ssId)
                     return
+                if (null == this.schedule.slId) {
+                    this.modifyScheduleLocationDialog.dialogVisible = true
+                    this.modifyScheduleLocationDialog.schedule = this.schedule
+                    return
+                }
                 if (null == this.location) {
-                    this.$message.error("该课程未指定地点或未加载，请重新选择")
+                    this.$message.error("地点加载失败，请重新尝试")
                     return
                 }
                 this.loading = true
@@ -86,19 +103,19 @@
                         this.$message.error(err.response.data.message)
                     })
             },
-            handleSelect() {
-                if ('' === this.ssId) {
+            handleSelect(ssId) {
+                if ('' === ssId) {
                     return
                 }
-                schedule = this.course.sisScheduleList.find(schedule => schedule.ssId === ssId)
+                const schedule = this.course.sisScheduleList.find(schedule => schedule.ssId === ssId)
                 if (null == schedule) {
                     return
                 }
-                if (null == shcedule.slId) {
+                this.schedule = schedule
+
+                if (null == schedule.slId) {
                     return
                 }
-
-                this.schedule = schedule
                 this.$request.getLocation(schedule.slId)
                     .then(res => {
                         if (!res.data.success) {
@@ -118,6 +135,40 @@
                 if (null == this.location)
                     return '未加载'
                 return this.location.slName
+            },
+            closeModifyScheduleLocationDialog(slId) {
+                debugger
+                if (null != slId) {
+                    this.loading = true
+                    this.$request.administrator.createSignIn(parseInt(slId))
+                        .then(res => {
+                            if (!res.data.success) {
+                                if (res.data.message)
+                                    this.$message.error(res.data.message)
+                                else
+                                    this.$message.error('签到已存在')
+                                this.loading = false
+                                return
+                            }
+
+                            this.$message.success('发起成功')
+                            this.loading = false
+                            this.closeDialog()
+                        })
+                        .catch(err => {
+                            this.loading = false
+                            if (!err.response || !err.response.data)
+                                return
+                            if (!err.response.data.message) {
+                                this.$message.error(err.response.data)
+                                return
+                            }
+                            this.$message.error(err.response.data.message)
+                        })
+                }
+                this.modifyScheduleLocationDialog.dialogVisible = false
+                this.modifyScheduleLocationDialog.schedule = null
+                this.closeDialog()
             }
         }
     }

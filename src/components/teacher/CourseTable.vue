@@ -143,6 +143,23 @@
             closeCreateSignInDialog() {
                 this.createSignInDialog.course = null
                 this.createSignInDialog.dialogVisible = false
+                this.$request.teacher.getCourseTable()
+                    .then(res => {
+                        if (!res.data.success) {
+                            this.$message.error(res.data.message)
+                            return
+                        }
+                        this.courseList = res.data.array.map(joinCourse => joinCourse.sisCourse)
+                    })
+                    .catch(err => {
+                        if (!err.response || !err.response.data)
+                            return
+                        if (!err.response.data.message) {
+                            this.$message.error(err.response.data)
+                            return
+                        }
+                        this.$message.error(err.response.data.message)
+                    })
             },
             showCourse(course) {
                 this.courseDialog.course = course

@@ -29,6 +29,17 @@ async function getLocation(slId) {
     return await axios.get(`/locations/${slId}`)
 }
 
+async function getLocations(page, pageSize, slId, slName) {
+    return await axios.get('/locations', {
+        params: {
+            page,
+            pageSize,
+            slId,
+            slName
+        }
+    })
+}
+
 export default {
     axios: axios,
     setAuthorizationValue,
@@ -36,6 +47,7 @@ export default {
     getWeek,
     modifyPassword,
     getLocation,
+    getLocations,
     student,
     administrator,
     teacher

@@ -147,27 +147,26 @@
                 if (!scheduleWithSignIn)
                     return []
 
-                return weekList.map(week => {
-                    const processing = scheduleWithSignIn.sisProcessingList.find(e => e.week === week)
-                    if (processing) {
-                        return {
-                            value: week,
-                            label: `${week} 进行中`
-                        }
-                    }
-
-                    const signIn = scheduleWithSignIn.sisSignInList.find(e => e.ssiWeek === week)
-                    if (signIn)
-                        return {
-                            value: week,
-                            label: `${week} 已签到`
+                return weekList
+                    .map(week => {
+                        const processing = scheduleWithSignIn.sisProcessingList.find(e => e.week === week)
+                        if (processing) {
+                            return {
+                                value: week,
+                                label: `${week} 进行中`
+                            }
                         }
 
-                    return {
-                        value: week,
-                        label: `${week} 未发起`
-                    }
-                })
+                        const signIn = scheduleWithSignIn.sisSignInList.find(e => e.ssiWeek === week)
+                        if (signIn)
+                            return {
+                                value: week,
+                                label: `${week} 已签到`
+                            }
+
+                        return null
+                    })
+                    .filter(s => null != s)
             },
             onSure() {
                 this.loading = true
