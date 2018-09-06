@@ -30,12 +30,10 @@
 </template>
 
 <script>
-    import ElSelectDropdown from "element-ui/packages/select/src/select-dropdown";
     import courseUtils from "@/util/courseUtils";
 
     export default {
         name: "SupervisionsDialog",
-        components: {ElSelectDropdown},
         props: {
             scId: String,
             dialogVisible: Boolean

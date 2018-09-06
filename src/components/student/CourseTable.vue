@@ -28,7 +28,8 @@
         <el-main>
             <el-table ref="courseTable"
                       class="course-table"
-                      border
+                      v-loading="loading"
+                      :border="true"
                       :span-method="spanMethod"
                       :data="tableData"
                       :cell-style="cellStyle"

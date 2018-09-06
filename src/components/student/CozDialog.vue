@@ -7,7 +7,7 @@
             :before-close="closeDialog">
         <el-tabs v-model="active" type="card" :stretch="true">
             <el-tab-pane label="课程信息" name="showCozDtl">
-                <el-form class="course-dtl-form" label-position="left" label-width="80px">
+                <el-form class="course-dtl-form" size="mini" label-position="left" label-width="80px">
                     <el-form-item label="课程序号">
                         <span v-text="course.scId"></span>
                     </el-form-item>
@@ -34,7 +34,7 @@
             <el-tab-pane label="历史签到" name="hisSignIn">
                 <el-container>
                     <el-header class="header">
-                        <el-form inline>
+                        <el-form inline size="mini">
                             <el-form-item label="上课时间">
                                 <el-select
                                         placeholder="上课时间"

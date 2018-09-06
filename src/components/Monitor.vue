@@ -3,8 +3,7 @@
         <el-aside class="idx-el-aside" width="300px">
             <el-menu class="idx-second-menu" background-color="#828A92" text-color="#fff"
                      active-text-color="#ffd04b" :default-active="activeIndex">
-                <el-menu-item index="1" @click="courseManage">全校课程</el-menu-item>
-                <el-menu-item index="2" @click="monitorManage">督导员管理</el-menu-item>
+                <el-menu-item index="1" @click="courseTable">督导课表</el-menu-item>
             </el-menu>
         </el-aside>
         <el-main class="idx-main">
@@ -16,24 +15,20 @@
 
 <script>
     export default {
-        name: "Administrator",
+        name: "Monitor",
         data() {
             return {
-                activeIndex: '',
+                activeIndex: ""
             }
         },
         created() {
             switch (this.$route.name) {
-                case 'courseManage': {
-                    this.activeIndex = '1'
-                    return
-                }
-                case 'monitorManage': {
-                    this.activeIndex = '2'
+                case 'monCourseTable': {
+                    this.activeIndex = "1"
                     return
                 }
                 default: {
-                    this.$router.push('/index/administrator/courseManage')
+                    this.$router.push('/index/monitor/courseTable')
                 }
             }
         },
@@ -41,26 +36,19 @@
             '$route'(to) {
                 const name = to.name
                 switch (name) {
-                    case 'courseManage': {
-                        this.activeIndex = '1'
-                        return
-                    }
-                    case 'monitorManage': {
-                        this.activeIndex = '2'
+                    case 'tchCourseTable': {
+                        this.activeIndex = "1"
                         return
                     }
                     default: {
-                        this.$router.push('/index/administrator/courseManage')
+                        this.$router.push('/index/monitor/courseTable')
                     }
                 }
             }
         },
         methods: {
-            courseManage() {
-                this.$router.push('/index/administrator/courseManage')
-            },
-            monitorManage() {
-                this.$router.push('/index/administrator/monitorManage')
+            courseTable() {
+                this.$router.push('/index/monitor/courseTable')
             }
         }
     }

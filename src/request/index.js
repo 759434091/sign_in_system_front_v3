@@ -2,6 +2,7 @@ import axios from './axiosConfig'
 import student from './student'
 import administrator from './administrator'
 import teacher from './teacher'
+import monitor from './monitor'
 
 function setAuthorizationValue(token) {
     axios.defaults.headers.Authorization = `Bearer ${token}`
@@ -50,5 +51,6 @@ export default {
     getLocations,
     student,
     administrator,
-    teacher
+    teacher,
+    monitor
 }

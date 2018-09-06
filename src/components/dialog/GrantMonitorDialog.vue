@@ -5,7 +5,7 @@
                :close-on-press-escape="false"
                :visible="dialogVisible"
                :before-close="closeDialog">
-        <el-form :model="newMonitorForm">
+        <el-form :model="newMonitorForm" size="mini">
             <el-form-item label="学号">
                 <el-autocomplete v-model="newMonitorForm.suId"
                                  placeholder="请输入学号"

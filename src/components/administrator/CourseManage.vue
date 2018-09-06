@@ -1,6 +1,6 @@
 <template>
     <el-container>
-        <el-header>
+        <el-header height="auto">
             <el-form class="coz-manage-form" :inline="true" size="mini" :model="selectForm">
                 <el-form-item label="年级">
                     <el-select placeholder="年级" v-model="selectForm.scGrade">
@@ -21,17 +21,19 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
+                <br v-if="screenWidth < 1200">
                 <el-form-item label="课程序号">
                     <el-input v-model="selectForm.scId"></el-input>
                 </el-form-item>
                 <el-form-item label="课程名字">
                     <el-input v-model="selectForm.scName"></el-input>
                 </el-form-item>
+                <br v-if="screenWidth < 1440">
                 <el-form-item class="coz-manage-form-remember" label="记住">
                     <el-checkbox v-model="selectForm.remember"></el-checkbox>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="onSearch">
+                    <el-button type="primary" @click="onSearch" :loading="loading">
                         搜索
                     </el-button>
                 </el-form-item>
@@ -59,7 +61,8 @@
             </el-form>
         </el-header>
         <el-main>
-            <el-table :data="courseList"
+            <el-table v-loading="loading"
+                      :data="courseList"
                       @selection-change="handleSelectionChange">
                 <el-table-column type="selection"
                                  width="55">
@@ -110,6 +113,9 @@
                                 <el-dropdown-item @click.native="showSupervision(scope.row.scId)">
                                     历史督导
                                 </el-dropdown-item>
+                                <el-dropdown-item @click.native="showHistorySignIn(scope.row.scId)">
+                                    历史签到
+                                </el-dropdown-item>
                                 <el-dropdown-item
                                         @click.native="modifyScNeedMonitor(scope.row.scId, !scope.row.scNeedMonitor)"
                                         :divided="true"
@@ -117,12 +123,6 @@
                                 <el-dropdown-item @click.native="showCreateSignIn(scope.row)">
                                     发起签到
                                 </el-dropdown-item>
-
-                                <!--
-                                                                <el-dropdown-item @click.native="">查看历史签到</el-dropdown-item>
-                                                                <el-dropdown-item @click.native="" divided>管理督导</el-dropdown-item>
-                                                                <el-dropdown-item @click.native="">签到设置</el-dropdown-item>
-                                -->
                             </el-dropdown-menu>
                         </el-dropdown>
                     </template>
@@ -150,6 +150,9 @@
         <SupervisionsDialog :dialogVisible="supervisionsDialog.dialogVisible"
                             :scId="supervisionsDialog.scId"
                             @closeDialog="closeSupervision"/>
+        <HistorySignInDialog :dialogVisible="historySignInDialog.dialogVisible"
+                             :scId="historySignInDialog.scId"
+                             @closeDialog="closeHistorySignIn"/>
         <CreateSignInDialog :dialogVisible="createSignInDialog.dialogVisible"
                             :course="createSignInDialog.course"
                             @closeDialog="closeCreateSignInDialog"/>
@@ -162,12 +165,32 @@
     import CourseDialog from "@/components/dialog/CourseDialog";
     import SupervisionsDialog from "@/components/dialog/SupervisionsDialog";
     import CreateSignInDialog from "@/components/dialog/CreateSignInDialog";
+    import HistorySignInDialog from "../dialog/HistorySignInDialog";
 
     export default {
         name: "CourseManage",
-        components: {CreateSignInDialog, SupervisionsDialog, StudentDialog, CourseDialog},
+        components: {HistorySignInDialog, CreateSignInDialog, SupervisionsDialog, StudentDialog, CourseDialog},
+        watch: {
+            screenWidth(val) {
+                if (val < 1440) {
+                    this.barWidth = '250px'
+                } else {
+                    this.barWidth = '300px'
+                }
+            },
+        },
+        mounted() {
+            const _this = this
+            window.onresize = () => {
+                return (() => {
+                    _this.screenWidth = document.documentElement.clientWidth
+                })()
+            }
+        },
         data() {
             return {
+                screenWidth: document.documentElement.clientWidth,
+                loading: false,
                 selectForm: {
                     remember: false,
                     scGrade: '',
@@ -201,24 +224,22 @@
                     dialogVisible: false,
                     course: null
                 },
+                historySignInDialog: {
+                    dialogVisible: false,
+                    course: null
+                },
                 selectionList: []
             }
         },
         created() {
+            this.loading = true
             const rememberForm = JSON.parse(localStorage.getItem('cozManagerForm'))
             if (rememberForm)
                 this.selectForm = rememberForm
+            this.loading = false
             this.handleCurrentChange(1)
         },
         methods: {
-            showCreateSignIn(course) {
-                this.createSignInDialog.course = course
-                this.createSignInDialog.dialogVisible = true
-            },
-            closeCreateSignInDialog() {
-                this.createSignInDialog.course = null
-                this.createSignInDialog.dialogVisible = false
-            },
             remoteMethod(val) {
                 this.selectForm.sdLoading = true
                 this.$request.administrator
@@ -250,6 +271,7 @@
                 this.handleCurrentChange(1)
             },
             handleCurrentChange(page) {
+                this.loading = true
                 this.$request.administrator
                     .getCourse(
                         page,
@@ -283,6 +305,9 @@
                             return
                         }
                         this.$message.error(err.response.data.message)
+                    })
+                    .finally(() => {
+                        this.loading = false
                     })
             },
             getScheduleTimeString(schedule) {
@@ -321,6 +346,22 @@
             closeSupervision() {
                 this.supervisionsDialog.scId = ''
                 this.supervisionsDialog.dialogVisible = false
+            },
+            showHistorySignIn(scId) {
+                this.historySignInDialog.scId = scId
+                this.historySignInDialog.dialogVisible = true
+            },
+            closeHistorySignIn() {
+                this.historySignInDialog.scId = ''
+                this.historySignInDialog.dialogVisible = false
+            },
+            showCreateSignIn(course) {
+                this.createSignInDialog.course = course
+                this.createSignInDialog.dialogVisible = true
+            },
+            closeCreateSignInDialog() {
+                this.createSignInDialog.course = null
+                this.createSignInDialog.dialogVisible = false
             },
             modifyScNeedMonitor(scId, status) {
                 this.$confirm(`将对课程 ${scId} ${status ? '发起督导' : '取消督导'}，请确认`, status ? '发起督导' : '取消督导',)

@@ -49,6 +49,19 @@ export default new Router({
                     component: () => import('./components/Teacher.vue')
                 },
                 {
+                    path: 'monitor',
+                    name: 'monitor',
+                    redirect: 'monitor/courseTable',
+                    children: [
+                        {
+                            path: 'courseTable',
+                            name: 'monCourseTable',
+                            component: () => import('./components/monitor/CourseTable.vue')
+                        }
+                    ],
+                    component: () => import('./components/Monitor.vue')
+                },
+                {
                     path: 'administrator',
                     name: 'administrator',
                     redirect: 'administrator/courseManage',

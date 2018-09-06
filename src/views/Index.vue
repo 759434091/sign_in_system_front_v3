@@ -147,6 +147,8 @@
                         return this.$router.push('/index/student')
                     case 'ADMINISTRATOR':
                         return this.$router.push('/index/administrator')
+                    case 'MONITOR':
+                        return this.$router.push('/index/monitor')
                     case 'TEACHER':
                         return this.$router.push('/index/teacher')
                     default: {
@@ -239,5 +241,15 @@
 
     .idx-el-aside, .idx-second-menu {
         border-bottom-left-radius: 5px;
+    }
+
+    @media screen and (max-width: 1440px) {
+        .idx-main {
+            height: calc(100vh - 24px - 60px);
+            margin-right: 20px;
+            padding: 10px 0;
+            background-color: transparent;
+            border-bottom-right-radius: 5px;
+        }
     }
 </style>
