@@ -80,6 +80,11 @@ export default new Router({
                             path: 'studentManage',
                             name: 'studentManage',
                             component: () => import('./components/administrator/StudentManage.vue')
+                        },
+                        {
+                            path: 'importService',
+                            name: 'importService',
+                            component: () => import('./components/administrator/ImportService.vue')
                         }
                     ],
                     component: () => import('./components/Administrator.vue')

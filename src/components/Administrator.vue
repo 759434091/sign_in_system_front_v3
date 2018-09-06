@@ -6,6 +6,7 @@
                 <el-menu-item index="1" @click="courseManage">全校课程</el-menu-item>
                 <el-menu-item index="2" @click="monitorManage">督导员管理</el-menu-item>
                 <el-menu-item index="3" @click="studentManage">学生管理</el-menu-item>
+                <el-menu-item index="4" @click="importService">上传信息</el-menu-item>
             </el-menu>
         </el-aside>
         <el-main class="idx-main">
@@ -37,6 +38,10 @@
                     this.activeIndex = '3'
                     return
                 }
+                case 'importService': {
+                    this.activeIndex = '4'
+                    return
+                }
                 default: {
                     this.$router.push('/index/administrator/courseManage')
                 }
@@ -58,6 +63,10 @@
                         this.activeIndex = '3'
                         return
                     }
+                    case 'importService': {
+                        this.activeIndex = '4'
+                        return
+                    }
                     default: {
                         this.$router.push('/index/administrator/courseManage')
                     }
@@ -73,6 +82,9 @@
             },
             studentManage() {
                 this.$router.push('/index/administrator/studentManage')
+            },
+            importService(){
+                this.$router.push('/index/administrator/importService')
             }
         }
     }
