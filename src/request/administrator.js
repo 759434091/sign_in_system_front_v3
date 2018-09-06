@@ -105,6 +105,14 @@ async function modifyScheduleLocation(ssId, slId) {
     return await axios.put(`/schedules/${ssId}/locations/${slId}`)
 }
 
+async function getProgress(key) {
+    return await axios.get(`/progress/${key}`)
+}
+
+async function importCozInfo(formData) {
+    return await axios.post('/courses/import', formData)
+}
+
 export default {
     getCourse,
     getStudents,
@@ -118,5 +126,7 @@ export default {
     revokeMonitor,
     createSignIn,
     getSignIns,
-    modifyScheduleLocation
+    modifyScheduleLocation,
+    getProgress,
+    importCozInfo
 }
