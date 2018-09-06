@@ -7,11 +7,14 @@
                :before-close="closeDialog">
         <el-form v-if="null != course" label-width="80px" label-position="right">
             <el-form-item label="上课时间">
-                <el-select v-model="ssId">
+                <el-select v-model="ssId" @handle-select="handleSelect">
                     <el-option v-for="val in course.sisScheduleList"
                                :key="val.ssId" :label="`${getScheduleTimeString(val)}`" :value="val.ssId">
                     </el-option>
                 </el-select>
+            </el-form-item>
+            <el-form-item label="地点">
+                <span v-text="getLocation"></span>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="createSignIn" :loading="loading">
@@ -34,7 +37,9 @@
         data() {
             return {
                 ssId: '',
-                loading: false
+                loading: false,
+                schedule: null,
+                location: null
             }
         },
         methods: {
@@ -50,6 +55,10 @@
             createSignIn() {
                 if ('' === this.ssId)
                     return
+                if (null == this.location) {
+                    this.$message.error("该课程未指定地点或未加载，请重新选择")
+                    return
+                }
                 this.loading = true
                 this.$request.administrator.createSignIn(this.ssId)
                     .then(res => {
@@ -76,6 +85,39 @@
                         }
                         this.$message.error(err.response.data.message)
                     })
+            },
+            handleSelect() {
+                if ('' === this.ssId) {
+                    return
+                }
+                schedule = this.course.sisScheduleList.find(schedule => schedule.ssId === ssId)
+                if (null == schedule) {
+                    return
+                }
+                if (null == shcedule.slId) {
+                    return
+                }
+
+                this.schedule = schedule
+                this.$request.getLocation(schedule.slId)
+                    .then(res => {
+                        if (!res.data.success) {
+                            return
+                        }
+
+                        this.location = res.data.sisLocation
+                    })
+                    .catch(() => {
+                    })
+            },
+            getLocation() {
+                if (null == this.schedule)
+                    return ''
+                if (null == this.schedule.slId)
+                    return '该课程未指定地点'
+                if (null == this.location)
+                    return '未加载'
+                return this.location.slName
             }
         }
     }

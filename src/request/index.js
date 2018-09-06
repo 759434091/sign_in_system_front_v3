@@ -25,12 +25,17 @@ async function modifyPassword(suId, oldPassword, newPassword) {
     return await axios.post(`/users/${suId}`, formData)
 }
 
+async function getLocation(slId) {
+    return await axios.get(`/locations/${slId}`)
+}
+
 export default {
     axios: axios,
     setAuthorizationValue,
     getToken,
     getWeek,
     modifyPassword,
+    getLocation,
     student,
     administrator,
     teacher
