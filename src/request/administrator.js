@@ -113,6 +113,10 @@ async function importCozInfo(formData) {
     return await axios.post('/courses/import', formData)
 }
 
+async function importStuInfo(formData) {
+    return await axios.post('/students/import', formData)
+}
+
 export default {
     getCourse,
     getStudents,
@@ -128,5 +132,6 @@ export default {
     getSignIns,
     modifyScheduleLocation,
     getProgress,
-    importCozInfo
+    importCozInfo,
+    importStuInfo
 }
