@@ -19,14 +19,21 @@
                 <el-button type="primary" @click="doModify">
                     确定
                 </el-button>
+                <el-button @click="showMapDialog">
+                    选择地图
+                </el-button>
             </el-form-item>
         </el-form>
+        <MapDialog :dialogVisible="mapDialog.dialogVisible" @closeDialog="closeMapDialog"/>
     </el-dialog>
 </template>
 
 <script>
+    import MapDialog from "./MapDialog";
+
     export default {
         name: "ModifyLocationDialog",
+        components: {MapDialog},
         props: {
             dialogVisible: Boolean,
             slId: String
@@ -64,6 +71,9 @@
         data() {
             return {
                 loading: false,
+                mapDialog: {
+                    dialogVisible: false
+                },
                 locationForm: {
                     slName: '',
                     slLong: '',
@@ -72,6 +82,16 @@
             }
         },
         methods: {
+            showMapDialog() {
+                this.mapDialog.dialogVisible = true
+            },
+            closeMapDialog(latLng) {
+                if (latLng) {
+                    this.locationForm.slLat = latLng.lat
+                    this.locationForm.slLong = latLng.long
+                }
+                this.mapDialog.dialogVisible = false
+            },
             closeDialog() {
                 this.loading = false
                 this.locationForm.slName = ''
