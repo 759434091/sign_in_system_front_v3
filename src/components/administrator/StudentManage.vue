@@ -23,6 +23,13 @@
                 <el-table-column label="学号" prop="suId"></el-table-column>
                 <el-table-column label="姓名" prop="suName"></el-table-column>
                 <el-table-column label="缺勤数" prop="suiCozLackNum"></el-table-column>
+                <el-table-column label="查看">
+                    <template slot-scope="scope">
+                        <el-button type="info" size="mini" @click="showCozLackDetail(scope.row.suId)">
+                            查看详情
+                        </el-button>
+                    </template>
+                </el-table-column>
             </el-table>
         </el-main>
         <el-footer>
@@ -37,12 +44,18 @@
                     :total="pagination.total">
             </el-pagination>
         </el-footer>
+        <CozLackDetailDialog :dialogVisible="cozLackDetailDialog.dialogVisible"
+                             :suId="cozLackDetailDialog.suId"
+                             @closeDialog="closeCozLackDetail"/>
     </el-container>
 </template>
 
 <script>
+    import CozLackDetailDialog from "../dialog/CozLackDetailDialog";
+
     export default {
         name: "StudentManage",
+        components: {CozLackDetailDialog},
         data() {
             return {
                 loading: false,
@@ -56,13 +69,25 @@
                     total: 0,
                     size: 10
                 },
-                studentList: []
+                studentList: [],
+                cozLackDetailDialog: {
+                    dialogVisible: false,
+                    suId: ''
+                }
             }
         },
         created() {
             this.onSearch()
         },
         methods: {
+            showCozLackDetail(suId) {
+                this.cozLackDetailDialog.dialogVisible = true
+                this.cozLackDetailDialog.suId = suId
+            },
+            closeCozLackDetail() {
+                this.cozLackDetailDialog.dialogVisible = false
+                this.cozLackDetailDialog.suId = ''
+            },
             handleSizeChange(size) {
                 this.pagination.size = size
                 this.onSearch()

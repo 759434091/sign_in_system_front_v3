@@ -117,6 +117,18 @@ async function importStuInfo(formData) {
     return await axios.post('/students/import', formData)
 }
 
+async function getStuSignIns(suId) {
+    return await axios.get(`/users/${suId}/signIns`)
+}
+
+async function modifyLocation(slId, sisLocation) {
+    return await axios.put(`/locations/${slId}`, sisLocation)
+}
+
+async function deleteLocation(slId) {
+    return await axios.delete(`/locations/${slId}`)
+}
+
 export default {
     getCourse,
     getStudents,
@@ -133,5 +145,8 @@ export default {
     modifyScheduleLocation,
     getProgress,
     importCozInfo,
-    importStuInfo
+    importStuInfo,
+    getStuSignIns,
+    modifyLocation,
+    deleteLocation
 }

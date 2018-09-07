@@ -1,7 +1,7 @@
 <template>
     <el-container class="idx-second-container">
         <el-aside class="idx-el-aside" width="300px">
-            <el-menu class="idx-second-menu" background-color="#828A92" text-color="#fff"
+            <el-menu class="idx-second-menu" background-color="#4b4b4b" text-color="#fff"
                      active-text-color="#ffd04b" :default-active="activeIndex">
                 <el-menu-item index="1" @click="goBack">返回</el-menu-item>
                 <el-menu-item index="2" @click="passwordSetting">修改密码</el-menu-item>

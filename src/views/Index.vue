@@ -245,6 +245,7 @@
 
     @media screen and (max-width: 1440px) {
         .idx-main {
+            color: #4b4b4b;
             height: calc(100vh - 24px - 60px);
             margin-right: 20px;
             padding: 10px 0;

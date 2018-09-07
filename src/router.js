@@ -85,6 +85,11 @@ export default new Router({
                             path: 'importService',
                             name: 'importService',
                             component: () => import('./components/administrator/ImportService.vue')
+                        },
+                        {
+                            path: 'locationManage',
+                            name: 'locationManage',
+                            component: () => import('./components/administrator/LocationManage.vue')
                         }
                     ],
                     component: () => import('./components/Administrator.vue')
