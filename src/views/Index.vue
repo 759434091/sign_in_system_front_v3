@@ -171,8 +171,14 @@
         margin-top: 8px;
     }
 
-    .idx-second-menu {
+    .idx-el-aside {
         margin-left: 20px;
+        background-color: #4b4b4b;
+        border-bottom-left-radius: 5px;
+        box-shadow: 0 4px 15px #888888;
+    }
+
+    .idx-second-menu {
         height: calc(100vh - 24px - 60px);
     }
 
@@ -182,11 +188,13 @@
         padding: 10px 10%;
         background-color: transparent;
         border-bottom-right-radius: 5px;
+        box-shadow: 3px 4px 15px #888888;
     }
 
     .idx-menu {
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
+        box-shadow: 3px 1px 15px #888888;
     }
 
     .idx-menu-brand {
@@ -237,10 +245,6 @@
 
     .idx-menu-setting .el-submenu__title {
         border-top-right-radius: 5px;
-    }
-
-    .idx-el-aside, .idx-second-menu {
-        border-bottom-left-radius: 5px;
     }
 
     @media screen and (max-width: 1440px) {

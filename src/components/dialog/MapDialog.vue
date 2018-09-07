@@ -62,7 +62,7 @@
             }
             let script = document.createElement("script")
             script.type = "text/javascript"
-            script.src = 'http://map.qq.com/api/js?v=2.exp&callback=init&key=Q62BZ-BPCKJ-2IQFY-FQQFL-2UAWH-RJBJD'
+            script.src = 'https://map.qq.com/api/js?v=2.exp&callback=init&key=Q62BZ-BPCKJ-2IQFY-FQQFL-2UAWH-RJBJD'
             script.onerror = reject
             document.head.appendChild(script)
         })

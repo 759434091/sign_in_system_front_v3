@@ -1,6 +1,6 @@
 <template>
     <el-container class="idx-second-container">
-        <el-aside class="idx-el-aside" width="300px">
+        <el-aside class="idx-el-aside" width="280px">
             <el-menu class="idx-second-menu" background-color="#4b4b4b" text-color="#fff"
                      active-text-color="#ffd04b" :default-active="activeIndex">
                 <el-menu-item index="1" @click="courseManage">全校课程</el-menu-item>
