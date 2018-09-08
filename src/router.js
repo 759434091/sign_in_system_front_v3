@@ -90,6 +90,11 @@ export default new Router({
                             path: 'locationManage',
                             name: 'locationManage',
                             component: () => import('./components/administrator/LocationManage.vue')
+                        },
+                        {
+                            path: 'cozInfoManage',
+                            name: 'cozInfoManage',
+                            component: () => import('./components/administrator/CozInfoManage.vue')
                         }
                     ],
                     component: () => import('./components/Administrator.vue')

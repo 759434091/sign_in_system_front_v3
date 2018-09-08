@@ -41,7 +41,7 @@
                     suId: '',
                     suName: ''
                 },
-                suggestList: [],
+                locationSuggestList: [],
                 loading: false
             }
         },
@@ -87,8 +87,8 @@
                             return
 
                         this.suggestList = res.data.data.list
-                        this.suggestList.forEach(user => user.value = `${user.suId} ${user.suName}`)
-                        callback(this.suggestList)
+                        this.locationSuggestList.forEach(user => user.value = `${user.suId} ${user.suName}`)
+                        callback(this.locationSuggestList)
                     })
                     .catch(() => {
                     })
@@ -106,8 +106,8 @@
                             return
 
                         this.suggestList = res.data.data.list
-                        this.suggestList.forEach(user => user.value = `${user.suId} ${user.suName}`)
-                        callback(this.suggestList)
+                        this.locationSuggestList.forEach(user => user.value = `${user.suId} ${user.suName}`)
+                        callback(this.locationSuggestList)
                     })
                     .catch(() => {
                     })

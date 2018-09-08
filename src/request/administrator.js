@@ -129,6 +129,36 @@ async function deleteLocation(slId) {
     return await axios.delete(`/locations/${slId}`)
 }
 
+async function getCourseDepartments(scId) {
+    return await axios.get(`/courses/${scId}/departments`)
+}
+
+async function modifyCourse(scId, course, mScheduleList, nScheduleList, departList) {
+    if (null != mScheduleList && (departList instanceof Array))
+        mScheduleList = mScheduleList.filter(s => null != s.ssId && '' !== s.ssId.trim())
+    else
+        mScheduleList = []
+
+    if (null == nScheduleList || !(nScheduleList instanceof Array))
+        nScheduleList = []
+
+    if (null != departList && (departList instanceof Array))
+        departList = departList.filter(d => null != d.sdId && '' !== d.sdId.trim())
+    else
+        departList = []
+
+    const formData = new FormData();
+    formData.append('course', JSON.stringify(course))
+    formData.append('mScheduleList', JSON.stringify(mScheduleList))
+    formData.append('nScheduleList', JSON.stringify(nScheduleList))
+    formData.append('departList', JSON.stringify(departList))
+    return await axios.put(`/courses/${scId}`, formData)
+}
+
+async function deleteCourse(scId) {
+    return await axios.delete(`/courses/${scId}`)
+}
+
 export default {
     getCourse,
     getStudents,
@@ -148,5 +178,8 @@ export default {
     importStuInfo,
     getStuSignIns,
     modifyLocation,
-    deleteLocation
+    deleteLocation,
+    getCourseDepartments,
+    modifyCourse,
+    deleteCourse
 }

@@ -170,15 +170,6 @@
     export default {
         name: "CourseManage",
         components: {HistorySignInDialog, CreateSignInDialog, SupervisionsDialog, StudentDialog, CourseDialog},
-        watch: {
-            screenWidth(val) {
-                if (val < 1440) {
-                    this.barWidth = '250px'
-                } else {
-                    this.barWidth = '300px'
-                }
-            },
-        },
         mounted() {
             const _this = this
             window.onresize = () => {

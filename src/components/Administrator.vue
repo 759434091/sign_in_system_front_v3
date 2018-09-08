@@ -5,11 +5,12 @@
                      active-text-color="#ffd04b" :default-active="activeIndex">
                 <el-menu-item index="1" @click="courseManage">全校课程</el-menu-item>
                 <el-menu-item index="2" @click="monitorManage">督导员管理</el-menu-item>
-                <el-menu-item index="3" @click="studentManage">学生管理</el-menu-item>
+                <el-menu-item index="3" @click="studentManage">学生历史</el-menu-item>
                 <el-menu-item index="4" @click="importService">上传信息</el-menu-item>
                 <el-submenu index="5">
                     <template slot="title">系统管理</template>
                     <el-menu-item index="5-1" @click="locationManage">地点管理</el-menu-item>
+                    <el-menu-item index="5-2" @click="cozInfoManage">课程管理</el-menu-item>
                 </el-submenu>
             </el-menu>
         </el-aside>
@@ -50,6 +51,10 @@
                     this.activeIndex = '5-1'
                     return
                 }
+                case 'cozInfoManage': {
+                    this.activeIndex = '5-2'
+                    return
+                }
                 default: {
                     this.$router.push('/index/administrator/courseManage')
                 }
@@ -79,6 +84,10 @@
                         this.activeIndex = '5-1'
                         return
                     }
+                    case 'cozInfoManage': {
+                        this.activeIndex = '5-2'
+                        return
+                    }
                     default: {
                         this.$router.push('/index/administrator/courseManage')
                     }
@@ -100,6 +109,9 @@
             },
             locationManage() {
                 this.$router.push('/index/administrator/locationManage')
+            },
+            cozInfoManage() {
+                this.$router.push('/index/administrator/cozInfoManage')
             }
         }
     }

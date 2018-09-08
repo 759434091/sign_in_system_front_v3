@@ -43,7 +43,7 @@
                     slId: '',
                     slName: ''
                 },
-                suggestList: [],
+                locationSuggestList: [],
                 loading: false
             }
         },
@@ -71,8 +71,8 @@
                         }
 
                         this.suggestList = res.data.data.list
-                        this.suggestList.forEach(user => user.value = `${user.slId} ${user.slName}`)
-                        callback(this.suggestList)
+                        this.locationSuggestList.forEach(user => user.value = `${user.slId} ${user.slName}`)
+                        callback(this.locationSuggestList)
                     })
                     .catch(() => {
                         callback([])
@@ -95,8 +95,8 @@
                         }
 
                         this.suggestList = res.data.data.list
-                        this.suggestList.forEach(user => user.value = `${user.slId} ${user.slName}`)
-                        callback(this.suggestList)
+                        this.locationSuggestList.forEach(user => user.value = `${user.slId} ${user.slName}`)
+                        callback(this.locationSuggestList)
                     })
                     .catch(() => {
                         callback([])
