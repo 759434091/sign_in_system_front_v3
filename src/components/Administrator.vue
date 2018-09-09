@@ -9,8 +9,9 @@
                 <el-menu-item index="4" @click="importService">上传信息</el-menu-item>
                 <el-submenu index="5">
                     <template slot="title">系统管理</template>
-                    <el-menu-item index="5-1" @click="locationManage">地点管理</el-menu-item>
                     <el-menu-item index="5-2" @click="cozInfoManage">课程管理</el-menu-item>
+                    <el-menu-item index="5-1" @click="locationManage">地点管理</el-menu-item>
+                    <el-menu-item index="5-3" @click="departManage">学院管理</el-menu-item>
                 </el-submenu>
             </el-menu>
         </el-aside>
@@ -55,6 +56,10 @@
                     this.activeIndex = '5-2'
                     return
                 }
+                case 'departManage': {
+                    this.activeIndex = '5-3'
+                    return
+                }
                 default: {
                     this.$router.push('/index/administrator/courseManage')
                 }
@@ -88,6 +93,10 @@
                         this.activeIndex = '5-2'
                         return
                     }
+                    case 'departManage': {
+                        this.activeIndex = '5-3'
+                        return
+                    }
                     default: {
                         this.$router.push('/index/administrator/courseManage')
                     }
@@ -112,6 +121,9 @@
             },
             cozInfoManage() {
                 this.$router.push('/index/administrator/cozInfoManage')
+            },
+            departManage() {
+                this.$router.push('/index/administrator/departManage')
             }
         }
     }

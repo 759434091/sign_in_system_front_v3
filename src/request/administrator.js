@@ -159,6 +159,26 @@ async function deleteCourse(scId) {
     return await axios.delete(`/courses/${scId}`)
 }
 
+async function modifyDepartment(sdId, sdName) {
+    return await axios.put(`/departments/${sdId}`, null, {
+        params: {
+            sdName
+        }
+    })
+}
+
+async function deleteDepartment(sdId) {
+    return await axios.delete(`/departments/${sdId}`)
+}
+
+async function addDepartment(sdName) {
+    return await axios.post('/departments', null, {
+        params: {
+            sdName
+        }
+    })
+}
+
 export default {
     getCourse,
     getStudents,
@@ -181,5 +201,8 @@ export default {
     deleteLocation,
     getCourseDepartments,
     modifyCourse,
-    deleteCourse
+    deleteCourse,
+    modifyDepartment,
+    deleteDepartment,
+    addDepartment
 }

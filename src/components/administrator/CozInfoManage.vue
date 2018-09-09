@@ -1,7 +1,7 @@
 <template>
     <el-container>
         <el-header height="auto">
-            <el-form class="coz-manage-form" :inline="true" size="mini" :model="selectForm">
+            <el-form class="coz-manage-form" :inline="true" size="mini" :model="selectForm" @submit.native.prevent>
                 <el-form-item label="年级">
                     <el-select placeholder="年级" v-model="selectForm.scGrade">
                         <el-option label="不指定" value=""></el-option>

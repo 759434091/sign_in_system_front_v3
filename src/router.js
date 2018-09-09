@@ -95,6 +95,11 @@ export default new Router({
                             path: 'cozInfoManage',
                             name: 'cozInfoManage',
                             component: () => import('./components/administrator/CozInfoManage.vue')
+                        },
+                        {
+                            path: 'departManage',
+                            name: 'departManage',
+                            component: () => import('./components/administrator/DepartManage.vue')
                         }
                     ],
                     component: () => import('./components/Administrator.vue')
