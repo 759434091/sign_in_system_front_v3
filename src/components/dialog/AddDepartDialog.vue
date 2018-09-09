@@ -1,6 +1,8 @@
 <template>
     <el-dialog title="增加学院"
                width="400px"
+               :close-on-click-modal="false"
+               :close-on-press-escape="false"
                :visible="dialogVisible"
                :before-close="closeDialog">
         <el-form :model="departForm" :rules="rules" ref="departForm">
