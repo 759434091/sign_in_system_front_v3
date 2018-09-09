@@ -33,6 +33,11 @@
                         搜索
                     </el-button>
                 </el-form-item>
+                <el-form-item>
+                    <el-button @click="showAddCourseDialog" :loading="loading" :disabled="loading">
+                        新增课程
+                    </el-button>
+                </el-form-item>
             </el-form>
         </el-header>
         <el-main>
@@ -64,17 +69,20 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="督导状态">
+                <el-table-column label="督导状态" width="80px">
                     <template slot-scope="scope">
                         <span v-text="getCourseMonitorStatus(scope.row)"></span>
                     </template>
                 </el-table-column>
-                <el-table-column label="到勤率" prop="scAttRate">
+                <el-table-column label="到勤率" prop="scAttRate" width="70px">
                 </el-table-column>
-                <el-table-column label="操作" width="200px">
+                <el-table-column label="操作" width="300px">
                     <template slot-scope="scope">
-                        <el-button type="info" size="mini" @click="showModifyCourseDialog(scope.row)">
-                            修改信息
+                        <el-button type="primary" size="mini" @click="showModifyJoinCourseDialog(scope.row.scId)">
+                            修改学生
+                        </el-button>
+                        <el-button type="warning" size="mini" @click="showModifyCourseDialog(scope.row)">
+                            查看/修改信息
                         </el-button>
                         <el-button type="danger" size="mini" @click="delCourse(scope.row.scId)">
                             删除
@@ -98,16 +106,23 @@
         <ModifyCourseDialog :dialogVisible="modifyCourseDialog.dialogVisible"
                             :course="modifyCourseDialog.course"
                             @closeDialog="closeModifyCourseDialog"/>
+        <AddCourseDialog :dialogVisible="addCourseDialog.dialogVisible"
+                         @closeDialog="closeAddCourseDialog"/>
+        <ModifyJoinCourseDialog :dialogVisible="modifyJoinCourseDialog.dialogVisible"
+                                :scId="modifyJoinCourseDialog.scId"
+                                @closeDialog="closeModifyJoinCourseDialog"/>
     </el-container>
 </template>
 
 <script>
     import courseUtils from '@/util/courseUtils'
     import ModifyCourseDialog from "../dialog/ModifyCourseDialog";
+    import ModifyJoinCourseDialog from "../dialog/ModifyJoinCourseDialog";
+    import AddCourseDialog from "../dialog/AddCourseDialog";
 
     export default {
         name: "CozInfoManage",
-        components: {ModifyCourseDialog},
+        components: {AddCourseDialog, ModifyJoinCourseDialog, ModifyCourseDialog},
         mounted() {
             const _this = this
             window.onresize = () => {
@@ -140,6 +155,13 @@
                 modifyCourseDialog: {
                     dialogVisible: false,
                     course: null
+                },
+                modifyJoinCourseDialog: {
+                    dialogVisible: false,
+                    scId: null
+                },
+                addCourseDialog: {
+                    dialogVisible: false
                 }
             }
         },
@@ -233,6 +255,12 @@
             handleSelectionChange(selectionList) {
                 this.selectionList = selectionList
             },
+            showAddCourseDialog() {
+                this.addCourseDialog.dialogVisible = true
+            },
+            closeAddCourseDialog() {
+                this.addCourseDialog.dialogVisible = false
+            },
             showModifyCourseDialog(course) {
                 this.modifyCourseDialog.course = course
                 this.modifyCourseDialog.dialogVisible = true
@@ -241,6 +269,15 @@
                 this.handleCurrentChange(this.pagination.currentPage)
                 this.modifyCourseDialog.course = null
                 this.modifyCourseDialog.dialogVisible = false
+            },
+            showModifyJoinCourseDialog(scId) {
+                this.modifyJoinCourseDialog.scId = scId
+                this.modifyJoinCourseDialog.dialogVisible = true
+            },
+            closeModifyJoinCourseDialog() {
+                this.handleCurrentChange(this.pagination.currentPage)
+                this.modifyJoinCourseDialog.scId = null
+                this.modifyJoinCourseDialog.dialogVisible = false
             },
             delCourse(scId) {
                 this.$confirm(`将会永久删除该课程, 且会影响已存在的督导和签到, 请慎重考虑`, '删除课程')

@@ -1,16 +1,16 @@
 <template>
-    <el-dialog title="修改课程"
+    <el-dialog title="增加课程"
                width="800px"
                :close-on-click-modal="false"
                :close-on-press-escape="false"
                :visible="dialogVisible"
                :before-close="closeDialog">
         <el-form ref="cozInfoForm" size="small" :model="courseForm" label-position="left" label-width="90px"
-                 :rules="formRules" :disabled="disable">
+                 :rules="formRules">
             <el-form-item v-for="(depart,idx) in courseForm.departmentList"
                           :key="`depart_${idx}`"
                           :label="`开课学院${idx + 1}`">
-                <el-form size="mini" :disabled="disable">
+                <el-form size="mini">
                     <el-row type="flex" :gutter="15">
                         <el-col>
                             <el-form-item label="开课学院名" label-width="100px">
@@ -67,8 +67,7 @@
             <el-form-item v-for="(sch,idx) in courseForm.scheduleList"
                           :key="`sch_${idx}`"
                           :label="`上课时间${idx + 1}`">
-                <el-form size="mini" :model="courseForm.scheduleList[idx]" :rules="scheduleRules" :ref="`sch_${idx}`"
-                         :disabled="disable">
+                <el-form size="mini" :model="courseForm.scheduleList[idx]" :rules="scheduleRules" :ref="`sch_${idx}`">
                     <el-row type="flex" :gutter="15">
                         <el-col>
                             <el-form-item label="起始周" label-width="55px" prop="ssStartWeek">
@@ -154,16 +153,11 @@
                     </el-row>
                 </el-form>
             </el-form-item>
-            <el-form-item v-if="!disable">
+            <el-form-item>
                 <el-button type="primary" @click="onSure">确定</el-button>
                 <el-button @click="addCozTime">新增上课时间</el-button>
                 <el-button @click="addDepartment">新增开课学院</el-button>
                 <el-button @click="resetForm">重置</el-button>
-            </el-form-item>
-        </el-form>
-        <el-form v-if="disable" size="small" label-position="left" label-width="90px">
-            <el-form-item>
-                <el-button type="danger" @click="unlockForm">解锁并修改信息</el-button>
             </el-form-item>
         </el-form>
     </el-dialog>
@@ -171,15 +165,9 @@
 
 <script>
     export default {
-        name: "ModifyCourseDialog",
+        name: "AddCourseDialog",
         props: {
-            dialogVisible: Boolean,
-            course: Object
-        },
-        watch: {
-            course(course) {
-                this.init(course)
-            }
+            dialogVisible: Boolean
         },
         data() {
             const numberValidator = (rule, value, callback) => {
@@ -201,7 +189,6 @@
                 callback();
             }
             return {
-                disable: true,
                 scheduleRules: {
                     ssStartWeek: [
                         {
@@ -316,96 +303,8 @@
             }
         },
         methods: {
-            init(course) {
-                if (null == course)
-                    return
-                this.$request.administrator.getCourseDepartments(course.scId)
-                    .then(res => {
-                        const array = res.data.array;
-                        array.forEach(d => d.sdId = d.sdId.toString())
-                        this.courseForm.departmentList = array
-                    })
-                    .catch(() => {
-                        this.$message.error('获取学院列表失败，请重新尝试')
-                    })
-                this.courseForm.scId = course.scId
-                this.courseForm.scName = course.scName
-                this.courseForm.scMaxSize = course.scMaxSize.toString()
-                this.courseForm.scActSize = course.scActSize.toString()
-                this.courseForm.scNeedMonitor = course.scNeedMonitor
-                const list = []
-                course.sisScheduleList.forEach(s => {
-                    const schedule = {}
-                    schedule.ssId = s.ssId.toString()
-                    schedule.ssStartWeek = s.ssStartWeek.toString()
-                    schedule.ssEndWeek = s.ssEndWeek.toString()
-                    schedule.ssFortnight = s.ssFortnight.toString()
-                    schedule.ssStartTime = s.ssStartTime.toString()
-                    schedule.ssEndTime = s.ssEndTime.toString()
-                    schedule.ssDayOfWeek = s.ssDayOfWeek.toString()
-                    schedule.ssYearEtTerm = s.ssYearEtTerm
-                    schedule.slId = s.slId.toString()
-                    list.push(schedule)
-                })
-                this.courseForm.scheduleList = list
-            },
             closeDialog() {
                 this.$emit('closeDialog')
-            },
-            onSure() {
-                const formList = [this.$refs.cozInfoForm]
-                let idx = 0
-                while (null != this.$refs[`sch_${idx}`] && this.$refs[`sch_${idx}`].length > 0) {
-                    formList.push(this.$refs[`sch_${idx++}`][0])
-                }
-
-
-                const resList = []
-                formList.forEach(f => f.validate((validated) => {
-                    if (validated)
-                        resList.push(true)
-                    else
-                        resList.push(false)
-                }))
-
-                while (resList.length !== formList.length) {
-                    if (resList.length === formList.length)
-                        break;
-                }
-
-                if (resList.find(s => false === s)) {
-                    return
-                }
-
-                const course = this.courseForm
-                const mScheduleList = course.scheduleList.filter(s => null != s.ssId && '' !== s.ssId.trim())
-                const nScheduleList = course.scheduleList.filter(s => null == s.ssId || '' === s.ssId.trim())
-                const departList = course.departmentList.filter(d => null != d.sdId && '' !== d.sdId.trim())
-                this.$request.administrator
-                    .modifyCourse(this.courseForm.scId, course, mScheduleList, nScheduleList, departList)
-                    .then(res => {
-                        if (!res.data.success) {
-                            this.$message.error(res.data.message)
-                            return
-                        }
-
-                        this.$message.success('修改成功')
-                    })
-                    .catch(err => {
-                        if (!err.response || !err.response.data)
-                            return
-                        if (!err.response.data.message) {
-                            this.$message.error(err.response.data)
-                            return
-                        }
-                        this.$message.error(err.response.data.message)
-                    })
-                    .finally(() => {
-                        this.disable = true
-                        this.closeDialog()
-                    })
-
-
             },
             addDepartment() {
                 this.courseForm.departmentList.push({
@@ -428,7 +327,29 @@
                 })
             },
             resetForm() {
-                this.init(this.course)
+                this.courseForm = {
+                    departmentList: [{
+                        sdId: '',
+                        sdName: ''
+                    }],
+                    scId: '',
+                    scName: '',
+                    scGrade: '',
+                    scMaxSize: '',
+                    scActSize: '',
+                    scNeedMonitor: false,
+                    scheduleList: [{
+                        ssId: '',
+                        ssStartWeek: '',
+                        ssEndWeek: '',
+                        ssFortnight: '',
+                        ssStartTime: '',
+                        ssEndTime: '',
+                        ssDayOfWeek: '',
+                        slId: '',
+                        slName: ''
+                    }]
+                }
             },
             queryBySlName(val, callback) {
                 if (null == val || '' === val) {
@@ -486,28 +407,65 @@
                 }
                 return list
             },
-            unlockForm() {
-                this.$confirm(`解锁并修改信息, 可能会影响该课程历史数据, 请慎重考虑`, '修改课程信息')
-                    .then(() => this.disable = false)
-                    .catch(() => {
-                    })
-            },
+
             delSchedule(idx) {
-                const ssId = this.courseForm.scheduleList[idx].ssId;
-                if (null != ssId && '' !== ssId.trim()) {
-                    this.$confirm(`将会删除已存在的排课,且会影响已存在的督导和签到, 请慎重考虑`, '删除原排课')
-                        .then(() => {
-                            this.courseForm.scheduleList.splice(idx, 1)
-                        })
-                        .catch(() => {
-                        })
-                    return
-                }
                 this.courseForm.scheduleList.splice(idx, 1)
             },
             delDepart(idx) {
                 this.courseForm.departmentList.splice(idx, 1)
-            }
+            },
+            onSure() {
+                const formList = [this.$refs.cozInfoForm]
+                let idx = 0
+                while (null != this.$refs[`sch_${idx}`] && this.$refs[`sch_${idx}`].length > 0) {
+                    formList.push(this.$refs[`sch_${idx++}`][0])
+                }
+
+
+                const resList = []
+                formList.forEach(f => f.validate((validated) => {
+                    if (validated)
+                        resList.push(true)
+                    else
+                        resList.push(false)
+                }))
+
+                while (resList.length !== formList.length) {
+                    if (resList.length === formList.length)
+                        break;
+                }
+
+                if (resList.find(s => false === s)) {
+                    return
+                }
+
+                const course = this.courseForm
+                const departList = course.departmentList.filter(d => null != d.sdId && '' !== d.sdId.trim())
+                this.$request.administrator
+                    .addCourse(this.courseForm.scId, course, course.scheduleList, departList)
+                    .then(res => {
+                        if (!res.data.success) {
+                            this.$message.error(res.data.message)
+                            return
+                        }
+
+                        this.$message.success('修改成功')
+                    })
+                    .catch(err => {
+                        if (!err.response || !err.response.data)
+                            return
+                        if (!err.response.data.message) {
+                            this.$message.error(err.response.data)
+                            return
+                        }
+                        this.$message.error(err.response.data.message)
+                    })
+                    .finally(() => {
+                        this.closeDialog()
+                    })
+
+
+            },
         }
     }
 </script>

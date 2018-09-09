@@ -179,6 +179,36 @@ async function addDepartment(sdName) {
     })
 }
 
+async function getJoinCourses(scId) {
+    return await axios.get(`/courses/${scId}/joinCourses`)
+}
+
+async function modifyJoinCourse(scId, joinCourseList) {
+    joinCourseList.forEach(sjc => {
+        delete sjc.sisUser
+        if (null != sjc.sjcId && isNaN(parseInt(sjc.sjcId))) {
+            sjc.sjcId = null
+        }
+    })
+    return await axios.put(`/courses/${scId}/joinCourses`, joinCourseList)
+}
+
+async function addCourse(scId, course, scheduleList, departList) {
+    if (null == scheduleList || !(scheduleList instanceof Array))
+        scheduleList = []
+
+    if (null != departList && (departList instanceof Array))
+        departList = departList.filter(d => null != d.sdId && '' !== d.sdId.trim())
+    else
+        departList = []
+
+    const formData = new FormData();
+    formData.append('course', JSON.stringify(course))
+    formData.append('scheduleList', JSON.stringify(scheduleList))
+    formData.append('departList', JSON.stringify(departList))
+    return await axios.post(`/courses/${scId}`, formData)
+}
+
 export default {
     getCourse,
     getStudents,
@@ -204,5 +234,8 @@ export default {
     deleteCourse,
     modifyDepartment,
     deleteDepartment,
-    addDepartment
+    addDepartment,
+    getJoinCourses,
+    modifyJoinCourse,
+    addCourse
 }
