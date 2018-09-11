@@ -81,6 +81,8 @@
                 user: 'user'
             }),
             teacherList() {
+                if (null == this.course)
+                    return []
                 return this.course
                     .sisJoinCourseList
                     .filter(sisJoinCourse => sisJoinCourse.joinCourseType === 1)
