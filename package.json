@@ -5,19 +5,20 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "inspect": "vue-cli-service inspect"
   },
   "dependencies": {
-    "axios": "^0.18.0",
-    "element-ui": "^2.4.6",
-    "vue": "^2.5.17",
-    "vue-router": "^3.0.1",
-    "vuex": "^3.0.1"
+    "axios": "^0.18.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.1",
     "@vue/cli-plugin-eslint": "^3.0.1",
     "@vue/cli-service": "^3.0.1",
-    "vue-template-compiler": "^2.5.17"
+    "vue-template-compiler": "^2.5.17",
+    "element-ui": "latest",
+    "vue": "latest",
+    "vue-router": "latest",
+    "vuex": "latest"
   }
 }

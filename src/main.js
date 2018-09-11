@@ -3,12 +3,9 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import request from './request'
-import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 
 Vue.prototype.$request = request
-
-Vue.use(ElementUI);
 
 Vue.config.productionTip = false
 
