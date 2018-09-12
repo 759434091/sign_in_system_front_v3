@@ -57,6 +57,11 @@ export default new Router({
                             path: 'courseTable',
                             name: 'monCourseTable',
                             component: () => import('./components/monitor/CourseTable.vue')
+                        },
+                        {
+                            path: 'monitorPool',
+                            name: 'monitorPool',
+                            component: () => import('./components/monitor/MonitorPool.vue')
                         }
                     ],
                     component: () => import('./components/Monitor.vue')
