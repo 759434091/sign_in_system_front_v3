@@ -29,7 +29,9 @@
 </template>
 
 <script>
+    import {mapState} from 'vuex'
     import courseUtils from '@/util/courseUtils';
+    import judgeTimeUtils from '../../util/judgeTimeUtils';
     import ModifyScheduleLocationDialog from './ModifyScheduleLocationDialog'
 
     export default {
@@ -37,6 +39,11 @@
         props: {
             dialogVisible: Boolean,
             course: Object
+        },
+        computed: {
+            ...mapState({
+                week: 'week'
+            })
         },
         components: {ModifyScheduleLocationDialog},
         data() {
@@ -64,6 +71,9 @@
             getScheduleTimeString(schedule) {
                 return courseUtils.getScheduleTimeString(schedule)
             },
+            checkTime(schedule) {
+                judgeTimeUtils.isCourseTime(schedule, this.week, new Date())
+            },
             createSignIn() {
                 if ('' === this.ssId)
                     return
@@ -74,6 +84,41 @@
                 }
                 if (null == this.location) {
                     this.$message.error("地点加载失败，请重新尝试")
+                    return
+                }
+                if (!this.checkTime(this.schedule)) {
+                    this.$confirm('现在不是课堂时间, 确定发起?', '发起签到')
+                        .then(() => {
+                            this.loading = true
+                            this.$request.administrator.createSignIn(this.ssId)
+                                .then(res => {
+                                    if (!res.data.success) {
+                                        if (res.data.message)
+                                            this.$message.error(res.data.message)
+                                        else
+                                            this.$message.error('签到已存在')
+                                        this.loading = false
+                                        return
+                                    }
+
+                                    this.$message.success('发起成功')
+                                    this.loading = false
+                                    this.closeDialog()
+                                })
+                                .catch(err => {
+                                    this.loading = false
+                                    if (!err.response || !err.response.data)
+                                        return
+                                    if (!err.response.data.message) {
+                                        this.$message.error(err.response.data)
+                                        return
+                                    }
+                                    this.$message.error(err.response.data.message)
+                                })
+                                .finally(() => this.loading = false)
+                        })
+                        .catch(() => {
+                        })
                     return
                 }
                 this.loading = true
@@ -102,6 +147,7 @@
                         }
                         this.$message.error(err.response.data.message)
                     })
+                    .finally(() => this.loading = false)
             },
             handleSelect(ssId) {
                 if ('' === ssId) {
