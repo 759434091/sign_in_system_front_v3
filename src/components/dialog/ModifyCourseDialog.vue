@@ -8,7 +8,7 @@
         <el-form ref="cozInfoForm" size="small" :model="courseForm" label-position="left" label-width="90px"
                  :rules="formRules" :disabled="disable">
             <el-form-item v-for="(depart,idx) in courseForm.departmentList"
-                          :key="`depart_${idx}`"
+                          :key="`mcd_depart_${idx}`"
                           :label="`开课学院${idx + 1}`">
                 <el-form size="mini" :disabled="disable">
                     <el-row type="flex" :gutter="15">
@@ -65,7 +65,7 @@
                 <el-switch v-model="courseForm.scNeedMonitor"></el-switch>
             </el-form-item>
             <el-form-item v-for="(sch,idx) in courseForm.scheduleList"
-                          :key="`sch_${idx}`"
+                          :key="`mcd_sch_${idx}`"
                           :label="`上课时间${idx + 1}`">
                 <el-form size="mini" :model="courseForm.scheduleList[idx]" :rules="scheduleRules" :ref="`sch_${idx}`"
                          :disabled="disable">
@@ -123,7 +123,7 @@
                                 <el-select v-model="sch.ssYearEtTerm">
                                     <el-option label="未选择" value=""></el-option>
                                     <el-option v-for="val in getYearEtTerm()"
-                                               :key="val"
+                                               :key="`mcd_${val}`"
                                                :label="val"
                                                :value="val"></el-option>
                                 </el-select>

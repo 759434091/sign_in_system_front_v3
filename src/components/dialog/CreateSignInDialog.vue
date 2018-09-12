@@ -9,7 +9,7 @@
             <el-form-item label="上课时间">
                 <el-select v-model="ssId" @change="handleSelect">
                     <el-option v-for="val in course.sisScheduleList"
-                               :key="val.ssId" :label="`${getScheduleTimeString(val)}`" :value="val.ssId">
+                               :key="`csd_${val.ssId}`" :label="`${getScheduleTimeString(val)}`" :value="val.ssId">
                     </el-option>
                 </el-select>
             </el-form-item>

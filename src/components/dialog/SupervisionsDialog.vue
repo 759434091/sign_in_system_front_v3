@@ -8,7 +8,7 @@
                     <el-form-item label="上课时间">
                         <el-select placeholder="上课时间" v-model="ssId">
                             <el-option v-for="val in scheduleList"
-                                       :key="val.ssId"
+                                       :key="`sd_${val.ssId}`"
                                        :label="getScheduleTimeString(val)"
                                        :value="val.ssId">
                             </el-option>

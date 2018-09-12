@@ -14,12 +14,12 @@
             </el-form-item>
             <el-form-item label="任课老师">
                 <span v-for="val in getTeacherList(course.sisJoinCourseList)"
-                      :key="val.suId" v-text="`${val.suName} ${val.suId}`">
+                      :key="`cd_${val.suId}`" v-text="`${val.suName} ${val.suId}`">
                 </span>
             </el-form-item>
             <el-form-item label="上课时间">
                 <span v-for="val in course.sisScheduleList"
-                      :key="val.ssId" v-text="`${getScheduleTimeString(val)}; `">
+                      :key="`cd_${val.ssId}`" v-text="`${getScheduleTimeString(val)}; `">
                 </span>
             </el-form-item>
             <el-form-item label="督导状态">

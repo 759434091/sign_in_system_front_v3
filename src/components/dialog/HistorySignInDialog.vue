@@ -8,7 +8,7 @@
                     <el-form-item label="上课时间">
                         <el-select placeholder="上课时间" v-model="ssId">
                             <el-option v-for="val in scheduleList"
-                                       :key="val.ssId"
+                                       :key="`hsid_${val.ssId}`"
                                        :label="getScheduleTimeString(val)"
                                        :value="val.ssId.toString()">
                             </el-option>
@@ -18,7 +18,7 @@
                         <el-select placeholder="请选择周" v-model="week" @change="handleWeekSelect">
                             <el-option v-for="val in getWeekList(ssId)"
                                        :disabled="val.disable"
-                                       :key="val.value"
+                                       :key="`hsid_${val.value}`"
                                        :label="val.label"
                                        :value="val.value.toString()">
                             </el-option>
@@ -89,6 +89,10 @@
         methods: {
             closeDialog() {
                 this.$emit('closeDialog')
+                this.ssId = ''
+                this.week = ''
+                this.scheduleList = []
+                this.tableData = []
             },
             getScheduleTimeString(schedule) {
                 return courseUtils.getScheduleTimeString(schedule)

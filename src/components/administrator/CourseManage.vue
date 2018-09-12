@@ -1,34 +1,65 @@
 <template>
     <el-container>
         <el-header height="auto">
-            <el-form class="coz-manage-form" :inline="true" size="mini" :model="selectForm">
-                <el-form-item label="年级">
-                    <el-select placeholder="年级" v-model="selectForm.scGrade">
-                        <el-option label="不指定" value=""></el-option>
-                        <el-option label="2016" value="2016"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="学院">
-                    <el-select placeholder="学院" v-model="selectForm.sdId"
-                               :filterable="true" :remote="true"
-                               @focus="remoteMethod(selectForm.sdId)"
-                               :remote-method="remoteMethod" :loading="selectForm.sdLoading">
-                        <el-option label="不指定" value=""></el-option>
-                        <el-option v-for="val in selectForm.departmentList"
-                                   :key="val.sdId"
-                                   :label="val.sdName"
-                                   :value="val.sdId">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <br v-if="screenWidth < 1200">
-                <el-form-item label="课程序号">
-                    <el-input v-model="selectForm.scId"></el-input>
-                </el-form-item>
-                <el-form-item label="课程名字">
-                    <el-input v-model="selectForm.scName"></el-input>
-                </el-form-item>
-                <br v-if="screenWidth < 1440">
+            <el-form class="coz-manage-form" :inline="true" size="mini" :model="selectForm" label-width="100px">
+                <el-row type="flex" justify="start" :gutter="0">
+                    <el-col :span="5">
+                        <el-form-item label="年级">
+                            <el-select placeholder="年级" v-model="selectForm.scGrade">
+                                <el-option label="不指定" value=""></el-option>
+                                <el-option label="2016" value="2016"></el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="5">
+                        <el-form-item label="学院">
+                            <el-select placeholder="学院" v-model="selectForm.sdId"
+                                       :filterable="true" :remote="true"
+                                       @focus="remoteMethod(selectForm.sdId)"
+                                       :remote-method="remoteMethod" :loading="selectForm.sdLoading">
+                                <el-option label="不指定" value=""></el-option>
+                                <el-option v-for="val in selectForm.departmentList"
+                                           :key="val.sdId"
+                                           :label="val.sdName"
+                                           :value="val.sdId">
+                                </el-option>
+                            </el-select>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="5">
+                        <el-form-item label="课程序号">
+                            <el-input v-model="selectForm.scId"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="5">
+                        <el-form-item label="课程名字">
+                            <el-input v-model="selectForm.scName"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row type="flex">
+                    <el-col :span="5">
+                        <el-form-item label="督导人学号">
+                            <el-input :disabled="true" placeholder="暂未开放" v-model="selectForm.sisUser.suId"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="5">
+                        <el-form-item label="督导人名字">
+                            <el-input :disabled="true" placeholder="暂未开放"
+                                      v-model="selectForm.sisUser.suName"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="5">
+                        <el-switch v-model="selectForm.needMonitor"
+                                   active-text="需要督导"
+                                   inactive-text="不需要"></el-switch>
+                    </el-col>
+                    <el-col :span="5">
+                        <el-switch v-model="selectForm.hasMonitor"
+                                   active-text="已领取督导"
+                                   inactive-text="未领取"></el-switch>
+                    </el-col>
+                </el-row>
                 <el-form-item class="coz-manage-form-remember" label="记住">
                     <el-checkbox v-model="selectForm.remember"></el-checkbox>
                 </el-form-item>
@@ -189,6 +220,12 @@
                     sdId: '',
                     scId: '',
                     scName: '',
+                    sisUser: {
+                        suId: '',
+                        suName: ''
+                    },
+                    needMonitor: false,
+                    hasMonitor: false,
                     departmentList: []
                 },
                 pagination: {
@@ -196,8 +233,6 @@
                     total: 0,
                     size: 10
                 },
-                hasMonitor: null,
-                needMonitor: null,
                 courseList: [],
                 courseDialog: {
                     dialogVisible: false,
@@ -267,8 +302,8 @@
                     .getCourse(
                         page,
                         this.pagination.size,
-                        this.hasMonitor,
-                        this.needMonitor,
+                        this.selectForm.hasMonitor,
+                        this.selectForm.needMonitor,
                         '' === this.selectForm.sdId ? null : this.selectForm.sdId,
                         '' === this.selectForm.scGrade ? null : this.selectForm.scGrade,
                         '' === this.selectForm.scId ? null : this.selectForm.scId,
