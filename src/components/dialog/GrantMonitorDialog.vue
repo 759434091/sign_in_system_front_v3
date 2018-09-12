@@ -41,7 +41,6 @@
                     suId: '',
                     suName: ''
                 },
-                locationSuggestList: [],
                 loading: false
             }
         },
@@ -79,16 +78,20 @@
                 this.$emit('closeDialog')
             },
             queryBySuId(val, callback) {
-                if ('' === val)
+                if ('' === val) {
+                    callback([])
                     return
+                }
                 this.$request.administrator.getStudents(1, 10, val, null)
                     .then(res => {
-                        if (!res.data.success)
+                        if (!res.data.success) {
+                            callback([])
                             return
+                        }
 
-                        this.suggestList = res.data.data.list
-                        this.locationSuggestList.forEach(user => user.value = `${user.suId} ${user.suName}`)
-                        callback(this.locationSuggestList)
+                        const list = res.data.data.list
+                        list.forEach(user => user.value = `${user.suId} ${user.suName}`)
+                        callback(list)
                     })
                     .catch(() => {
                     })
@@ -98,16 +101,20 @@
                 this.newMonitorForm.suName = user.suName
             },
             queryBySuName(val, callback) {
-                if ('' === val)
+                if ('' === val) {
+                    callback([])
                     return
+                }
                 this.$request.administrator.getStudents(1, 10, null, val)
                     .then(res => {
-                        if (!res.data.success)
+                        if (!res.data.success) {
+                            callback([])
                             return
+                        }
 
-                        this.suggestList = res.data.data.list
-                        this.locationSuggestList.forEach(user => user.value = `${user.suId} ${user.suName}`)
-                        callback(this.locationSuggestList)
+                        const list = res.data.data.list
+                        list.forEach(user => user.value = `${user.suId} ${user.suName}`)
+                        callback(list)
                     })
                     .catch(() => {
                     })
