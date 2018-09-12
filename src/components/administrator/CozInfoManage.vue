@@ -5,7 +5,11 @@
                 <el-form-item label="年级">
                     <el-select placeholder="年级" v-model="selectForm.scGrade">
                         <el-option label="不指定" value=""></el-option>
+                        <el-option label="2014" value="2014"></el-option>
+                        <el-option label="2015" value="2015"></el-option>
                         <el-option label="2016" value="2016"></el-option>
+                        <el-option label="2017" value="2017"></el-option>
+                        <el-option label="2018" value="2018"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="学院">
