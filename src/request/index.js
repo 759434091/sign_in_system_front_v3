@@ -41,6 +41,10 @@ async function getLocations(page, pageSize, slId, slName) {
     })
 }
 
+async function contact(contact) {
+    return await axios.post('/contacts', contact)
+}
+
 export default {
     axios: axios,
     setAuthorizationValue,
@@ -49,6 +53,7 @@ export default {
     modifyPassword,
     getLocation,
     getLocations,
+    contact,
     student,
     administrator,
     teacher,
