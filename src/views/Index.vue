@@ -11,21 +11,25 @@
                         {{this.userName}}
                     </template>
                     <el-menu-item index="1-1" @click="goSetting">个人中心</el-menu-item>
-                    <el-menu-item index="1-2" @click="clearStorage">清除缓存</el-menu-item>
+                    <el-menu-item index="1-4" @click="showContactDialog">联系我们</el-menu-item>
+                    <el-menu-item index="1-2" @click="clearStorage">清除缓存(修复UI错误)</el-menu-item>
                     <el-menu-item index="1-3" @click="logout">退出</el-menu-item>
                 </el-submenu>
             </el-menu>
         </el-header>
         <router-view>
         </router-view>
+        <ContactDialog :visible="contactDialog.visible" @closeDialog="closeContactDialog"/>
     </el-container>
 </template>
 
 <script>
     import {mapState, mapGetters} from 'vuex'
+    import ContactDialog from "../components/dialog/ContactDialog";
 
     export default {
         name: 'index',
+        components: {ContactDialog},
         computed: {
             userName() {
                 if (this.user == null)
@@ -56,7 +60,10 @@
         data() {
             return {
                 date: new Date(),
-                timer: null
+                timer: null,
+                contactDialog: {
+                    visible: false
+                }
             }
         },
         created() {
@@ -161,6 +168,16 @@
                 localStorage.clear()
                 this.$message.success('清除成功，请重新登录')
                 this.$router.push("/")
+            },
+            showContactDialog() {
+                this.contactDialog = {
+                    visible: true
+                }
+            },
+            closeContactDialog() {
+                this.contactDialog = {
+                    visible: false
+                }
             }
         }
     }
