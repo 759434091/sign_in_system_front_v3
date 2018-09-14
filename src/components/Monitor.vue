@@ -4,6 +4,7 @@
             <el-menu class="idx-second-menu" background-color="#4b4b4b" text-color="#fff"
                      active-text-color="#ffd04b" :default-active="activeIndex">
                 <el-menu-item index="1" @click="courseTable">督导课表</el-menu-item>
+                <el-menu-item index="2" @click="monitorPool">查看督导池</el-menu-item>
             </el-menu>
         </el-aside>
         <el-main class="idx-main">
@@ -27,6 +28,10 @@
                     this.activeIndex = "1"
                     return
                 }
+                case 'monitorPool': {
+                    this.activeIndex = "2"
+                    return
+                }
                 default: {
                     this.$router.push('/index/monitor/courseTable')
                 }
@@ -40,6 +45,10 @@
                         this.activeIndex = "1"
                         return
                     }
+                    case 'monitorPool': {
+                        this.activeIndex = "2"
+                        return
+                    }
                     default: {
                         this.$router.push('/index/monitor/courseTable')
                     }
@@ -49,6 +58,9 @@
         methods: {
             courseTable() {
                 this.$router.push('/index/monitor/courseTable')
+            },
+            monitorPool() {
+                this.$router.push('/index/monitor/monitorPool')
             }
         }
     }

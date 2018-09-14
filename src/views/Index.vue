@@ -247,6 +247,10 @@
         border-top-right-radius: 5px;
     }
 
+    .coz-manage-pagination {
+        float: right;
+    }
+
     @media screen and (max-width: 1440px) {
         .idx-main {
             color: #4b4b4b;
