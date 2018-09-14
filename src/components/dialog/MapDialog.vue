@@ -172,9 +172,21 @@
                 this.searchService.search(this.keyword);
             },
             closeDialog() {
+                this.keyword = ''
+                this.map = null
+                this.searchService = null
+                this.markers = []
+                this.pois = []
+                this.lat = 0
+                this.long = 0
+                this.infoWin = null
+                this.pagination = {
+                    currentPage: 1,
+                    total: 0,
+                    size: 5
+                }
                 this.$emit('closeDialog')
-            }
-            ,
+            },
             onSearch() {
                 if ('' === this.keyword.trim())
                     return
@@ -189,6 +201,19 @@
                     lat: this.lat,
                     long: this.long
                 })
+                this.keyword = ''
+                this.map = null
+                this.searchService = null
+                this.markers = []
+                this.pois = []
+                this.lat = 0
+                this.long = 0
+                this.infoWin = null
+                this.pagination = {
+                    currentPage: 1,
+                    total: 0,
+                    size: 5
+                }
             },
             handleRowClick(row) {
                 this.infoWin.open();
