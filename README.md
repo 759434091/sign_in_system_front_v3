@@ -1,21 +1,8 @@
 # sign_in_system_front_v3
 
-## Project setup
-```
-npm install
-```
+学院督导系统+学院签到系统
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
+1、便捷的督导管理  
+2、利用小程序api的轻巧签到
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
+V1、V2版本已废弃使用
