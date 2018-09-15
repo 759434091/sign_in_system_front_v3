@@ -34,6 +34,8 @@
                         <span v-text="getCourseMonitorStatus(scope.row)"></span>
                     </template>
                 </el-table-column>
+                <el-table-column label="课程容量" prop="scMaxSize"></el-table-column>
+                <el-table-column label="实际人数" prop="scActSize"></el-table-column>
                 <el-table-column label="到勤率" prop="scAttRate">
                 </el-table-column>
                 <el-table-column label="操作">
