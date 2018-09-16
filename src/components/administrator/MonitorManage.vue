@@ -143,6 +143,7 @@
                 this.grantMonitorDialog.dialogVisible = true
             },
             closeGrantMonitorDialog() {
+                this.handleCurrentChange(this.pagination.currentPage)
                 this.grantMonitorDialog.dialogVisible = false
             },
             batchRevokeMonitor() {
@@ -171,6 +172,7 @@
                                     return
                                 }
                                 this.$message.error("操作成功")
+                                this.handleCurrentChange(this.pagination.currentPage)
                             })
                             .catch((errs) => {
                                 console.error(errs)
