@@ -55,6 +55,7 @@
                         }
 
                         this.$message.success("操作成功")
+                        this.loading = false
                         this.closeDialog()
                     })
                     .catch(err => {
