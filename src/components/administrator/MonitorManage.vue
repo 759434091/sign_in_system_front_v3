@@ -165,8 +165,12 @@
                                         errList.push(res)
                                 })
 
-                                console.log(errList)
-                                this.$message.error("部分操作失败")
+                                if (errList.length > 0) {
+                                    console.log(errList)
+                                    this.$message.error("部分操作失败")
+                                    return
+                                }
+                                this.$message.error("操作成功")
                             })
                             .catch((errs) => {
                                 console.error(errs)
