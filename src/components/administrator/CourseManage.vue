@@ -104,7 +104,7 @@
                 </el-table-column>
                 <el-table-column prop="scId" label="课程序号"/>
                 <el-table-column prop="scName" label="课程名字"/>
-                <el-table-column label="任课老师">
+                <el-table-column label="任课老师" width="150px">
                     <template slot-scope="scope">
                         <div v-for="val in getTeacherList(scope.row.sisJoinCourseList)"
                              :key="val.suId">
@@ -114,7 +114,7 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="上课时间">
+                <el-table-column label="上课时间" width="150px">
                     <template slot-scope="scope">
                         <div v-for="val in scope.row.sisScheduleList"
                              :key="val.ssId">
@@ -128,11 +128,11 @@
                     <template slot-scope="scope">
                         <span v-text="getCourseMonitorStatus(scope.row)"></span>
                     </template>
-                    </el-table-column>
-                    <el-table-column label="课程容量" prop="scMaxSize"></el-table-column>
-                    <el-table-column label="实际人数" prop="scActSize"></el-table-column>
-                <el-table-column label="到勤率" prop="scAttRate"></el-table-column>
-                <el-table-column label="操作">
+                </el-table-column>
+                <el-table-column label="课程容量" prop="scMaxSize" width="80px"></el-table-column>
+                <el-table-column label="实际人数" prop="scActSize" width="80px"></el-table-column>
+                <el-table-column label="到勤率" prop="scAttRate" width="70px"></el-table-column>
+                <el-table-column label="操作"  width="120px">
                     <template slot-scope="scope">
                         <el-dropdown>
                             <el-button type="primary" size="mini">
@@ -276,12 +276,7 @@
                 this.$request.administrator
                     .getDepartments(val)
                     .then(res => {
-                        if (!res.data.success) {
-                            this.$message.error(res.data.message)
-                            return
-                        }
-
-                        this.selectForm.departmentList = res.data.sisDepartmentList
+                        this.selectForm.departmentList = res.data
                     })
                     .catch(err => {
                         if (!err.response || !err.response.data)
@@ -315,15 +310,7 @@
                         '' === this.selectForm.scName ? null : this.selectForm.scName
                     )
                     .then(res => {
-                        if (!res.data.success) {
-                            this.$message.error(res.data.message)
-                            this.pagination.currentPage = 1
-                            this.pagination.total = 0
-                            this.courseList = []
-                            return
-                        }
-
-                        const pageIntro = res.data.data
+                        const pageIntro = res.data
                         this.pagination.currentPage = pageIntro.pageNum
                         this.pagination.total = pageIntro.total
                         this.courseList = pageIntro.list
@@ -441,6 +428,7 @@
                                 }
 
                                 this.$message.success('操作成功')
+                                this.handleCurrentChange(this.pagination.currentPage)
                             })
                             .catch(err => {
                                 if (!err.response || !err.response.data)
@@ -474,6 +462,7 @@
                                 }
 
                                 this.$message.success('操作成功')
+                                this.handleCurrentChange(this.pagination.currentPage)
                             })
                             .catch(err => {
                                 if (!err.response || !err.response.data)

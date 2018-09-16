@@ -7,6 +7,8 @@
                 <el-form :inline="true">
                     <el-form-item label="上课时间">
                         <el-select placeholder="上课时间" v-model="ssId">
+                            <el-option label="未选择" value="">
+                            </el-option>
                             <el-option v-for="val in scheduleList"
                                        :key="`sd_${val.ssId}`"
                                        :label="getScheduleTimeString(val)"
@@ -40,7 +42,7 @@
         },
         data() {
             return {
-                ssId: 0,
+                ssId: '',
                 sisSupervisionList: null,
                 scheduleList: []
             }

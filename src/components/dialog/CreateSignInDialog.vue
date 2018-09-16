@@ -93,11 +93,7 @@
                             this.$request.administrator.createSignIn(this.ssId)
                                 .then(res => {
                                     if (!res.data.success) {
-                                        if (res.data.message)
-                                            this.$message.error(res.data.message)
-                                        else
-                                            this.$message.error('签到已存在')
-                                        this.loading = false
+                                        this.$message.error(res.data.message)
                                         return
                                     }
 
@@ -125,11 +121,7 @@
                 this.$request.administrator.createSignIn(this.ssId)
                     .then(res => {
                         if (!res.data.success) {
-                            if (res.data.message)
-                                this.$message.error(res.data.message)
-                            else
-                                this.$message.error('签到已存在')
-                            this.loading = false
+                            this.$message.error(res.data.message)
                             return
                         }
 
@@ -189,11 +181,7 @@
                     this.$request.administrator.createSignIn(parseInt(slId))
                         .then(res => {
                             if (!res.data.success) {
-                                if (res.data.message)
-                                    this.$message.error(res.data.message)
-                                else
-                                    this.$message.error('签到已存在')
-                                this.loading = false
+                                this.$message.error(res.data.message)
                                 return
                             }
 

@@ -68,12 +68,7 @@
                 this.$request.administrator
                     .getSignIns(this.scId)
                     .then(res => {
-                        if (!res.data.success) {
-                            this.$message.error(res.data.message)
-                            return
-                        }
-
-                        this.scheduleList = res.data.course.sisScheduleList
+                        this.scheduleList = res.data.sisScheduleList
                     })
                     .catch(err => {
                         if (!err.response || !err.response.data)
@@ -100,7 +95,7 @@
             getWeekList(ssId) {
                 if ('' === ssId)
                     return []
-                const schedule = this.scheduleList.find(schedule => schedule.ssId = parseInt(ssId))
+                const schedule = this.scheduleList.find(schedule => schedule.ssId === parseInt(ssId))
                 if (null == schedule)
                     return []
                 const weekList = ((start, end) => Array(end - start + 1).fill(0).map((v, i) => i + start))(schedule.ssStartWeek, schedule.ssEndWeek)
@@ -134,11 +129,11 @@
             handleWeekSelect(week) {
                 if ('' === week)
                     return
-                const schedule = this.scheduleList.find(schedule => schedule.ssId = parseInt(this.ssId))
+                const schedule = this.scheduleList.find(schedule => schedule.ssId === parseInt(this.ssId))
                 if (null == schedule)
                     return
 
-                const sisSignIn = schedule.sisSignInList.find(e => e.ssiWeek = week)
+                const sisSignIn = schedule.sisSignInList.find(e => e.ssiWeek === week)
                 if (null === sisSignIn)
                     return
 

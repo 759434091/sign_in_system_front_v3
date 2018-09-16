@@ -37,8 +37,8 @@ export default new Vuex.Store({
     },
     actions: {
         login({commit, state}, loginData) {
-            commit('setToken', loginData.access_token)
-            commit('setUser', loginData.user)
+            commit('setToken', loginData.accessToken)
+            commit('setUser', loginData.sisUser)
             localStorage.setItem('state', JSON.stringify(state))
         },
         getLocalStorageState({commit, state}) {

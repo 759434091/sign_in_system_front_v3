@@ -1,7 +1,7 @@
 <template>
     <el-container class="login-box-container">
         <el-row class="login-box-row" type="flex" justify="center">
-            <el-col class="login-box-col" :xl="5" :xs="12" :span="6">
+            <el-col class="login-box-col" :xl="5" :xs="12" :md="12" :sm="9" :span="12">
                 <h1 class="login-box-brand">Happy Sign In</h1>
                 <el-form class="login-form" ref="loginForm" :model="loginForm" :rules="loginRules">
                     <el-form-item label="用户名/学号/教工号" prop="suId">
@@ -99,10 +99,7 @@
                     this.$request.getToken(this.loginForm)
                         .then(res => {
                             if (!res.data.success) {
-                                this.$message({
-                                    message: res.data.message,
-                                    type: 'error'
-                                });
+                                this.$message.error(res.data.message);
                                 this.isLoginProcessing = false
                                 return
                             }
@@ -114,7 +111,7 @@
                                 return
                             }
 
-                            const user = res.data.user;
+                            const user = res.data.data.sisUser;
                             if (user.suAuthorities.length > 1) {
                                 this.loginData = res.data
                                 this.dialogVisible = true
@@ -122,7 +119,7 @@
                                 this.authorities = user.suAuthorities.map(auth => auth.authority)
                             } else if (user.suAuthorities.length === 1) {
                                 this.$store.commit('setRole', user.suAuthorities[0].authority)
-                                this.goIndex(res.data)
+                                this.goIndex(res.data.data)
                             } else {
                                 this.$message.error("该账号无权限登录，请联系管理员")
                             }
@@ -142,10 +139,9 @@
                 this.goIndex(this.loginData)
             },
             goIndex(loginData) {
-                const _this = this;
                 this.$store.dispatch('login', loginData).then(() => {
-                    _this.$router.push('/index')
-                    _this.isLoginProcessing = false
+                    this.$router.push('/index')
+                    this.isLoginProcessing = false
                 })
             },
             toGov() {
