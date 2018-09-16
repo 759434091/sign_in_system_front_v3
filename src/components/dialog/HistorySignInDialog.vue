@@ -29,7 +29,7 @@
             <el-main>
                 <el-table :data="tableData">
                     <el-table-column label="学号" prop="suId"></el-table-column>
-                    <el-table-column label="姓名" prop="suName"></el-table-column>
+                    <el-table-column label="姓名" prop="sisUser.suName"></el-table-column>
                     <el-table-column label="签到状态" prop="ssidStatus">
                         <template slot-scope="scope">
                             <div v-text="scope.row.ssidStatus ? '已签到' : '缺勤'">
