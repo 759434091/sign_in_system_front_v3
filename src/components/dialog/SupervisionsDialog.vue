@@ -19,7 +19,7 @@
                 </el-form>
             </el-header>
             <el-main>
-                <el-table :data="sisSupervisionList">
+                <el-table :data="sisSupervisionList" v-loading="loading">
                     <el-table-column label="督导周" prop="ssvWeek"></el-table-column>
                     <el-table-column label="实际人数" prop="ssvActualNum"></el-table-column>
                     <el-table-column label="玩手机人数" prop="ssvMobileNum"></el-table-column>
@@ -42,6 +42,7 @@
         },
         data() {
             return {
+                loading: false,
                 ssId: '',
                 sisSupervisionList: null,
                 scheduleList: []
@@ -49,17 +50,19 @@
         },
         watch: {
             ssId() {
-                if ('' === this.ssId)
+                if ('' === this.ssId) {
+                    this.sisSupervisionList = null
                     return
+                }
+
                 this.sisSupervisionList = this.scheduleList
                     .find(schedule => schedule.ssId === this.ssId)
                     .sisSupervisionList
             },
             scId() {
-                if ('' === this.scId) {
-                    return
-                }
+                if ('' === this.scId) return
 
+                this.loading = true
                 this.$request.administrator
                     .getSupervision(this.scId)
                     .then(res => {
@@ -79,6 +82,7 @@
                         }
                         this.$message.error(err.response.data.message)
                     })
+                    .finally(() => this.loading = false)
             }
         },
         methods: {

@@ -10,7 +10,7 @@
                             <el-option v-for="val in scheduleList"
                                        :key="`hsid_${val.ssId}`"
                                        :label="getScheduleTimeString(val)"
-                                       :value="val.ssId.toString()">
+                                       :value="val.ssId">
                             </el-option>
                         </el-select>
                     </el-form-item>
@@ -27,9 +27,9 @@
                 </el-form>
             </el-header>
             <el-main>
-                <el-table :data="tableData">
+                <el-table :data="tableData" v-loading="loading">
                     <el-table-column label="学号" prop="suId"></el-table-column>
-                    <el-table-column label="姓名" prop="suName"></el-table-column>
+                    <el-table-column label="姓名" prop="sisUser.suName"></el-table-column>
                     <el-table-column label="签到状态" prop="ssidStatus">
                         <template slot-scope="scope">
                             <div v-text="scope.row.ssidStatus ? '已签到' : '缺勤'">
@@ -53,6 +53,7 @@
         },
         data() {
             return {
+                loading: false,
                 ssId: '',
                 week: '',
                 scheduleList: [],
@@ -65,10 +66,12 @@
                     return
                 }
 
+                this.loading = true
                 this.$request.administrator
                     .getSignIns(this.scId)
                     .then(res => {
                         this.scheduleList = res.data.sisScheduleList
+                        this.scheduleList.forEach(s => s.ssId = s.ssId.toString())
                     })
                     .catch(err => {
                         if (!err.response || !err.response.data)
@@ -79,6 +82,7 @@
                         }
                         this.$message.error(err.response.data.message)
                     })
+                    .finally(() => this.loading = false)
             }
         },
         methods: {
@@ -95,7 +99,7 @@
             getWeekList(ssId) {
                 if ('' === ssId)
                     return []
-                const schedule = this.scheduleList.find(schedule => schedule.ssId === parseInt(ssId))
+                const schedule = this.scheduleList.find(schedule => schedule.ssId === ssId)
                 if (null == schedule)
                     return []
                 const weekList = ((start, end) => Array(end - start + 1).fill(0).map((v, i) => i + start))(schedule.ssStartWeek, schedule.ssEndWeek)
@@ -129,14 +133,13 @@
             handleWeekSelect(week) {
                 if ('' === week)
                     return
-                const schedule = this.scheduleList.find(schedule => schedule.ssId === parseInt(this.ssId))
+                const schedule = this.scheduleList.find(schedule => schedule.ssId === this.ssId)
                 if (null == schedule)
                     return
 
-                const sisSignIn = schedule.sisSignInList.find(e => e.ssiWeek === week)
+                const sisSignIn = schedule.sisSignInList.find(e => e.ssiWeek === parseInt(week))
                 if (null === sisSignIn)
                     return
-
                 this.tableData = sisSignIn.sisSignInDetailList
             }
         }
