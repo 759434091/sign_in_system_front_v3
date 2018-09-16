@@ -49,7 +49,7 @@
         },
         watch: {
             ssId() {
-                if (0 === this.ssId)
+                if ('' === this.ssId)
                     return
                 this.sisSupervisionList = this.scheduleList
                     .find(schedule => schedule.ssId === this.ssId)
@@ -63,12 +63,9 @@
                 this.$request.administrator
                     .getSupervision(this.scId)
                     .then(res => {
-                        if (!res.data.success) {
-                            this.$message.error(res.data.message)
-                            return
-                        }
+                        this.scheduleList = res.data
+                        this.scheduleList.forEach(s => s.ssId = s.ssId.toString())
 
-                        this.scheduleList = res.data.array
                         if (this.scheduleList.length > 0) {
                             this.ssId = this.scheduleList[0].ssId
                         }
