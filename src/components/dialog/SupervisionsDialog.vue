@@ -40,7 +40,7 @@
         },
         data() {
             return {
-                ssId: 0,
+                ssId: '',
                 sisSupervisionList: null,
                 scheduleList: []
             }
@@ -67,6 +67,7 @@
                         }
 
                         this.scheduleList = res.data.array
+                        this.scheduleList.forEach(s => s.ssId = s.ssId.toString())
                         if (this.scheduleList.length > 0) {
                             this.ssId = this.scheduleList[0].ssId
                         }
