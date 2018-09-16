@@ -47,7 +47,7 @@
         },
         watch: {
             ssId() {
-                if (0 === this.ssId)
+                if ('' === this.ssId)
                     return
                 this.sisSupervisionList = this.scheduleList
                     .find(schedule => schedule.ssId === this.ssId)
