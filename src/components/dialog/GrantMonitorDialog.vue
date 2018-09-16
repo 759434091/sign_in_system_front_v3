@@ -15,7 +15,7 @@
             </el-form-item>
             <el-form-item label="姓名">
                 <el-autocomplete v-model="newMonitorForm.suName"
-                                 placeholder="请输入学号"
+                                 placeholder="请输入姓名"
                                  :fetch-suggestions="queryBySuName"
                                  @select="handleSuNameSelect">
                 </el-autocomplete>
@@ -55,6 +55,7 @@
                         }
 
                         this.$message.success("操作成功")
+                        this.loading = false
                         this.closeDialog()
                     })
                     .catch(err => {

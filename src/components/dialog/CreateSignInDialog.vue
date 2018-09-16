@@ -8,8 +8,11 @@
         <el-form v-if="null != course" label-width="80px" label-position="right">
             <el-form-item label="上课时间">
                 <el-select v-model="ssId" @change="handleSelect">
+                    <el-option label="未选择" value=""></el-option>
                     <el-option v-for="val in course.sisScheduleList"
-                               :key="`csd_${val.ssId}`" :label="`${getScheduleTimeString(val)}`" :value="val.ssId">
+                               :key="`csd_${val.ssId}`"
+                               :label="`${getScheduleTimeString(val)}`"
+                               :value="val.ssId.toString()">
                     </el-option>
                 </el-select>
             </el-form-item>
@@ -145,7 +148,7 @@
                 if ('' === ssId) {
                     return
                 }
-                const schedule = this.course.sisScheduleList.find(schedule => schedule.ssId === ssId)
+                const schedule = this.course.sisScheduleList.find(schedule => schedule.ssId === parseInt(ssId))
                 if (null == schedule) {
                     return
                 }
@@ -155,13 +158,7 @@
                     return
                 }
                 this.$request.getLocation(schedule.slId)
-                    .then(res => {
-                        if (!res.data.success) {
-                            return
-                        }
-
-                        this.location = res.data.sisLocation
-                    })
+                    .then(res => this.location = res.data)
                     .catch(() => {
                     })
             },
