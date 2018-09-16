@@ -138,7 +138,7 @@
                 if (null == schedule)
                     return
 
-                const sisSignIn = schedule.sisSignInList.find(e => e.ssiWeek === week)
+                const sisSignIn = schedule.sisSignInList.find(e => e.ssiWeek === parseInt(week))
                 if (null === sisSignIn)
                     return
 
