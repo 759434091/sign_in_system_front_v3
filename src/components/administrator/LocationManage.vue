@@ -102,12 +102,7 @@
                 this.$request
                     .getLocations(this.pagination.currentPage, this.pagination.size, this.selectForm.slId, this.selectForm.slName)
                     .then(res => {
-                        if (!res.data.success) {
-                            this.$message.error(res.data.message)
-                            return
-                        }
-
-                        const pageIntro = res.data.data
+                        const pageIntro = res.data
                         this.pagination.currentPage = pageIntro.pageNum
                         this.pagination.total = pageIntro.total
                         this.locationList = pageIntro.list

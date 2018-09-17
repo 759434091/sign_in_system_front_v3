@@ -85,12 +85,7 @@
                 }
                 this.$request.administrator.getStudents(1, 10, val, null)
                     .then(res => {
-                        if (!res.data.success) {
-                            callback([])
-                            return
-                        }
-
-                        const list = res.data.data.list
+                        const list = res.data.list
                         list.forEach(user => user.value = `${user.suId} ${user.suName}`)
                         callback(list)
                     })
@@ -108,12 +103,7 @@
                 }
                 this.$request.administrator.getStudents(1, 10, null, val)
                     .then(res => {
-                        if (!res.data.success) {
-                            callback([])
-                            return
-                        }
-
-                        const list = res.data.data.list
+                        const list = res.data.list
                         list.forEach(user => user.value = `${user.suId} ${user.suName}`)
                         callback(list)
                     })

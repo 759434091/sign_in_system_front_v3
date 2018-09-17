@@ -321,7 +321,7 @@
                     return
                 this.$request.administrator.getCourseDepartments(course.scId)
                     .then(res => {
-                        const array = res.data.array;
+                        const array = res.data;
                         array.forEach(d => d.sdId = d.sdId.toString())
                         this.courseForm.departmentList = array
                     })
@@ -437,12 +437,7 @@
                 }
                 this.$request.getLocations(1, 10, null, val)
                     .then(res => {
-                        if (!res.data.success) {
-                            callback([])
-                            return
-                        }
-
-                        this.locationSuggestList = res.data.data.list
+                        this.locationSuggestList = res.data.list
                         this.locationSuggestList.forEach(l => l.value = `${l.slId} ${l.slName}`)
                         callback(this.locationSuggestList)
                     })
@@ -461,12 +456,7 @@
                 }
                 this.$request.administrator.getDepartments(val)
                     .then(res => {
-                        if (!res.data.success) {
-                            callback([])
-                            return
-                        }
-
-                        this.departmentSuggestList = res.data.sisDepartmentList
+                        this.departmentSuggestList = res.data
                         this.departmentSuggestList.forEach(d => d.value = `${d.sdId} ${d.sdName}`)
                         callback(this.departmentSuggestList)
                     })

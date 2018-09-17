@@ -92,7 +92,7 @@
                         }
 
                         this.$message.success('上传成功，正在导入')
-                        this.cozKey = res.data.key
+                        this.cozKey = res.data.data
                         const _this = this
                         this.cozUploadTimer = setInterval(() => {
                             _this.$request.administrator.getProgress(this.cozKey)
@@ -104,12 +104,12 @@
                                         return
                                     }
 
-                                    if (res.data.progress === 100) {
+                                    if (res.data.data === 100) {
                                         clearInterval(_this.cozUploadTimer)
                                         _this.cozStatus = 'success'
                                         _this.$message.success('导入成功')
                                     }
-                                    _this.cozProgress = res.data.progress
+                                    _this.cozProgress = res.data.data
                                 })
                                 .catch(err => {
                                     _this.cozStatus = 'exception'
@@ -148,7 +148,7 @@
                         }
 
                         this.$message.success('上传成功，正在导入')
-                        this.stuKey = res.data.key
+                        this.stuKey = res.data.data
                         const _this = this
                         this.stuUploadTimer = setInterval(() => {
                             _this.$request.administrator.getProgress(this.stuKey)
@@ -160,12 +160,12 @@
                                         return
                                     }
 
-                                    if (res.data.progress === 100) {
+                                    if (res.data.data === 100) {
                                         clearInterval(_this.stuUploadTimer)
                                         _this.stuStatus = 'success'
                                         _this.$message.success('导入成功')
                                     }
-                                    _this.stuProgress = res.data.progress
+                                    _this.stuProgress = res.data.data
                                 })
                                 .catch(err => {
                                     _this.stuStatus = 'exception'

@@ -132,7 +132,7 @@
                 <el-table-column label="课程容量" prop="scMaxSize" width="80px"></el-table-column>
                 <el-table-column label="实际人数" prop="scActSize" width="80px"></el-table-column>
                 <el-table-column label="到勤率" prop="scAttRate" width="70px"></el-table-column>
-                <el-table-column label="操作"  width="120px">
+                <el-table-column label="操作" width="120px">
                     <template slot-scope="scope">
                         <el-dropdown>
                             <el-button type="primary" size="mini">
@@ -311,6 +311,7 @@
                     )
                     .then(res => {
                         const pageIntro = res.data
+                        if (pageIntro.total === 0) this.$message.warning('暂无数据')
                         this.pagination.currentPage = pageIntro.pageNum
                         this.pagination.total = pageIntro.total
                         this.courseList = pageIntro.list

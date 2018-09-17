@@ -179,12 +179,7 @@
                 this.$request.administrator
                     .getDepartments(val)
                     .then(res => {
-                        if (!res.data.success) {
-                            this.$message.error(res.data.message)
-                            return
-                        }
-
-                        this.selectForm.departmentList = res.data.sisDepartmentList
+                        this.selectForm.departmentList = res.data
                     })
                     .catch(err => {
                         if (!err.response || !err.response.data)
@@ -216,15 +211,7 @@
                         '' === this.selectForm.scName ? null : this.selectForm.scName
                     )
                     .then(res => {
-                        if (!res.data.success) {
-                            this.$message.error(res.data.message)
-                            this.pagination.currentPage = 1
-                            this.pagination.total = 0
-                            this.courseList = []
-                            return
-                        }
-
-                        const pageIntro = res.data.data
+                        const pageIntro = res.data
                         this.pagination.currentPage = pageIntro.pageNum
                         this.pagination.total = pageIntro.total
                         this.courseList = pageIntro.list

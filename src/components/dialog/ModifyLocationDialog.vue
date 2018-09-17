@@ -45,14 +45,9 @@
                 this.loading = true
                 this.$request.getLocation(this.slId)
                     .then(res => {
-                        if (!res.data.success) {
-                            this.$message.error(res.data.message)
-                            return
-                        }
-
-                        this.locationForm.slName = res.data.sisLocation.slName
-                        this.locationForm.slLong = res.data.sisLocation.slLong
-                        this.locationForm.slLat = res.data.sisLocation.slLat
+                        this.locationForm.slName = res.data.slName
+                        this.locationForm.slLong = res.data.slLong
+                        this.locationForm.slLat = res.data.slLat
                     })
                     .catch(err => {
                         if (!err.response || !err.response.data)

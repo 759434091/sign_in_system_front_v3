@@ -55,11 +55,7 @@
                 this.loading = true
                 this.$request.administrator.getStuSignIns(this.suId)
                     .then(res => {
-                        if (!res.data.success) {
-                            this.$message.error(res.data.message)
-                            return
-                        }
-                        this.signInDetailList = res.data.array
+                        this.signInDetailList = res.data
                     })
                     .catch(err => {
                         if (!err.response || !err.response.data)

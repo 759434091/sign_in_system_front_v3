@@ -71,11 +71,7 @@
                 this.loading = true
                 this.$request.administrator.getJoinCourses(scId)
                     .then(res => {
-                        if (!res.data.success) {
-                            this.$message.error(res.data.message)
-                            return
-                        }
-                        this.joinCourseList = res.data.array
+                        this.joinCourseList = res.data
                     })
                     .catch(err => {
                         if (!err.response || !err.response.data)
@@ -103,11 +99,7 @@
                 this.loading = true
                 this.$request.administrator.getJoinCourses(this.scId)
                     .then(res => {
-                        if (!res.data.success) {
-                            this.$message.error(res.data.message)
-                            return
-                        }
-                        this.joinCourseList = res.data.array
+                        this.joinCourseList = res.data
                     })
                     .catch(err => {
                         if (!err.response || !err.response.data)
@@ -145,14 +137,13 @@
                 this.joinCourseList.splice(index, 1)
             },
             queryBySuId(val, callback) {
-                if ('' === val)
+                if ('' === val) {
+                    callback([])
                     return
+                }
                 this.$request.administrator.getStudents(1, 10, val, null)
                     .then(res => {
-                        if (!res.data.success)
-                            return
-
-                        this.suggestList = res.data.data.list
+                        this.suggestList = res.data.list
                         this.suggestList.forEach(user => user.value = `${user.suId} ${user.suName}`)
                         callback(this.suggestList)
                     })

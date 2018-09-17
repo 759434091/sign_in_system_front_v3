@@ -81,30 +81,28 @@
             }
         },
         created() {
-            this.loading = true
-            this.$request.administrator.getDepartments('')
-                .then(res => {
-                    if (!res.data.success) {
-                        this.$message.error(res.data.message)
-                        return
-                    }
-
-                    this.departList = res.data.sisDepartmentList
-                    this.pagination.total = this.departList.length
-                    this.handleCurrentChange(1)
-                })
-                .catch(err => {
-                    if (!err.response || !err.response.data)
-                        return
-                    if (!err.response.data.message) {
-                        this.$message.error(err.response.data)
-                        return
-                    }
-                    this.$message.error(err.response.data.message)
-                })
-                .finally(() => this.loading = false)
+            this.getTotalDepart()
         },
         methods: {
+            getTotalDepart() {
+                this.loading = true
+                this.$request.administrator.getDepartments('')
+                    .then(res => {
+                        this.departList = res.data
+                        this.pagination.total = this.departList.length
+                        this.handleCurrentChange(this.pagination.currentPage)
+                    })
+                    .catch(err => {
+                        if (!err.response || !err.response.data)
+                            return
+                        if (!err.response.data.message) {
+                            this.$message.error(err.response.data)
+                            return
+                        }
+                        this.$message.error(err.response.data.message)
+                    })
+                    .finally(() => this.loading = false)
+            },
             handleSizeChange(size) {
                 this.pagination.size = size
                 this.handleCurrentChange(this.pagination.currentPage)
@@ -137,28 +135,7 @@
             },
             closeAddDepartDialog() {
                 this.addDepartDialog.dialogVisible = false
-                this.loading = true
-                this.$request.administrator.getDepartments('')
-                    .then(res => {
-                        if (!res.data.success) {
-                            this.$message.error(res.data.message)
-                            return
-                        }
-
-                        this.departList = res.data.sisDepartmentList
-                        this.pagination.total = this.departList.length
-                        this.handleCurrentChange(this.pagination.currentPage)
-                    })
-                    .catch(err => {
-                        if (!err.response || !err.response.data)
-                            return
-                        if (!err.response.data.message) {
-                            this.$message.error(err.response.data)
-                            return
-                        }
-                        this.$message.error(err.response.data.message)
-                    })
-                    .finally(() => this.loading = false)
+                this.getTotalDepart()
             },
             showModifyDepartDialog(depart) {
                 this.modifyDepartDialog.department = depart
@@ -167,28 +144,7 @@
             closeModifyDepartDialog() {
                 this.modifyDepartDialog.dialogVisible = false
                 this.modifyDepartDialog.department = null
-                this.loading = true
-                this.$request.administrator.getDepartments('')
-                    .then(res => {
-                        if (!res.data.success) {
-                            this.$message.error(res.data.message)
-                            return
-                        }
-
-                        this.departList = res.data.sisDepartmentList
-                        this.pagination.total = this.departList.length
-                        this.handleCurrentChange(this.pagination.currentPage)
-                    })
-                    .catch(err => {
-                        if (!err.response || !err.response.data)
-                            return
-                        if (!err.response.data.message) {
-                            this.$message.error(err.response.data)
-                            return
-                        }
-                        this.$message.error(err.response.data.message)
-                    })
-                    .finally(() => this.loading = false)
+                this.getTotalDepart()
             },
             delDepart(depart) {
                 this.$confirm(`将会删除学院 ${depart.sdName}, 请确认`, '删除学院')
@@ -213,27 +169,7 @@
                                 this.$message.error(err.response.data.message)
                             })
                             .finally(() => {
-                                this.$request.administrator.getDepartments('')
-                                    .then(res => {
-                                        if (!res.data.success) {
-                                            this.$message.error(res.data.message)
-                                            return
-                                        }
-
-                                        this.departList = res.data.sisDepartmentList
-                                        this.pagination.total = this.departList.length
-                                        this.handleCurrentChange(this.pagination.currentPage)
-                                    })
-                                    .catch(err => {
-                                        if (!err.response || !err.response.data)
-                                            return
-                                        if (!err.response.data.message) {
-                                            this.$message.error(err.response.data)
-                                            return
-                                        }
-                                        this.$message.error(err.response.data.message)
-                                    })
-                                    .finally(() => this.loading = false)
+                                this.getTotalDepart()
                             })
                     })
                     .catch(() => {

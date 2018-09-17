@@ -108,15 +108,7 @@
                         this.selectForm.ordByLackNum
                     )
                     .then(res => {
-                        if (!res.data.success) {
-                            this.$message.error(res.data.message)
-                            this.pagination.currentPage = 1
-                            this.pagination.total = 0
-                            this.monitorList = []
-                            return
-                        }
-
-                        const pageIntro = res.data.data
+                        const pageIntro = res.data
                         this.pagination.currentPage = pageIntro.pageNum
                         this.pagination.total = pageIntro.total
                         this.monitorList = pageIntro.list
@@ -143,6 +135,7 @@
                 this.grantMonitorDialog.dialogVisible = true
             },
             closeGrantMonitorDialog() {
+                this.handleCurrentChange(this.pagination.currentPage)
                 this.grantMonitorDialog.dialogVisible = false
             },
             batchRevokeMonitor() {
@@ -165,13 +158,19 @@
                                         errList.push(res)
                                 })
 
-                                console.log(errList)
-                                this.$message.error("部分操作失败")
+                                if (errList.length > 0) {
+                                    console.log(errList)
+                                    this.$message.error("部分操作失败")
+                                    return
+                                }
+                                this.$message.success('操作成功')
                             })
                             .catch((errs) => {
                                 console.error(errs)
                                 this.$message.error("操作失败")
-                                debugger
+                            })
+                            .finally(() => {
+                                this.handleCurrentChange(this.pagination.currentPage)
                             })
 
                     })
