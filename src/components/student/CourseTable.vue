@@ -117,7 +117,7 @@
         created() {
             const date = new Date()
             const year = date.getFullYear()
-            const term = date.getMonth() >= 9 && date.getMonth() <= 12 || date.getMonth() >= 1 && date.getMonth() <= 2 ? '1' : '2'
+            const term = date.getMonth() >= 9 && date.getMonth() <= 12 || date.getMonth() >= 1 && date.getMonth() <= 2 ? '2' : '1'
             this.selectForm.yearEtTerm = year + '-' + (year + 1) + '-' + term
             this.$request.getWeek()
                 .then(res => {
