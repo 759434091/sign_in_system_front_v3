@@ -67,12 +67,7 @@
             this.loading = true
             this.$request.monitor.getCourseTable()
                 .then(res => {
-                    if (!res.data.success) {
-                        this.$message.error(res.data.message)
-                        return
-                    }
-
-                    this.courseList = res.data.array
+                    this.courseList = res.data.list
                 })
                 .catch(err => {
                     if (!err.response || !err.response.data)

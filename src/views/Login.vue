@@ -107,13 +107,13 @@
                             const role = localStorage.getItem('role')
                             if (null != role && '' !== role) {
                                 this.$store.commit('setRole', role)
-                                this.goIndex(res.data)
+                                this.goIndex(res.data.data)
                                 return
                             }
 
                             const user = res.data.data.sisUser;
                             if (user.suAuthorities.length > 1) {
-                                this.loginData = res.data
+                                this.loginData = res.data.data
                                 this.dialogVisible = true
                                 this.isLoginProcessing = false
                                 this.authorities = user.suAuthorities.map(auth => auth.authority)

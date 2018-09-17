@@ -4,6 +4,7 @@
             <el-form :inline="true" size="mini" :model="selectForm">
                 <el-form-item label="课程">
                     <el-select v-model="selectForm.scId" @change="clearSsId">
+                        <el-option label="未选择" value=""></el-option>
                         <el-option v-for="val in courseList"
                                    :key="val.scId"
                                    :label="`${val.scName} ${val.scId}`"
@@ -14,6 +15,7 @@
                 </el-form-item>
                 <el-form-item label="上课时间">
                     <el-select v-model="selectForm.ssId">
+                        <el-option label="未选择" value=""></el-option>
                         <el-option
                                 v-for="val in getScheduleList(selectForm.scId)"
                                 :key="val.ssId"
@@ -24,11 +26,12 @@
                 </el-form-item>
                 <el-form-item label="周">
                     <el-select v-model="selectForm.week" :loading="loading">
+                        <el-option label="未选择" value=""></el-option>
                         <el-option
                                 v-for="val in getWeekList(selectForm.ssId)"
                                 :key="val.value"
                                 :label="val.label"
-                                :value="val.value">
+                                :value="val.value.toString()">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -75,11 +78,7 @@
         created() {
             this.$request.teacher.getCourseTable()
                 .then(res => {
-                    if (!res.data.success) {
-                        this.$message.error(res.data.message)
-                        return
-                    }
-                    this.courseList = res.data.array.map(joinCourse => joinCourse.sisCourse)
+                    this.courseList = res.data.list.map(joinCourse => joinCourse.sisCourse)
                 })
                 .catch(err => {
                     if (!err.response || !err.response.data)
@@ -106,12 +105,7 @@
                 this.loading = true
                 this.$request.teacher.getSignIns(this.selectForm.scId)
                     .then(res => {
-                        if (!res.data.success) {
-                            this.$message.error(res.data.message)
-                            return
-                        }
-
-                        const scheduleWithSignInList = res.data.course.sisScheduleList
+                        const scheduleWithSignInList = res.data.sisScheduleList
                         this.scheduleWithSignInList = null == scheduleWithSignInList ? null : scheduleWithSignInList
                     })
                     .catch(err => {
@@ -149,6 +143,7 @@
 
                 return weekList
                     .map(week => {
+                        week = parseInt(week)
                         const processing = scheduleWithSignIn.sisProcessingList.find(e => e.week === week)
                         if (processing) {
                             return {

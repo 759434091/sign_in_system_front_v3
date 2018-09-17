@@ -4,9 +4,9 @@
             <el-table v-loading="loading"
                       :data="courseList"
                       @selection-change="handleSelectionChange">
-<!--                <el-table-column type="selection"
-                                 width="55">
-                </el-table-column>-->
+                <!--                <el-table-column type="selection"
+                                                 width="55">
+                                </el-table-column>-->
                 <el-table-column prop="scId" label="课程序号"/>
                 <el-table-column prop="scName" label="课程名字"/>
                 <el-table-column label="任课老师">
@@ -103,15 +103,7 @@
                 this.$request.monitor
                     .getMonitorPool(page, this.pagination.size)
                     .then(res => {
-                        if (!res.data.success) {
-                            this.$message.error(res.data.message)
-                            this.pagination.currentPage = 1
-                            this.pagination.total = 0
-                            this.courseList = []
-                            return
-                        }
-
-                        const pageIntro = res.data.data
+                        const pageIntro = res.data
                         this.pagination.currentPage = pageIntro.pageNum
                         this.pagination.total = pageIntro.total
                         this.courseList = pageIntro.list

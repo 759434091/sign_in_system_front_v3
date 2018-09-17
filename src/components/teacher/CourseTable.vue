@@ -110,11 +110,7 @@
         created() {
             this.$request.teacher.getCourseTable()
                 .then(res => {
-                    if (!res.data.success) {
-                        this.$message.error(res.data.message)
-                        return
-                    }
-                    this.courseList = res.data.array.map(joinCourse => joinCourse.sisCourse)
+                    this.courseList = res.data.list.map(joinCourse => joinCourse.sisCourse)
                 })
                 .catch(err => {
                     if (!err.response || !err.response.data)

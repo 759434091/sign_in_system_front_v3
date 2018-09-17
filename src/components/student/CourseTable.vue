@@ -130,12 +130,7 @@
             this.loading = true
             this.$request.student.getCourseTable()
                 .then(res => {
-                    if (!res.data.success) {
-                        this.$message.error(res.data.message)
-                        return
-                    }
-
-                    this.joinCourseList = res.data.array;
+                    this.joinCourseList = res.data.list;
                     this.reDraw()
                 })
                 .catch(err => {

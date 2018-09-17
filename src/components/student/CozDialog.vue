@@ -40,11 +40,12 @@
                                         placeholder="上课时间"
                                         value=""
                                         v-model="selectSchIdx">
+                                    <el-option label="未选择" value=""></el-option>
                                     <el-option
                                             v-for="(val, idx) in hisScheduleList"
                                             :key="val.ssId"
                                             :label="getScheduleTimeString(val)"
-                                            :value="idx">
+                                            :value="idx.toString()">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
@@ -89,10 +90,11 @@
                     .map(sisJoinCourse => sisJoinCourse.sisUser)
             },
             historyList() {
-                if (null == this.hisScheduleList[this.selectSchIdx])
+                const selectSchIdx = parseInt(this.selectSchIdx)
+                if (null == this.hisScheduleList[selectSchIdx])
                     return []
                 const sisSignInList = JSON.parse(JSON.stringify(
-                    this.hisScheduleList[this.selectSchIdx].sisSignInList
+                    this.hisScheduleList[selectSchIdx].sisSignInList
                 ))
 
                 sisSignInList.forEach(sisSignIn => {
@@ -107,7 +109,7 @@
         data() {
             return {
                 codeMap: new Map([[false, '缺勤'], [true, '到勤']]),
-                selectSchIdx: 0,
+                selectSchIdx: '',
                 active: 'showCozDtl',
                 hisScheduleList: []
             }
@@ -119,13 +121,7 @@
                 }
                 this.$request.student.getHisSignIns(this.course.scId)
                     .then(res => {
-                        if (!res.data.success) {
-                            console.error(res.data.message)
-                            this.$message.error(res.data.message)
-                            return
-                        }
-
-                        this.hisScheduleList = res.data.course.sisScheduleList
+                        this.hisScheduleList = res.data.sisScheduleList
                     })
                     .catch(err => {
                         if (!err.response || !err.response.data)
