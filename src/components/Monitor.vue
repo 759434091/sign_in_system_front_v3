@@ -7,7 +7,7 @@
                 <el-menu-item index="2" @click="monitorPool">查看督导池</el-menu-item>
                 <el-submenu index="3">
                     <template slot="title">督导转接</template>
-                    <el-menu-item index="3-1" @click="myAcceptCourse">已领取课程</el-menu-item>
+                    <el-menu-item index="3-1" @click="myAcceptTrans">已领取课程</el-menu-item>
                     <el-menu-item index="3-2" @click="myUntreatedTrans">未处理转接</el-menu-item>
                     <el-menu-item index="3-3" @click="myUntreatedTrans">我发起的转接</el-menu-item>
                 </el-submenu>
@@ -38,7 +38,7 @@
                     this.activeIndex = '2'
                     return
                 }
-                case 'myAcceptCourse': {
+                case 'myAcceptTrans': {
                     this.activeIndex = '3-1'
                     return
                 }
@@ -63,7 +63,7 @@
                         this.activeIndex = '2'
                         return
                     }
-                    case 'myAcceptCourse': {
+                    case 'myAcceptTrans': {
                         this.activeIndex = '3-1'
                         return
                     }
@@ -84,8 +84,8 @@
             monitorPool() {
                 this.$router.push('/index/monitor/monitorPool')
             },
-            myAcceptCourse() {
-                this.$router.push('/index/monitor/myAcceptCourse')
+            myAcceptTrans() {
+                this.$router.push('/index/monitor/myAcceptTrans')
             },
             myUntreatedTrans() {
                 this.$router.push('/index/monitor/myUntreatedTrans')
