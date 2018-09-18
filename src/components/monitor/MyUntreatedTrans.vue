@@ -11,7 +11,7 @@
 
 <script>
     export default {
-        name: "MonitorTrans",
+        name: "MyUntreatedTrans",
         data() {
             return {
                 loading: false,
@@ -20,7 +20,7 @@
         },
         created() {
             this.loading = true
-            this.$request.monitor.getSchedules('agree')
+            this.$request.monitor.getSchedules('untreated')
                 .then(res => {
                     this.transList = res.data
                 })

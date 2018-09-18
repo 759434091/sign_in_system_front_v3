@@ -67,8 +67,12 @@ export default new Router({
                             path: 'myAcceptCourse',
                             name: 'myAcceptCourse',
                             component: () => import('./components/monitor/MyAcceptCourse.vue')
+                        },
+                        {
+                            path: 'myUntreatedTrans',
+                            name: 'myUntreatedTrans',
+                            component: () => import('./components/monitor/MyUntreatedTrans.vue')
                         }
-
                     ],
                     component: () => import('./components/Monitor.vue')
                 },

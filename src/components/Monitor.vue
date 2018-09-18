@@ -8,8 +8,8 @@
                 <el-submenu index="3">
                     <template slot="title">督导转接</template>
                     <el-menu-item index="3-1" @click="myAcceptCourse">已领取课程</el-menu-item>
-                    <el-menu-item index="3-2" @click="departManage">未处理转接</el-menu-item>
-                    <el-menu-item index="3-3" @click="locationManage">我发起的转接</el-menu-item>
+                    <el-menu-item index="3-2" @click="myUntreatedTrans">未处理转接</el-menu-item>
+                    <el-menu-item index="3-3" @click="myUntreatedTrans">我发起的转接</el-menu-item>
                 </el-submenu>
             </el-menu>
         </el-aside>
@@ -25,21 +25,25 @@
         name: "Monitor",
         data() {
             return {
-                activeIndex: ""
+                activeIndex: ''
             }
         },
         created() {
             switch (this.$route.name) {
                 case 'monCourseTable': {
-                    this.activeIndex = "1"
+                    this.activeIndex = '1'
                     return
                 }
                 case 'monitorPool': {
-                    this.activeIndex = "2"
+                    this.activeIndex = '2'
                     return
                 }
                 case 'myAcceptCourse': {
-                    this.activeIndex = "3-1"
+                    this.activeIndex = '3-1'
+                    return
+                }
+                case 'myUntreatedTrans': {
+                    this.activeIndex = '3-2'
                     return
                 }
                 default: {
@@ -52,15 +56,19 @@
                 const name = to.name
                 switch (name) {
                     case 'tchCourseTable': {
-                        this.activeIndex = "1"
+                        this.activeIndex = '1'
                         return
                     }
                     case 'monitorPool': {
-                        this.activeIndex = "2"
+                        this.activeIndex = '2'
                         return
                     }
                     case 'myAcceptCourse': {
-                        this.activeIndex = "3-1"
+                        this.activeIndex = '3-1'
+                        return
+                    }
+                    case 'myUntreatedTrans': {
+                        this.activeIndex = '3-2'
                         return
                     }
                     default: {
@@ -78,6 +86,9 @@
             },
             myAcceptCourse() {
                 this.$router.push('/index/monitor/myAcceptCourse')
+            },
+            myUntreatedTrans() {
+                this.$router.push('/index/monitor/myUntreatedTrans')
             }
         }
     }

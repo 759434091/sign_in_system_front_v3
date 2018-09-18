@@ -1,5 +1,13 @@
 import axios from "./axiosConfig"
 
+async function getSchedules(smtStatus) {
+    return await axios.get('/schedules/monitor-trans', {
+        params: {
+            smtStatus
+        }
+    })
+}
+
 async function getCourseTable() {
     return await axios.get('/courses', {
         params: {
@@ -27,5 +35,6 @@ async function receiveCourse(scId) {
 export default {
     getCourseTable,
     getMonitorPool,
-    receiveCourse
+    receiveCourse,
+    getSchedules
 }
