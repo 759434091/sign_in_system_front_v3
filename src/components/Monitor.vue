@@ -5,6 +5,12 @@
                      active-text-color="#ffd04b" :default-active="activeIndex">
                 <el-menu-item index="1" @click="courseTable">督导课表</el-menu-item>
                 <el-menu-item index="2" @click="monitorPool">查看督导池</el-menu-item>
+                <el-submenu index="3">
+                    <template slot="title">督导转接</template>
+                    <el-menu-item index="3-1" @click="myAcceptCourse">已领取课程</el-menu-item>
+                    <el-menu-item index="3-2" @click="departManage">未处理转接</el-menu-item>
+                    <el-menu-item index="3-3" @click="locationManage">我发起的转接</el-menu-item>
+                </el-submenu>
             </el-menu>
         </el-aside>
         <el-main class="idx-main">
@@ -32,6 +38,10 @@
                     this.activeIndex = "2"
                     return
                 }
+                case 'myAcceptCourse': {
+                    this.activeIndex = "3-1"
+                    return
+                }
                 default: {
                     this.$router.push('/index/monitor/courseTable')
                 }
@@ -49,6 +59,10 @@
                         this.activeIndex = "2"
                         return
                     }
+                    case 'myAcceptCourse': {
+                        this.activeIndex = "3-1"
+                        return
+                    }
                     default: {
                         this.$router.push('/index/monitor/courseTable')
                     }
@@ -61,6 +75,9 @@
             },
             monitorPool() {
                 this.$router.push('/index/monitor/monitorPool')
+            },
+            myAcceptCourse() {
+                this.$router.push('/index/monitor/myAcceptCourse')
             }
         }
     }

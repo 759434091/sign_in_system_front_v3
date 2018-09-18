@@ -62,7 +62,13 @@ export default new Router({
                             path: 'monitorPool',
                             name: 'monitorPool',
                             component: () => import('./components/monitor/MonitorPool.vue')
+                        },
+                        {
+                            path: 'myAcceptCourse',
+                            name: 'myAcceptCourse',
+                            component: () => import('./components/monitor/MyAcceptCourse.vue')
                         }
+
                     ],
                     component: () => import('./components/Monitor.vue')
                 },
