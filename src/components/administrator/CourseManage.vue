@@ -143,7 +143,7 @@
                                 <el-dropdown-item @click.native="showCourse(scope.row)">
                                     课程信息
                                 </el-dropdown-item>
-                                <el-dropdown-item @click.native="showStudents(scope.row.sisJoinCourseList)">
+                                <el-dropdown-item @click.native="showStudents(scope.row.scId)">
                                     学生信息
                                 </el-dropdown-item>
                                 <el-dropdown-item @click.native="showSupervision(scope.row.scId)">
@@ -181,7 +181,7 @@
                       :course="courseDialog.course"
                       @closeDialog="closeCourse"/>
         <StudentDialog :dialogVisible="studentsDialog.dialogVisible"
-                       :userList="studentsDialog.userList"
+                       :scId="studentsDialog.scId"
                        @closeDialog="closeStudents"/>
         <SupervisionsDialog :dialogVisible="supervisionsDialog.dialogVisible"
                             :scId="supervisionsDialog.scId"
@@ -245,7 +245,7 @@
                 },
                 studentsDialog: {
                     dialogVisible: false,
-                    userList: []
+                    scId: ''
                 },
                 supervisionsDialog: {
                     dialogVisible: false,
@@ -336,9 +336,7 @@
                 return courseUtils.getCourseMonitorStatus(course)
             },
             getTeacherList(joinCourseList) {
-                return joinCourseList
-                    .filter(joinCourse => joinCourse.joinCourseType === 1)
-                    .map(joinCourse => joinCourse.sisUser)
+                return joinCourseList.map(joinCourse => joinCourse.sisUser)
             },
             showCourse(course) {
                 this.courseDialog.course = course
@@ -348,14 +346,12 @@
                 this.courseDialog.course = null
                 this.courseDialog.dialogVisible = false
             },
-            showStudents(joinCourseList) {
-                this.studentsDialog.userList = joinCourseList
-                    .filter(joinCourse => joinCourse.joinCourseType === 0)
-                    .map(joinCourse => joinCourse.sisUser)
+            showStudents(scId) {
+                this.studentsDialog.scId = scId;
                 this.studentsDialog.dialogVisible = true
             },
             closeStudents() {
-                this.studentsDialog.userList = []
+                this.studentsDialog.scId = null;
                 this.studentsDialog.dialogVisible = false
             },
             showSupervision(scId) {

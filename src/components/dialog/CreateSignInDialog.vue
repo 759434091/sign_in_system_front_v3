@@ -75,7 +75,7 @@
                 return courseUtils.getScheduleTimeString(schedule)
             },
             checkTime(schedule) {
-                judgeTimeUtils.isCourseTime(schedule, this.week, new Date())
+                return judgeTimeUtils.isCourseTime(schedule, this.week, new Date())
             },
             createSignIn() {
                 if ('' === this.ssId)
