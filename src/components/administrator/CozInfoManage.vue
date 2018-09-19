@@ -51,9 +51,9 @@
                 <el-table-column type="selection"
                                  width="55">
                 </el-table-column>
-                <el-table-column prop="scId" label="课程序号"/>
-                <el-table-column prop="scName" label="课程名字"/>
-                <el-table-column label="任课老师">
+                <el-table-column prop="scId" label="课程序号" width="110px"/>
+                <el-table-column prop="scName" label="课程名字" width="130px"/>
+                <el-table-column label="任课老师" width="130px">
                     <template slot-scope="scope">
                         <div v-for="val in getTeacherList(scope.row.sisJoinCourseList)"
                              :key="val.suId">

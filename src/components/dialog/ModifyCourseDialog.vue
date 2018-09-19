@@ -152,6 +152,13 @@
                             </el-form-item>
                         </el-col>
                     </el-row>
+                    <el-row type="flex" justify="start">
+                        <el-col :span="7">
+                            <el-form-item label="上课房间" label-width="80px">
+                                <el-input v-model="sch.ssRoom"></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
                 </el-form>
             </el-form-item>
             <el-form-item v-if="!disable">
@@ -309,6 +316,7 @@
                         ssStartTime: '',
                         ssEndTime: '',
                         ssDayOfWeek: '',
+                        ssRoom: '',
                         slId: '',
                         slName: ''
                     }]
@@ -344,6 +352,7 @@
                     schedule.ssEndTime = s.ssEndTime.toString()
                     schedule.ssDayOfWeek = s.ssDayOfWeek.toString()
                     schedule.ssYearEtTerm = s.ssYearEtTerm
+                    schedule.ssRoom = s.ssRoom
                     schedule.slId = s.slId.toString()
                     list.push(schedule)
                 })
@@ -423,6 +432,7 @@
                     ssEndTime: '',
                     ssDayOfWeek: '',
                     ssYearEtTerm: '',
+                    ssRoom: '',
                     slId: '',
                     slName: ''
                 })

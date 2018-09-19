@@ -102,8 +102,8 @@
                 <el-table-column type="selection"
                                  width="55">
                 </el-table-column>
-                <el-table-column prop="scId" label="课程序号"/>
-                <el-table-column prop="scName" label="课程名字"/>
+                <el-table-column prop="scId" label="课程序号" width="110px"/>
+                <el-table-column prop="scName" label="课程名字" width="110px"/>
                 <el-table-column label="任课老师" width="150px">
                     <template slot-scope="scope">
                         <div v-for="val in getTeacherList(scope.row.sisJoinCourseList)"
@@ -114,7 +114,7 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="上课时间" width="150px">
+                <el-table-column label="上课时间">
                     <template slot-scope="scope">
                         <div v-for="val in scope.row.sisScheduleList"
                              :key="val.ssId">
@@ -124,7 +124,7 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="督导状态">
+                <el-table-column label="督导状态" width="90px">
                     <template slot-scope="scope">
                         <span v-text="getCourseMonitorStatus(scope.row)"></span>
                     </template>
