@@ -4,13 +4,13 @@
             <el-menu class="idx-second-menu" background-color="#4b4b4b" text-color="#fff"
                      active-text-color="#ffd04b" :default-active="activeIndex">
                 <el-menu-item index="1" @click="courseTable">督导课表</el-menu-item>
-                <el-menu-item index="2" @click="monitorPool">查看督导池</el-menu-item><!--
+                <el-menu-item index="2" @click="monitorPool">查看督导池</el-menu-item>
                 <el-submenu index="3">
                     <template slot="title">督导转接</template>
-                    <el-menu-item index="3-1" @click="myAcceptTrans">已领取课程</el-menu-item>
+                    <el-menu-item index="3-1" @click="myAcceptTrans">已接受转接</el-menu-item>
                     <el-menu-item index="3-2" @click="myUntreatedTrans">未处理转接</el-menu-item>
-                    <el-menu-item index="3-3" @click="myUntreatedTrans">我发起的转接</el-menu-item>
-                </el-submenu>-->
+                    <el-menu-item index="3-3" @click="myApplyTrans">我发起的转接</el-menu-item>
+                </el-submenu>
             </el-menu>
         </el-aside>
         <el-main class="idx-main">
@@ -46,6 +46,10 @@
                     this.activeIndex = '3-2'
                     return
                 }
+                case 'myApplyTrans': {
+                    this.activeIndex = '3-3'
+                    return
+                }
                 default: {
                     this.$router.push('/index/monitor/courseTable')
                 }
@@ -71,6 +75,10 @@
                         this.activeIndex = '3-2'
                         return
                     }
+                    case 'myApplyTrans': {
+                        this.activeIndex = '3-3'
+                        return
+                    }
                     default: {
                         this.$router.push('/index/monitor/courseTable')
                     }
@@ -89,7 +97,10 @@
             },
             myUntreatedTrans() {
                 this.$router.push('/index/monitor/myUntreatedTrans')
-            }
+            },
+            myApplyTrans() {
+                this.$router.push('/index/monitor/myApplyTrans')
+            },
         }
     }
 </script>

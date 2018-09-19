@@ -24,17 +24,20 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="课程容量" prop="scMaxSize"></el-table-column>
-                <el-table-column label="实际人数" prop="scActSize"></el-table-column>
+                <el-table-column label="课程容量" prop="scMaxSize" width="80px"></el-table-column>
+                <el-table-column label="实际人数" prop="scActSize" width="80px"></el-table-column>
                 <el-table-column label="到勤率" prop="scAttRate" width="70">
                     <template slot-scope="scope">
                         <div v-text="null == scope.row.scAttRate ? '无' : scope.row.scAttRate"></div>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作">
+                <el-table-column label="操作" width="200px">
                     <template slot-scope="scope">
                         <el-button type="info" size="mini" @click="showSupervision(scope.row.scId)">
                             督导历史
+                        </el-button>
+                        <el-button size="mini" @click="showTransDialog(scope.row)">
+                            发起转接
                         </el-button>
                     </template>
                 </el-table-column>
@@ -43,16 +46,20 @@
         <SupervisionsDialog :dialogVisible="supervisionsDialog.dialogVisible"
                             :scId="supervisionsDialog.scId"
                             @closeDialog="closeSupervision"/>
+        <TransDialog :dialogVisible="transDialog.dialogVisible"
+                     :course="transDialog.course"
+                     @closeDialog="closeTransDialog"/>
     </el-container>
 </template>
 
 <script>
     import courseUtils from '@/util/courseUtils'
     import SupervisionsDialog from "../dialog/SupervisionsDialog";
+    import TransDialog from "../dialog/TransDialog";
 
     export default {
         name: "CourseTable",
-        components: {SupervisionsDialog},
+        components: {TransDialog, SupervisionsDialog},
         data() {
             return {
                 loading: false,
@@ -60,6 +67,10 @@
                 supervisionsDialog: {
                     dialogVisible: false,
                     scId: ''
+                },
+                transDialog: {
+                    dialogVisible: false,
+                    course: null
                 }
             }
         },
@@ -98,6 +109,18 @@
             closeSupervision() {
                 this.supervisionsDialog.dialogVisible = false
                 this.supervisionsDialog.scId = ''
+            },
+            showTransDialog(course) {
+                this.transDialog = {
+                    dialogVisible: true,
+                    course
+                }
+            },
+            closeTransDialog() {
+                this.transDialog = {
+                    dialogVisible: false,
+                    course: null
+                }
             }
         }
     }

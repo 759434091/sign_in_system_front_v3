@@ -32,9 +32,19 @@ async function receiveCourse(scId) {
     return await axios.post(`/courses/${scId}/monitor`)
 }
 
+async function applyTrans(ssId, monitorTrans) {
+    return await axios.post(`/schedules/${ssId}/monitor-trans`, monitorTrans)
+}
+
+async function modifyTransfer(ssId, monitorTrans) {
+    return await axios.put(`/schedules/${ssId}/monitor-trans`, monitorTrans)
+}
+
 export default {
     getCourseTable,
     getMonitorPool,
     receiveCourse,
-    getSchedules
+    getSchedules,
+    applyTrans,
+    modifyTransfer
 }
