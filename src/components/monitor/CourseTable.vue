@@ -2,9 +2,9 @@
     <el-container>
         <el-main>
             <el-table :data="courseList" v-loading="loading">
-                <el-table-column label="课程序号" prop="scId"></el-table-column>
-                <el-table-column label="课程名字" prop="scName"></el-table-column>
-                <el-table-column label="任课老师">
+                <el-table-column label="课程序号" prop="scId" width="110px"></el-table-column>
+                <el-table-column label="课程名字" prop="scName" width="130px"></el-table-column>
+                <el-table-column label="任课老师" width="120px">
                     <template slot-scope="scope">
                         <div v-for="val in getTeacherList(scope.row.sisJoinCourseList)"
                              :key="val.suId">

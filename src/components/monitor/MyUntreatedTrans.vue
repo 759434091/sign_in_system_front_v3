@@ -2,10 +2,10 @@
     <el-container>
         <el-main>
             <el-table v-loading="loading" :data="transList">
-                <el-table-column label="督导周" prop="smtWeek"></el-table-column>
-                <el-table-column label="课程序号" prop="sisSchedule.sisCourse.scId"></el-table-column>
-                <el-table-column label="课程名字" prop="sisSchedule.sisCourse.scName"></el-table-column>
-                <el-table-column label="任课老师">
+                <el-table-column label="督导周" prop="smtWeek" width="70px"></el-table-column>
+                <el-table-column label="课程序号" prop="sisSchedule.sisCourse.scId" width="110px"></el-table-column>
+                <el-table-column label="课程名字" prop="sisSchedule.sisCourse.scName" width="130px"></el-table-column>
+                <el-table-column label="任课老师" width="120px">
                     <template slot-scope="scope">
                         <div v-for="val in getTeacherList(scope.row.sisSchedule.sisCourse.sisJoinCourseList)"
                              :key="val.suId">
@@ -20,9 +20,9 @@
                         <span v-text="getScheduleTimeString(scope.row.sisSchedule)"></span>
                     </template>
                 </el-table-column>
-                <el-table-column label="课程容量" prop="sisSchedule.sisCourse.scMaxSize"></el-table-column>
-                <el-table-column label="实际人数" prop="sisSchedule.sisCourse.scActSize"></el-table-column>
-                <el-table-column label="到勤率" prop="sisSchedule.sisCourse.scAttRate" width="70">
+                <el-table-column label="课程容量" prop="sisSchedule.sisCourse.scMaxSize" width="90px"></el-table-column>
+                <el-table-column label="实际人数" prop="sisSchedule.sisCourse.scActSize" width="90px"></el-table-column>
+                <el-table-column label="到勤率" prop="sisSchedule.sisCourse.scAttRate" width="70px">
                     <template slot-scope="scope">
                         <div v-text="null == scope.row.sisSchedule.sisCourse.scAttRate ? '无' : scope.row.sisSchedule.sisCourse.scAttRate"></div>
                     </template>

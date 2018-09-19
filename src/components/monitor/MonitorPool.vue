@@ -7,9 +7,9 @@
                 <!--                <el-table-column type="selection"
                                                  width="55">
                                 </el-table-column>-->
-                <el-table-column prop="scId" label="课程序号"/>
-                <el-table-column prop="scName" label="课程名字"/>
-                <el-table-column label="任课老师">
+                <el-table-column prop="scId" label="课程序号" width="110px"/>
+                <el-table-column prop="scName" label="课程名字" width="130px"/>
+                <el-table-column label="任课老师" width="120px">
                     <template slot-scope="scope">
                         <div v-for="val in getTeacherList(scope.row.sisJoinCourseList)"
                              :key="val.suId">
@@ -29,7 +29,7 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="督导状态">
+                <el-table-column label="督导状态" width="80px">
                     <template slot-scope="scope">
                         <span v-text="getCourseMonitorStatus(scope.row)"></span>
                     </template>
@@ -38,7 +38,7 @@
                 <el-table-column label="实际人数" prop="scActSize" width="90px"></el-table-column>
                 <el-table-column label="到勤率" prop="scAttRate" width="70px">
                 </el-table-column>
-                <el-table-column label="操作">
+                <el-table-column label="操作" width="80px">
                     <template slot-scope="scope">
                         <el-button size="mini" type="primary" @click="receive(scope.row.scId)">
                             领取
