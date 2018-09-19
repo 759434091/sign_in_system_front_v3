@@ -209,6 +209,15 @@ async function addCourse(scId, course, scheduleList, departList) {
     return await axios.post(`/courses/${scId}`, formData)
 }
 
+async function getMonitorCourse(suId) {
+    return await axios.get('/courses', {
+        params: {
+            getType: 'monitor',
+            suId
+        }
+    })
+}
+
 export default {
     getCourse,
     getStudents,
@@ -237,5 +246,6 @@ export default {
     addDepartment,
     getJoinCourses,
     modifyJoinCourse,
-    addCourse
+    addCourse,
+    getMonitorCourse
 }

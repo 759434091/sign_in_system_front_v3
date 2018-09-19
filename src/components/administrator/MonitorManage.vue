@@ -36,6 +36,18 @@
                 <el-table-column prop="suId" label="学号"></el-table-column>
                 <el-table-column prop="suName" label="姓名"></el-table-column>
                 <el-table-column prop="suiLackNum" label="缺勤数"></el-table-column>
+                <el-table-column label="操作">
+                    <template slot-scope="scope">
+                        <el-dropdown>
+                            <el-button type="info" size="mini">
+                                更多信息<i class="el-icon-arrow-down el-icon--right"></i>
+                            </el-button>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item @click.native="showMonitorInfoDialog(scope.row.suId)">督导列表</el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
+                    </template>
+                </el-table-column>
             </el-table>
         </el-main>
         <el-footer>
@@ -52,15 +64,19 @@
         </el-footer>
         <GrantMonitorDialog :dialogVisible="grantMonitorDialog.dialogVisible"
                             @closeDialog="closeGrantMonitorDialog"/>
+        <MonitorInfoDialog :dialogVisible="monitorInfoDialog.dialogVisible" :suId="monitorInfoDialog.suId"
+                           @closeDialog="closeMonitorInfoDialog"/>
     </el-container>
 </template>
 
 <script>
     import GrantMonitorDialog from '@/components/dialog/GrantMonitorDialog'
+    import MonitorInfoDialog from "../dialog/MonitorInfoDialog";
 
     export default {
         name: "MonitorManage",
         components: {
+            MonitorInfoDialog,
             GrantMonitorDialog
         },
         data() {
@@ -80,6 +96,10 @@
                 },
                 grantMonitorDialog: {
                     dialogVisible: false
+                },
+                monitorInfoDialog: {
+                    dialogVisible: false,
+                    suId: ''
                 }
             }
         },
@@ -137,6 +157,18 @@
             closeGrantMonitorDialog() {
                 this.handleCurrentChange(this.pagination.currentPage)
                 this.grantMonitorDialog.dialogVisible = false
+            },
+            showMonitorInfoDialog(suId) {
+                this.monitorInfoDialog = {
+                    dialogVisible: true,
+                    suId
+                }
+            },
+            closeMonitorInfoDialog() {
+                this.monitorInfoDialog = {
+                    dialogVisible: false,
+                    suId: ''
+                }
             },
             batchRevokeMonitor() {
                 const suIdList = this.selectionList.map(user => user.suId)
