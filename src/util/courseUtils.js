@@ -9,7 +9,7 @@ function getCourseMonitorStatus(sisCourse) {
         return '未督导'
     if (null == sisCourse.suId)
         return '未领取'
-    return `督导中 ${sisCourse.monitor.suName} ${sisCourse.monitor.suId}`
+    return `督导中 ${sisCourse.monitor ? `${sisCourse.monitor.suName} ${sisCourse.monitor.suId}` : ''}`
 }
 
 export default {

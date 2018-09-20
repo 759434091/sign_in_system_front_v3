@@ -26,7 +26,7 @@
                 <span v-text="getCourseMonitorStatus(course)"></span>
             </el-form-item>
             <el-form-item label="督导人" v-if="null != course.suId">
-                <span v-text="`${course.monitor.suId} ${course.monitor.suName}`"></span>
+                <span v-text="`${course.monitor ? `${course.monitor.suName} ${course.monitor.suId}` : ''}`"></span>
             </el-form-item>
             <el-form-item label="实际人数">
                 <span v-text="course.scActSize"></span>

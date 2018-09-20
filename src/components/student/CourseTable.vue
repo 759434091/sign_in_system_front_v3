@@ -100,7 +100,7 @@
         data() {
             return {
                 dayMap: new Map([[1, 'mon'], [2, 'tue'], [3, 'wed'], [4, 'thu'], [5, 'fri'], [6, 'sat'], [7, 'sun']]),
-                joinCourseList: [],
+                courseList: [],
                 selectForm: {
                     yearEtTerm: '2017-2018-2',
                     week: '1'
@@ -130,7 +130,7 @@
             this.loading = true
             this.$request.student.getCourseTable()
                 .then(res => {
-                    this.joinCourseList = res.data.list;
+                    this.courseList = res.data.list;
                     this.reDraw()
                 })
                 .catch(err => {
@@ -157,7 +157,7 @@
                 for (let i = 0; i < 12; i++) {
                     tempTableData[i] = {period: i + 1, mon: '', tue: '', wed: '', thu: '', fri: '', sat: '', sun: ''}
                 }
-                const courseList = this.joinCourseList.map(joinCourse => joinCourse.sisCourse)
+                const courseList = this.courseList
                 for (let i = 0; i < courseList.length; i++) {
                     const course = courseList[i];
                     const scheduleList = course.sisScheduleList
