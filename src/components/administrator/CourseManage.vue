@@ -5,13 +5,8 @@
                 <el-row type="flex" justify="start" :gutter="0">
                     <el-col :span="5">
                         <el-form-item label="年级">
-                            <el-select placeholder="年级" v-model="selectForm.scGrade">
-                                <el-option label="不指定" value=""></el-option>
-                                <el-option label="2014" value="2014"></el-option>
-                                <el-option label="2015" value="2015"></el-option>
-                                <el-option label="2016" value="2016"></el-option>
-                                <el-option label="2017" value="2017"></el-option>
-                                <el-option label="2018" value="2018"></el-option>
+                            <el-select placeholder="年级" v-model="selectForm.scGrade" :disabled="disabled">
+                                <el-option v-for="val in lockGrade" :label="val" :value="val.toString()"></el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
@@ -68,7 +63,7 @@
                     <el-checkbox v-model="selectForm.remember"></el-checkbox>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="onSearch" :loading="loading" :disabled="loading">
+                    <el-button type="primary" @click="onSearch" :loading="loading" :disabled="loading && disabled">
                         搜索
                     </el-button>
                 </el-form-item>
@@ -216,6 +211,8 @@
         },
         data() {
             return {
+                disabled: true,
+                lockGrade: [2014, 2015, 2016, 2017, 2018],
                 screenWidth: document.documentElement.clientWidth,
                 loading: false,
                 selectForm: {
@@ -263,12 +260,24 @@
             }
         },
         created() {
-            this.loading = true
             const rememberForm = JSON.parse(localStorage.getItem('cozManagerForm'))
             if (rememberForm)
                 this.selectForm = rememberForm
-            this.loading = false
-            this.handleCurrentChange(1)
+            this.disabled = true
+            this.$request.administrator.getLockGrade()
+                .then(res => {
+                    const list = []
+                    if (res.data) {
+                        list.push(parseInt(res.data))
+                        this.lockGrade = list
+                        this.selectForm.scGrade = res.data.toString()
+                    }
+                    this.disabled = false
+                    this.handleCurrentChange(1)
+                })
+                .catch(() => {
+                    this.$message.error("获取权限错误, 请刷新或联系管理员");
+                })
         },
         methods: {
             remoteMethod(val) {

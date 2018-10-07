@@ -218,6 +218,11 @@ async function getMonitorCourse(suId) {
     })
 }
 
+async function getLockGrade() {
+    return await axios.get('/lock_grade')
+}
+
+
 export default {
     getCourse,
     getStudents,
@@ -247,5 +252,6 @@ export default {
     getJoinCourses,
     modifyJoinCourse,
     addCourse,
-    getMonitorCourse
+    getMonitorCourse,
+    getLockGrade
 }
