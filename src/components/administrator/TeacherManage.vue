@@ -2,10 +2,10 @@
     <el-container>
         <el-header>
             <el-form :inline="true" size="mini" :model="selectForm">
-                <el-form-item label="学号">
+                <el-form-item label="教工号">
                     <el-input @keyup.enter.native="onSearch" v-model="selectForm.suId"></el-input>
                 </el-form-item>
-                <el-form-item label="姓名">
+                <el-form-item label="名字">
                     <el-input @keyup.enter.native="onSearch" v-model="selectForm.suName"></el-input>
                 </el-form-item>
                 <el-form-item>
