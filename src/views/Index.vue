@@ -86,7 +86,7 @@
                     _this.timer = setInterval(() => _this.date = new Date(), 500);
                 }
 
-                if (this.$route.fullPath === '/index')
+                if (this.$route.fullPath === '/index' || this.$route.fullPath === '/index/')
                     _this.roleSwitchCase()
             })
         },

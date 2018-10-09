@@ -119,6 +119,7 @@
                                 this.authorities = user.suAuthorities.map(auth => auth.authority)
                             } else if (user.suAuthorities.length === 1) {
                                 this.$store.commit('setRole', user.suAuthorities[0].authority)
+                                localStorage.setItem('role', user.suAuthorities[0].authority)
                                 this.goIndex(res.data.data)
                             } else {
                                 this.$message.error("该账号无权限登录，请联系管理员")

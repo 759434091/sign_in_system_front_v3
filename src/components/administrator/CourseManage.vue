@@ -6,7 +6,7 @@
                     <el-col :span="5">
                         <el-form-item label="年级">
                             <el-select placeholder="年级" v-model="selectForm.scGrade" :disabled="disabled">
-                                <el-option v-for="val in lockGrade" :label="val" :value="val.toString()"></el-option>
+                                <el-option v-for="val in lockGrade" :key="`cm_${val}`" :label="val" :value="val.toString()"></el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
