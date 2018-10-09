@@ -3,8 +3,12 @@
         <el-aside class="idx-el-aside" width="280px">
             <el-menu class="idx-second-menu" background-color="#4b4b4b" text-color="#fff"
                      active-text-color="#ffd04b" :default-active="activeIndex">
-                <el-menu-item index="1" @click="courseManage">全校课程</el-menu-item>
-                <el-menu-item index="2" @click="monitorManage">督导员管理</el-menu-item>
+                <el-menu-item index="1" @click="courseStatistic">课程统计</el-menu-item>
+                <el-submenu index="2">
+                    <template slot="title">督导管理</template>
+                    <el-menu-item index="2-1" @click="courseManage">设置督导</el-menu-item>
+                    <el-menu-item index="2-2" @click="monitorManage">督导员管理</el-menu-item>
+                </el-submenu>
                 <el-menu-item index="3" @click="studentManage">学生历史</el-menu-item>
                 <el-menu-item index="4" @click="importService">上传信息</el-menu-item>
                 <el-submenu index="5">
@@ -32,12 +36,16 @@
         },
         created() {
             switch (this.$route.name) {
-                case 'courseManage': {
+                case 'courseStatistic': {
                     this.activeIndex = '1'
                     return
                 }
+                case 'courseManage': {
+                    this.activeIndex = '2-1'
+                    return
+                }
                 case 'monitorManage': {
-                    this.activeIndex = '2'
+                    this.activeIndex = '2-2'
                     return
                 }
                 case 'studentManage': {
@@ -61,7 +69,7 @@
                     return
                 }
                 default: {
-                    this.$router.push('/index/administrator/courseManage')
+                    this.$router.push('/index/administrator/courseStatistic')
                 }
             }
         },
@@ -69,12 +77,16 @@
             '$route'(to) {
                 const name = to.name
                 switch (name) {
-                    case 'courseManage': {
+                    case 'courseStatistic': {
                         this.activeIndex = '1'
                         return
                     }
+                    case 'courseManage': {
+                        this.activeIndex = '2-1'
+                        return
+                    }
                     case 'monitorManage': {
-                        this.activeIndex = '2'
+                        this.activeIndex = '2-2'
                         return
                     }
                     case 'studentManage': {
@@ -98,12 +110,15 @@
                         return
                     }
                     default: {
-                        this.$router.push('/index/administrator/courseManage')
+                        this.$router.push('/index/administrator/courseStatistic')
                     }
                 }
             }
         },
         methods: {
+            courseStatistic() {
+                this.$router.push('/index/administrator/courseStatistic')
+            },
             courseManage() {
                 this.$router.push('/index/administrator/courseManage')
             },

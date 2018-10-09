@@ -1,7 +1,7 @@
 <template>
     <el-container class="login-box-container">
         <el-row class="login-box-row" type="flex" justify="center">
-            <el-col class="login-box-col" :xl="5" :xs="12" :md="12" :sm="9" :span="12">
+            <el-col class="login-box-col" :xl="5" :xs="12" :md="8" :sm="9" :span="12">
                 <h1 class="login-box-brand">Happy Sign In</h1>
                 <el-form class="login-form" ref="loginForm" :model="loginForm" :rules="loginRules">
                     <el-form-item label="用户名/学号/教工号" prop="suId">

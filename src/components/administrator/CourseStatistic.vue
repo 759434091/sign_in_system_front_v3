@@ -51,36 +51,41 @@
                                       v-model="selectForm.sisUser.suName"></el-input>
                         </el-form-item>
                     </el-col>
-                    <el-form-item class="coz-manage-form-remember" label="记住">
-                        <el-checkbox @keyup.enter.native="onSearch" v-model="selectForm.remember"></el-checkbox>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="onSearch" :loading="loading" :disabled="loading && disabled">
-                            搜索
-                        </el-button>
-                    </el-form-item>
-                    <el-form-item label="丨">
-                        <el-dropdown>
-                            <el-button type="info">
-                                批量督导<i class="el-icon-arrow-down el-icon--right"></i>
-                            </el-button>
-                            <el-dropdown-menu slot="dropdown">
-                                <el-dropdown-item @click.native="batchSelectionSupervisions(true)">
-                                    发起督导（选中项）
-                                </el-dropdown-item>
-                                <el-dropdown-item @click.native="batchSelectionSupervisions(false)">
-                                    取消督导（选中项）
-                                </el-dropdown-item>
-                                <el-dropdown-item @click.native="batchSupervisions(true)" :divided="true">
-                                    发起督导（搜索条件）
-                                </el-dropdown-item>
-                                <el-dropdown-item @click.native="batchSupervisions(false)">
-                                    取消督导（搜索条件）
-                                </el-dropdown-item>
-                            </el-dropdown-menu>
-                        </el-dropdown>
-                    </el-form-item>
+                    <el-col :span="5">
+                        <el-switch v-model="selectForm.hasMonitor"
+                                   active-text="已领取督导"
+                                   inactive-text="未领取"></el-switch>
+                    </el-col>
                 </el-row>
+                <el-form-item class="coz-manage-form-remember" label="记住">
+                    <el-checkbox @keyup.enter.native="onSearch" v-model="selectForm.remember"></el-checkbox>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="onSearch" :loading="loading" :disabled="loading && disabled">
+                        搜索
+                    </el-button>
+                </el-form-item>
+                <el-form-item label="丨">
+                    <el-dropdown>
+                        <el-button type="info">
+                            批量督导<i class="el-icon-arrow-down el-icon--right"></i>
+                        </el-button>
+                        <el-dropdown-menu slot="dropdown">
+                            <el-dropdown-item @click.native="batchSelectionSupervisions(true)">
+                                发起督导（选中项）
+                            </el-dropdown-item>
+                            <el-dropdown-item @click.native="batchSelectionSupervisions(false)">
+                                取消督导（选中项）
+                            </el-dropdown-item>
+                            <el-dropdown-item @click.native="batchSupervisions(true)" :divided="true">
+                                发起督导（搜索条件）
+                            </el-dropdown-item>
+                            <el-dropdown-item @click.native="batchSupervisions(false)">
+                                取消督导（搜索条件）
+                            </el-dropdown-item>
+                        </el-dropdown-menu>
+                    </el-dropdown>
+                </el-form-item>
             </el-form>
         </el-header>
         <el-main>
@@ -192,7 +197,7 @@
     import HistorySignInDialog from "../dialog/HistorySignInDialog";
 
     export default {
-        name: "CourseManage",
+        name: "CourseStatistic",
         components: {HistorySignInDialog, CreateSignInDialog, SupervisionsDialog, StudentDialog, CourseDialog},
         mounted() {
             const _this = this
@@ -219,8 +224,8 @@
                         suId: '',
                         suName: ''
                     },
-                    needMonitor: false,
-                    hasMonitor: false,
+                    needMonitor: true,
+                    hasMonitor: true,
                     departmentList: []
                 },
                 pagination: {
@@ -253,7 +258,7 @@
             }
         },
         created() {
-            const rememberForm = JSON.parse(localStorage.getItem('cozManagerForm'))
+            const rememberForm = JSON.parse(localStorage.getItem('cozStatisticForm'))
             if (rememberForm)
                 this.selectForm = rememberForm
             this.disabled = true
@@ -295,9 +300,8 @@
             },
             onSearch() {
                 if (this.selectForm.remember)
-                    localStorage.setItem('cozManagerForm', JSON.stringify(this.selectForm))
-                this.selectForm.needMonitor = false
-                this.selectForm.hasMonitor = null
+                    localStorage.setItem('', JSON.stringify(this.selectForm))
+                this.selectForm.needMonitor = true
                 this.handleCurrentChange(1)
             },
             handleCurrentChange(page) {
