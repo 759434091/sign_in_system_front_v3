@@ -77,6 +77,17 @@ async function revokeMonitor(suId) {
     return await axios.delete(`/monitors/${suId}`)
 }
 
+async function getTeachers(page, pageSize, suId, suName) {
+    return await axios.get('/teachers', {
+        params: {
+            page,
+            pageSize,
+            suId: '' === suId ? null : suId,
+            suName: '' === suName ? null : suName,
+        }
+    })
+}
+
 async function getStudents(page, pageSize, suId, suName, orderByCozLackNum) {
     return await axios.get('/students', {
         params: {
@@ -222,6 +233,13 @@ async function getLockGrade() {
     return await axios.get('/lock_grade')
 }
 
+async function getTchCozTable(tchSuId) {
+    return await axios.get('/courses', {
+        getType: 'teacher',
+        tchSuId
+    })
+}
+
 
 export default {
     getCourse,
@@ -253,5 +271,7 @@ export default {
     modifyJoinCourse,
     addCourse,
     getMonitorCourse,
-    getLockGrade
+    getLockGrade,
+    getTeachers,
+    getTchCozTable
 }
