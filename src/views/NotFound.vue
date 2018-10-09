@@ -1,17 +1,17 @@
 <template>
     <el-container>
         <el-header>
-            <el-menu class="idx-menu" mode="horizontal" background-color="#545c64" text-color="#fff"
+            <el-menu class="nf-menu" mode="horizontal" background-color="#545c64" text-color="#fff"
                      active-text-color="#ffd04b">
-                <li class="idx-menu-brand">&emsp;Happy&nbsp;Sign&nbsp;In&emsp;</li>
+                <li class="nf-menu-brand">&emsp;Happy&nbsp;Sign&nbsp;In&emsp;</li>
             </el-menu>
         </el-header>
-        <el-container class="idx-second-container">
-            <el-main class="idx-main">
+        <el-container class="nf-second-container">
+            <el-main class="nf-main">
                 <el-card class="not-found-card">
                     <div slot="header" class="clearfix">
                         <span>NOT FOUND</span>
-                        <el-button @click="goIndex" style="float: right; padding: 0" type="text" plain="true"><i class="el-icon-d-arrow-left"></i>返回主页</el-button>
+                        <el-button @click="goIndex" style="float: right; padding: 0" type="text"><i class="el-icon-d-arrow-left"></i>返回主页</el-button>
                     </div>
                     <el-row>
                         <el-col>
@@ -41,22 +41,22 @@
 </script>
 
 <style>
-    .idx-second-container {
+    .nf-second-container {
         margin-top: 8px;
     }
 
-    .idx-el-aside {
+    .nf-el-aside {
         margin-left: 20px;
         background-color: #4b4b4b;
         border-bottom-left-radius: 5px;
         box-shadow: 0 4px 15px #888888;
     }
 
-    .idx-second-menu {
+    .nf-second-menu {
         height: calc(100vh - 24px - 60px);
     }
 
-    .idx-main {
+    .nf-main {
         display: flex;
         height: calc(100vh - 24px - 60px);
         margin-left: 20px;
@@ -68,13 +68,13 @@
         justify-content: center;
     }
 
-    .idx-menu {
+    .nf-menu {
         border-top-left-radius: 5px;
         border-top-right-radius: 5px;
         box-shadow: 3px 1px 15px #888888;
     }
 
-    .idx-menu-brand {
+    .nf-menu-brand {
         float: left;
         height: 60px;
         width: 240px;
@@ -89,7 +89,7 @@
         border-bottom-color: transparent;
     }
 
-    .idx-menu-brand:focus, .idx-menu-datetime:focus, .idx-menu-greeting:focus {
+    .nf-menu-brand:focus, .nf-menu-datetime:focus, .nf-menu-greeting:focus {
         outline: unset;
     }
 
@@ -103,7 +103,7 @@
     }
 
     @media screen and (max-width: 1440px) {
-        .idx-main {
+        .nf-main {
             color: #4b4b4b;
             height: calc(100vh - 24px - 60px);
             margin-right: 20px;
