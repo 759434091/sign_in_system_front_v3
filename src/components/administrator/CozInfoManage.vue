@@ -3,12 +3,12 @@
         <el-header height="auto">
             <el-form class="coz-manage-form" :inline="true" size="mini" :model="selectForm" @submit.native.prevent>
                 <el-form-item label="年级">
-                    <el-select placeholder="年级" v-model="selectForm.scGrade" :disabled="disabled">
+                    <el-select @keyup.enter.native="onSearch" placeholder="年级" v-model="selectForm.scGrade" :disabled="disabled">
                         <el-option v-for="val in lockGrade" :key="`cim_${val}`" :label="val" :value="val.toString()"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="学院">
-                    <el-select placeholder="学院" v-model="selectForm.sdId"
+                    <el-select @keyup.enter.native="onSearch" placeholder="学院" v-model="selectForm.sdId"
                                :filterable="true" :remote="true"
                                @focus="remoteMethod(selectForm.sdId)"
                                :remote-method="remoteMethod" :loading="selectForm.sdLoading">
@@ -22,10 +22,10 @@
                 </el-form-item>
                 <br v-if="screenWidth < 1200">
                 <el-form-item label="课程序号">
-                    <el-input v-model="selectForm.scId"></el-input>
+                    <el-input @keyup.enter.native="onSearch" v-model="selectForm.scId"></el-input>
                 </el-form-item>
                 <el-form-item label="课程名字">
-                    <el-input v-model="selectForm.scName"></el-input>
+                    <el-input @keyup.enter.native="onSearch" v-model="selectForm.scName"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="onSearch" :loading="loading" :disabled="loading && disabled">

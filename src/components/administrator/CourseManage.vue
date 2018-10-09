@@ -5,14 +5,14 @@
                 <el-row type="flex" justify="start" :gutter="0">
                     <el-col :span="5">
                         <el-form-item label="年级">
-                            <el-select placeholder="年级" v-model="selectForm.scGrade" :disabled="disabled">
+                            <el-select @keyup.enter.native="onSearch" placeholder="年级" v-model="selectForm.scGrade" :disabled="disabled">
                                 <el-option v-for="val in lockGrade" :key="`cm_${val}`" :label="val" :value="val.toString()"></el-option>
                             </el-select>
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="学院">
-                            <el-select placeholder="学院" v-model="selectForm.sdId"
+                            <el-select @keyup.enter.native="onSearch" placeholder="学院" v-model="selectForm.sdId"
                                        :filterable="true" :remote="true"
                                        @focus="remoteMethod(selectForm.sdId)"
                                        :remote-method="remoteMethod" :loading="selectForm.sdLoading">
@@ -27,24 +27,24 @@
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="课程序号">
-                            <el-input v-model="selectForm.scId"></el-input>
+                            <el-input @keyup.enter.native="onSearch" v-model="selectForm.scId"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="课程名字">
-                            <el-input v-model="selectForm.scName"></el-input>
+                            <el-input @keyup.enter.native="onSearch" v-model="selectForm.scName"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row type="flex">
                     <el-col :span="5">
                         <el-form-item label="督导人学号">
-                            <el-input :disabled="true" placeholder="暂未开放" v-model="selectForm.sisUser.suId"></el-input>
+                            <el-input @keyup.enter.native="onSearch" :disabled="true" placeholder="暂未开放" v-model="selectForm.sisUser.suId"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="5">
                         <el-form-item label="督导人名字">
-                            <el-input :disabled="true" placeholder="暂未开放"
+                            <el-input @keyup.enter.native="onSearch" :disabled="true" placeholder="暂未开放"
                                       v-model="selectForm.sisUser.suName"></el-input>
                         </el-form-item>
                     </el-col>
@@ -60,7 +60,7 @@
                     </el-col>
                 </el-row>
                 <el-form-item class="coz-manage-form-remember" label="记住">
-                    <el-checkbox v-model="selectForm.remember"></el-checkbox>
+                    <el-checkbox @keyup.enter.native="onSearch" v-model="selectForm.remember"></el-checkbox>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="onSearch" :loading="loading" :disabled="loading && disabled">
