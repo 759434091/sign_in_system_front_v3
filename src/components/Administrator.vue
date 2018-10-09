@@ -10,6 +10,7 @@
                     <el-menu-item index="2-2" @click="monitorManage">督导员管理</el-menu-item>
                 </el-submenu>
                 <el-menu-item index="3" @click="studentManage">学生历史</el-menu-item>
+                <el-menu-item index="6" @click="teacherManage">老师课程</el-menu-item>
                 <el-menu-item index="4" @click="importService">上传信息</el-menu-item>
                 <el-submenu index="5">
                     <template slot="title">系统管理</template>
@@ -50,6 +51,10 @@
                 }
                 case 'studentManage': {
                     this.activeIndex = '3'
+                    return
+                }
+                case 'teacherManage': {
+                    this.activeIndex = '6'
                     return
                 }
                 case 'importService': {
@@ -93,6 +98,10 @@
                         this.activeIndex = '3'
                         return
                     }
+                    case 'teacherManage': {
+                        this.activeIndex = '6'
+                        return
+                    }
                     case 'importService': {
                         this.activeIndex = '4'
                         return
@@ -124,6 +133,9 @@
             },
             monitorManage() {
                 this.$router.push('/index/administrator/monitorManage')
+            },
+            teacherManage() {
+                this.$router.push('/index/administrator/teacherManage')
             },
             studentManage() {
                 this.$router.push('/index/administrator/studentManage')

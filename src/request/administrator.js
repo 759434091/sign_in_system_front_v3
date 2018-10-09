@@ -235,8 +235,10 @@ async function getLockGrade() {
 
 async function getTchCozTable(tchSuId) {
     return await axios.get('/courses', {
-        getType: 'teacher',
-        tchSuId
+        params: {
+            getType: 'teacher',
+            tchSuId
+        }
     })
 }
 

@@ -3,10 +3,10 @@
         <el-header>
             <el-form :inline="true" size="mini" :model="selectForm">
                 <el-form-item label="学号">
-                    <el-input v-model="selectForm.suId"></el-input>
+                    <el-input @keyup.enter.native="onSearch" v-model="selectForm.suId"></el-input>
                 </el-form-item>
                 <el-form-item label="姓名">
-                    <el-input v-model="selectForm.suName"></el-input>
+                    <el-input @keyup.enter.native="onSearch" v-model="selectForm.suName"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="onSearch" :loading="loading" :disabled="loading">
@@ -22,7 +22,7 @@
                 <el-table-column label="操作">
                     <template slot-scope="scope">
                         <el-button type="info" size="mini" @click="showTchCozHistory(scope.row.suId)">
-                            查看详情
+                            查看课程历史
                         </el-button>
                     </template>
                 </el-table-column>
@@ -40,12 +40,18 @@
                     :total="pagination.total">
             </el-pagination>
         </el-footer>
+        <TchCozHistoryDialog :dialogVisible="tchCozHistoryDialog.dialogVisible"
+                             :suId="tchCozHistoryDialog.suId"
+                             @closeDialog="closeTchCozHistory"></TchCozHistoryDialog>
     </el-container>
 </template>
 
 <script>
+    import TchCozHistoryDialog from "../dialog/TchCozHistoryDialog";
+
     export default {
         name: "TeacherManage",
+        components: {TchCozHistoryDialog: TchCozHistoryDialog},
         data() {
             return {
                 loading: false,
@@ -59,6 +65,10 @@
                     total: 0,
                     size: 10
                 },
+                tchCozHistoryDialog: {
+                    dialogVisible: false,
+                    suId: ''
+                }
             }
         },
         created() {
@@ -66,7 +76,12 @@
         },
         methods: {
             showTchCozHistory(suId) {
-
+                this.tchCozHistoryDialog.dialogVisible = true;
+                this.tchCozHistoryDialog.suId = suId
+            },
+            closeTchCozHistory() {
+                this.tchCozHistoryDialog.dialogVisible = false;
+                this.tchCozHistoryDialog.suId = ''
             },
             handleSizeChange(size) {
                 this.pagination.size = size

@@ -107,6 +107,11 @@ export default new Router({
                             component: () => import('./components/administrator/StudentManage.vue')
                         },
                         {
+                            path: 'teacherManage',
+                            name: 'teacherManage',
+                            component: () => import('./components/administrator/TeacherManage.vue')
+                        },
+                        {
                             path: 'importService',
                             name: 'importService',
                             component: () => import('./components/administrator/ImportService.vue')
