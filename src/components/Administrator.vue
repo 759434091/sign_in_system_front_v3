@@ -21,8 +21,10 @@
             </el-menu>
         </el-aside>
         <el-main class="idx-main">
-            <router-view>
-            </router-view>
+            <transition name="el-fade-in" mode="out-in">
+                <router-view>
+                </router-view>
+            </transition>
         </el-main>
     </el-container>
 </template>

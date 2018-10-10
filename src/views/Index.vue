@@ -17,8 +17,10 @@
                 </el-submenu>
             </el-menu>
         </el-header>
-        <router-view>
-        </router-view>
+        <transition name="el-fade-in" mode="out-in">
+            <router-view>
+            </router-view>
+        </transition>
         <ContactDialog :visible="contactDialog.visible" @closeDialog="closeContactDialog"/>
     </el-container>
 </template>
