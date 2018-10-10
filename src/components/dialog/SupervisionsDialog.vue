@@ -59,7 +59,11 @@
         watch: {
             ssId() {
                 if ('' === this.ssId) {
-                    this.sisSupervisionList = null
+                    const list = []
+                    this.scheduleList.forEach(s => {
+                        list.push(...s.sisSupervisionList)
+                    })
+                    this.sisSupervisionList = list
                     return
                 }
 
@@ -102,6 +106,10 @@
             },
             getAttRate(ssvActualNum) {
                 return `${(Math.round((ssvActualNum / this.course.scActSize) * 10000) / 100).toFixed(2) + '%'}`
+            },
+            getTitle() {
+                if (null == this.course) return '课程信息'
+                return `${this.course.scName} ${this.course.scId}`
             }
         }
     }

@@ -17,7 +17,7 @@
         </el-header>
         <el-main>
             <el-table v-loading="loading" :data="teacherList">
-                <el-table-column label="学号" prop="suId"></el-table-column>
+                <!--<el-table-column label="学号" prop="suId"></el-table-column>-->
                 <el-table-column label="姓名" prop="suName"></el-table-column>
                 <el-table-column label="操作">
                     <template slot-scope="scope">

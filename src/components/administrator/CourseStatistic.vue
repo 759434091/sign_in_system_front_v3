@@ -61,7 +61,7 @@
                     <el-checkbox @keyup.enter.native="onSearch" v-model="selectForm.remember"></el-checkbox>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="onSearch" :loading="loading" :disabled="loading && disabled">
+                    <el-button type="primary" @click="onSearch" :loading="loading || disabled" :disabled="loading || disabled">
                         搜索
                     </el-button>
                 </el-form-item>
@@ -89,7 +89,7 @@
             </el-form>
         </el-header>
         <el-main>
-            <el-table v-loading="loading"
+            <el-table v-loading="loading || disabled"
                       :data="courseList"
                       @selection-change="handleSelectionChange">
                 <el-table-column type="selection"
@@ -101,7 +101,7 @@
                     <template slot-scope="scope">
                         <div v-for="val in getTeacherList(scope.row.sisJoinCourseList)"
                              :key="val.suId">
-                            <span v-text="`${val.suName} ${val.suId}`">
+                            <span v-text="`${val.suName}`">
                                 <br>
                             </span>
                         </div>

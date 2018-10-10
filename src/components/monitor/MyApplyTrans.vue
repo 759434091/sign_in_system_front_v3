@@ -9,7 +9,7 @@
                     <template slot-scope="scope">
                         <div v-for="val in getTeacherList(scope.row.sisSchedule.sisCourse.sisJoinCourseList)"
                              :key="val.suId">
-                            <span v-text="`${val.suName} ${val.suId}`">
+                            <span v-text="`${val.suName}`">
                                 <br>
                             </span>
                         </div>

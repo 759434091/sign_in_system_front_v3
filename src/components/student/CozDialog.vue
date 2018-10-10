@@ -17,7 +17,7 @@
                     <el-form-item label="任课老师">
                         <div v-for="val in teacherList"
                              :key="val.suId">
-                            <span v-text="`${val.suName} ${val.suId}`"></span>
+                            <span v-text="`${val.suName}`"></span>
                             <br>
                         </div>
                     </el-form-item>

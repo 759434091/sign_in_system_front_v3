@@ -7,7 +7,7 @@
                 <el-form size="mini" :inline="true" :model="form">
                     <el-form-item label="督导课">
                         <el-select v-model="form.scId" @change="getSuvSchList">
-                            <el-option label="未选择" value=""></el-option>
+                            <el-option label="请先选择" value=""></el-option>
                             <el-option v-for="val in courseList"
                                        :key="`mid_${val.scId}`"
                                        :label="`${val.scName} ${val.scId}`"
@@ -16,7 +16,7 @@
                     </el-form-item>
                     <el-form-item label="上课时间">
                         <el-select v-model="form.ssId" :loading="loading" @change="getSupervisionList">
-                            <el-option label="未选择" value=""></el-option>
+                            <el-option label="请先选择" value=""></el-option>
                             <el-option v-for="val in getSchedule()"
                                        :key="`mid_${val.ssId}`"
                                        :label="getScheduleTimeString(val)"

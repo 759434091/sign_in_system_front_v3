@@ -14,7 +14,7 @@
             </el-form-item>
             <el-form-item label="任课老师">
                 <span v-for="val in getTeacherList(course.sisJoinCourseList)"
-                      :key="`cd_${val.suId}`" v-text="`${val.suName} ${val.suId}`">
+                      :key="`cd_${val.suId}`" v-text="`${val.suName}`">
                 </span>
             </el-form-item>
             <el-form-item label="上课时间">
