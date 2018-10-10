@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="课程信息"
+    <el-dialog :title="getTitle()"
                :visible="dialogVisible"
                :before-close="closeDialog">
         <el-container>
@@ -109,7 +109,12 @@
             },
             getTitle() {
                 if (null == this.course) return '课程信息'
-                return `${this.course.scName} ${this.course.scId}`
+                let tchStr = ''
+                this.course.sisJoinCourseList
+                    .map(joinCourse => joinCourse.sisUser)
+                    .forEach(t => tchStr += t.suName + ' ')
+
+                return `${this.course.scName} ${this.course.scId} ${tchStr}`
             }
         }
     }

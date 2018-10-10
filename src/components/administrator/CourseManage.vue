@@ -133,10 +133,7 @@
                                 <el-dropdown-item @click.native="showStudents(scope.row.scId)">
                                     学生信息
                                 </el-dropdown-item>
-                                <el-dropdown-item @click.native="showSupervision(scope.row.scId)">
-                                    历史督导
-                                </el-dropdown-item>
-                                <el-dropdown-item @click.native="showHistorySignIn(scope.row.scId)">
+                                <el-dropdown-item @click.native="showHistorySignIn(scope.row)">
                                     历史签到
                                 </el-dropdown-item>
                                 <el-dropdown-item
@@ -170,11 +167,8 @@
         <StudentDialog :dialogVisible="studentsDialog.dialogVisible"
                        :scId="studentsDialog.scId"
                        @closeDialog="closeStudents"/>
-        <SupervisionsDialog :dialogVisible="supervisionsDialog.dialogVisible"
-                            :scId="supervisionsDialog.scId"
-                            @closeDialog="closeSupervision"/>
         <HistorySignInDialog :dialogVisible="historySignInDialog.dialogVisible"
-                             :scId="historySignInDialog.scId"
+                             :course="historySignInDialog.course"
                              @closeDialog="closeHistorySignIn"/>
         <CreateSignInDialog :dialogVisible="createSignInDialog.dialogVisible"
                             :course="createSignInDialog.course"
@@ -365,12 +359,12 @@
                 this.supervisionsDialog.scId = ''
                 this.supervisionsDialog.dialogVisible = false
             },
-            showHistorySignIn(scId) {
-                this.historySignInDialog.scId = scId
+            showHistorySignIn(course) {
+                this.historySignInDialog.course = course
                 this.historySignInDialog.dialogVisible = true
             },
             closeHistorySignIn() {
-                this.historySignInDialog.scId = ''
+                this.historySignInDialog.course = null
                 this.historySignInDialog.dialogVisible = false
             },
             showCreateSignIn(course) {

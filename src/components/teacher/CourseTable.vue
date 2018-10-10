@@ -49,7 +49,7 @@
                                 <el-dropdown-item @click.native="showStudents(scope.row.scId)">
                                     学生信息
                                 </el-dropdown-item>
-                                <el-dropdown-item @click.native="showSupervision(scope.row.scId)">
+                                <el-dropdown-item @click.native="showSupervision(scope.row)">
                                     历史督导
                                 </el-dropdown-item>
                                 <el-dropdown-item @click.native="showCreateSignIn(scope.row)" :divided="true">
@@ -68,7 +68,7 @@
                        :scId="studentsDialog.scId"
                        @closeDialog="closeStudents"/>
         <SupervisionsDialog :dialogVisible="supervisionsDialog.dialogVisible"
-                            :scId="supervisionsDialog.scId"
+                            :course="supervisionsDialog.course"
                             @closeDialog="closeSupervision"/>
         <CreateSignInDialog :dialogVisible="createSignInDialog.dialogVisible"
                             :course="createSignInDialog.course"
@@ -98,7 +98,7 @@
                 },
                 supervisionsDialog: {
                     dialogVisible: false,
-                    scId: ''
+                    course: null
                 },
                 createSignInDialog: {
                     dialogVisible: false,
@@ -171,12 +171,12 @@
                 this.studentsDialog.scId = ''
                 this.studentsDialog.dialogVisible = false
             },
-            showSupervision(scId) {
-                this.supervisionsDialog.scId = scId
+            showSupervision(course) {
+                this.supervisionsDialog.course = course
                 this.supervisionsDialog.dialogVisible = true
             },
             closeSupervision() {
-                this.supervisionsDialog.scId = ''
+                this.supervisionsDialog.course = null
                 this.supervisionsDialog.dialogVisible = false
             },
         }

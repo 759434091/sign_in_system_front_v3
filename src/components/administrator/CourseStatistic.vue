@@ -145,7 +145,7 @@
                                 <el-dropdown-item @click.native="showSupervision(scope.row)">
                                     历史督导
                                 </el-dropdown-item>
-                                <el-dropdown-item @click.native="showHistorySignIn(scope.row.scId)">
+                                <el-dropdown-item @click.native="showHistorySignIn(scope.row)">
                                     历史签到
                                 </el-dropdown-item>
                                 <el-dropdown-item
@@ -183,7 +183,7 @@
                             :course="supervisionsDialog.course"
                             @closeDialog="closeSupervision"/>
         <HistorySignInDialog :dialogVisible="historySignInDialog.dialogVisible"
-                             :scId="historySignInDialog.scId"
+                             :course="historySignInDialog.course"
                              @closeDialog="closeHistorySignIn"/>
         <CreateSignInDialog :dialogVisible="createSignInDialog.dialogVisible"
                             :course="createSignInDialog.course"
@@ -373,12 +373,12 @@
                 this.supervisionsDialog.course = null
                 this.supervisionsDialog.dialogVisible = false
             },
-            showHistorySignIn(scId) {
-                this.historySignInDialog.scId = scId
+            showHistorySignIn(course) {
+                this.historySignInDialog.course = course
                 this.historySignInDialog.dialogVisible = true
             },
             closeHistorySignIn() {
-                this.historySignInDialog.scId = ''
+                this.historySignInDialog.course = null
                 this.historySignInDialog.dialogVisible = false
             },
             showCreateSignIn(course) {

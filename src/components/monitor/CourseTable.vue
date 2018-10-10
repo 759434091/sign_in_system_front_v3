@@ -33,7 +33,7 @@
                 </el-table-column>
                 <el-table-column label="操作" width="200px">
                     <template slot-scope="scope">
-                        <el-button type="info" size="mini" @click="showSupervision(scope.row.scId)">
+                        <el-button type="info" size="mini" @click="showSupervision(scope.row)">
                             督导历史
                         </el-button>
                         <el-button size="mini" @click="showTransDialog(scope.row)">
@@ -44,7 +44,7 @@
             </el-table>
         </el-main>
         <SupervisionsDialog :dialogVisible="supervisionsDialog.dialogVisible"
-                            :scId="supervisionsDialog.scId"
+                            :course="supervisionsDialog.course"
                             @closeDialog="closeSupervision"/>
         <TransDialog :dialogVisible="transDialog.dialogVisible"
                      :course="transDialog.course"
@@ -94,9 +94,9 @@
                 })
         },
         methods: {
-            showSupervision(scId) {
+            showSupervision(course) {
                 this.supervisionsDialog.dialogVisible = true
-                this.supervisionsDialog.scId = scId
+                this.supervisionsDialog.course = course
             },
             getTeacherList(joinCourseList) {
                 return joinCourseList
@@ -108,7 +108,7 @@
             },
             closeSupervision() {
                 this.supervisionsDialog.dialogVisible = false
-                this.supervisionsDialog.scId = ''
+                this.supervisionsDialog.course = null
             },
             showTransDialog(course) {
                 this.transDialog = {

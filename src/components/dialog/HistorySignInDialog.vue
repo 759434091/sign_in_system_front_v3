@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="课程信息"
+    <el-dialog :title="getTitle()"
                :visible="dialogVisible"
                :before-close="closeDialog">
         <el-container>
@@ -49,7 +49,7 @@
     export default {
         name: "HistorySignInDialog",
         props: {
-            scId: String,
+            course: Object,
             dialogVisible: Boolean
         },
         data() {
@@ -62,14 +62,12 @@
             }
         },
         watch: {
-            scId() {
-                if ('' === this.scId) {
-                    return
-                }
+            course: function (course) {
+                if ('' === course.scId) return
 
                 this.loading = true
                 this.$request.administrator
-                    .getSignIns(this.scId)
+                    .getSignIns(course.scId)
                     .then(res => {
                         this.scheduleList = res.data.sisScheduleList
                         this.scheduleList.forEach(s => s.ssId = s.ssId.toString())
@@ -142,6 +140,15 @@
                 if (null === sisSignIn)
                     return
                 this.tableData = sisSignIn.sisSignInDetailList
+            },
+            getTitle() {
+                if (null == this.course) return '历史签到'
+                let tchStr = ''
+                this.course.sisJoinCourseList
+                    .map(joinCourse => joinCourse.sisUser)
+                    .forEach(t => tchStr += t.suName + ' ')
+
+                return `${this.course.scName} ${this.course.scId} ${tchStr}`
             }
         }
     }

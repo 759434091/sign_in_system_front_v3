@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="发起签到"
+    <el-dialog :title="getTitle()"
                width="500px"
                :close-on-click-modal="false"
                :close-on-press-escape="false"
@@ -200,6 +200,15 @@
                 this.modifyScheduleLocationDialog.dialogVisible = false
                 this.modifyScheduleLocationDialog.schedule = null
                 this.closeDialog()
+            },
+            getTitle() {
+                if (null == this.course) return '发起签到'
+                let tchStr = ''
+                this.course.sisJoinCourseList
+                    .map(joinCourse => joinCourse.sisUser)
+                    .forEach(t => tchStr += t.suName + ' ')
+
+                return `发起签到 ${this.course.scName} ${this.course.scId} ${tchStr}`
             }
         }
     }
