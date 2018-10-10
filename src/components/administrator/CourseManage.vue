@@ -117,9 +117,8 @@
                         <span v-text="getCourseMonitorStatus(scope.row)"></span>
                     </template>
                 </el-table-column>
-                <el-table-column label="课程容量" prop="scMaxSize" width="80px"></el-table-column>
-                <el-table-column label="实际人数" prop="scActSize" width="80px"></el-table-column>
-                <el-table-column label="到勤率" prop="scAttRate" width="70px"></el-table-column>
+                <el-table-column label="教室容量" prop="scMaxSize" width="80px"></el-table-column>
+                <el-table-column label="课程人数" prop="scActSize" width="80px"></el-table-column>
                 <el-table-column label="操作" width="120px">
                     <template slot-scope="scope">
                         <el-dropdown>

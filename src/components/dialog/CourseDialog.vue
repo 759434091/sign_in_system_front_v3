@@ -28,10 +28,10 @@
             <el-form-item label="督导人" v-if="null != course.suId">
                 <span v-text="`${course.monitor ? `${course.monitor.suName} ${course.monitor.suId}` : ''}`"></span>
             </el-form-item>
-            <el-form-item label="实际人数">
+            <el-form-item label="课程人数">
                 <span v-text="course.scActSize"></span>
             </el-form-item>
-            <el-form-item label="理论人数">
+            <el-form-item label="教室容量">
                 <span v-text="course.scMaxSize"></span>
             </el-form-item>
             <el-form-item label="到勤率">

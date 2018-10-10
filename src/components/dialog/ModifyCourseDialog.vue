@@ -55,11 +55,11 @@
             <el-form-item label="课程名字" prop="scName">
                 <el-input v-model="courseForm.scName" placeholder="请输入课程名字"></el-input>
             </el-form-item>
-            <el-form-item label="课程容量" prop="scMaxSize">
-                <el-input v-model="courseForm.scMaxSize" placeholder="请输入课程容量"></el-input>
+            <el-form-item label="教室容量" prop="scMaxSize">
+                <el-input v-model="courseForm.scMaxSize" placeholder="请输入教室容量"></el-input>
             </el-form-item>
-            <el-form-item label="实际人数" prop="scActSize">
-                <el-input v-model="courseForm.scActSize" placeholder="请输入实际人数"></el-input>
+            <el-form-item label="课程人数" prop="scActSize">
+                <el-input v-model="courseForm.scActSize" placeholder="请输入课程人数"></el-input>
             </el-form-item>
             <el-form-item label="需要督导">
                 <el-switch v-model="courseForm.scNeedMonitor"></el-switch>

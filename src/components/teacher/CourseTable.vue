@@ -29,8 +29,8 @@
                         <span v-text="getCourseMonitorStatus(scope.row)"></span>
                     </template>
                 </el-table-column>
-                <el-table-column label="课程容量" prop="scMaxSize"></el-table-column>
-                <el-table-column label="实际人数" prop="scActSize"></el-table-column>
+                <el-table-column label="教室容量" prop="scMaxSize"></el-table-column>
+                <el-table-column label="课程人数" prop="scActSize"></el-table-column>
                 <el-table-column label="到勤率" prop="scAttRate" width="70">
                     <template slot-scope="scope">
                         <div v-text="null == scope.row.scAttRate ? '无' : scope.row.scAttRate"></div>
