@@ -55,7 +55,7 @@
                         <el-checkbox @keyup.enter.native="onSearch" v-model="selectForm.remember"></el-checkbox>
                     </el-form-item>
                     <el-form-item>
-                        <el-button type="primary" @click="onSearch" :loading="loading" :disabled="loading && disabled">
+                        <el-button type="primary" @click="onSearch" :loading="loading || disabled" :disabled="loading || disabled">
                             搜索
                         </el-button>
                     </el-form-item>
@@ -84,7 +84,7 @@
             </el-form>
         </el-header>
         <el-main>
-            <el-table v-loading="loading"
+            <el-table v-loading="loading || disabled"
                       :data="courseList"
                       @selection-change="handleSelectionChange">
                 <el-table-column type="selection"
