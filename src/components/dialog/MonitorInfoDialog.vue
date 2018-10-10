@@ -23,6 +23,9 @@
                                        :value="val.ssId.toString()"></el-option>
                         </el-select>
                     </el-form-item>
+                    <el-form-item label="应到人数">
+                        <span v-text="getActSize()"></span>
+                    </el-form-item>
                 </el-form>
             </el-header>
             <el-main>
@@ -141,11 +144,18 @@
                     .find(schedule => schedule.ssId === ssId)
                     .sisSupervisionList
             },
+            getActSize() {
+                if ('' === this.form.scId) return ''
+                const course = this.courseList.find(c => c.scId === this.form.scId)
+                if (null == course)
+                    return ''
+                return `${course.scActSize} 人`
+            },
             getAttRate(ssvActualNum) {
                 const course = this.courseList.find(c => c.scId === this.form.scId)
                 if (null == course)
                     return '无'
-                return ssvActualNum / course.scActSize
+                return `${(Math.round((ssvActualNum / course.scActSize) * 10000) / 100).toFixed(2) + '%'}`
             }
         }
     }

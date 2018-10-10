@@ -4,7 +4,7 @@
                :before-close="closeDialog">
         <el-container>
             <el-header>
-                <el-form :inline="true">
+                <el-form :inline="true" size="mini">
                     <el-form-item label="上课时间">
                         <el-select placeholder="上课时间" v-model="ssId">
                             <el-option label="未选择" value="">
@@ -15,6 +15,9 @@
                                        :value="val.ssId">
                             </el-option>
                         </el-select>
+                    </el-form-item>
+                    <el-form-item label="应到人数">
+                        <span v-text="null == this.course ? '' : `${this.course.scActSize} 人`"></span>
                     </el-form-item>
                 </el-form>
             </el-header>
@@ -98,7 +101,7 @@
                 return courseUtils.getScheduleTimeString(schedule)
             },
             getAttRate(ssvActualNum) {
-                return `${(Math.round((ssvActualNum / this.course.scActSize) * 10000)/100).toFixed(2) + '%'}`
+                return `${(Math.round((ssvActualNum / this.course.scActSize) * 10000) / 100).toFixed(2) + '%'}`
             }
         }
     }
