@@ -2,9 +2,9 @@
     <el-container>
         <el-main>
             <el-table :data="courseList">
-                <el-table-column prop="scId" label="课程序号"/>
-                <el-table-column prop="scName" label="课程名字"/>
-                <el-table-column label="任课老师">
+                <el-table-column prop="scId" label="课程序号" width="110px"/>
+                <el-table-column prop="scName" label="课程名字" width="110px"/>
+                <el-table-column label="任课老师" width="150px">
                     <template slot-scope="scope">
                         <div v-for="val in getTeacherList(scope.row.sisJoinCourseList)"
                              :key="val.suId">
@@ -24,19 +24,19 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="督导状态" width="80">
+                <el-table-column label="督导状态" width="100px">
                     <template slot-scope="scope">
                         <span v-text="getCourseMonitorStatus(scope.row)"></span>
                     </template>
                 </el-table-column>
-                <el-table-column label="教室容量" prop="scMaxSize"></el-table-column>
-                <el-table-column label="课程人数" prop="scActSize"></el-table-column>
-                <el-table-column label="到勤率" prop="scAttRate" width="70">
+                <el-table-column label="教室容量" prop="scMaxSize" width="80px"></el-table-column>
+                <el-table-column label="课程人数" prop="scActSize" width="80px"></el-table-column>
+                <el-table-column label="总到勤率" prop="scAttRate" width="90px">
                     <template slot-scope="scope">
-                        <div v-text="null == scope.row.scAttRate ? '无' : scope.row.scAttRate"></div>
+                        <div v-text="null == scope.row.scAttRate ? '无' : `${(Math.round(scope.row.scAttRate * 10000)/100).toFixed(2) + '%'}`"></div>
                     </template>
                 </el-table-column>
-                <el-table-column label="操作">
+                <el-table-column label="操作" width="120px">
                     <template slot-scope="scope">
                         <el-dropdown>
                             <el-button type="primary" size="mini">

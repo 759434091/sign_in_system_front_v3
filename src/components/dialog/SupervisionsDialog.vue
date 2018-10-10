@@ -21,7 +21,12 @@
             <el-main>
                 <el-table :data="sisSupervisionList" v-loading="loading">
                     <el-table-column label="督导周" prop="ssvWeek"></el-table-column>
-                    <el-table-column label="实际人数" prop="ssvActualNum"></el-table-column>
+                    <el-table-column label="本次到勤率">
+                        <template slot-scope="scope">
+                            <span v-text="getAttRate(scope.row.ssvActualNum)"></span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="实到人数" prop="ssvActualNum"></el-table-column>
                     <el-table-column label="玩手机人数" prop="ssvMobileNum"></el-table-column>
                     <el-table-column label="睡觉人数" prop="ssvSleepNum"></el-table-column>
                     <el-table-column label="督导备注" prop="ssvRecInfo"></el-table-column>
@@ -37,7 +42,7 @@
     export default {
         name: "SupervisionsDialog",
         props: {
-            scId: String,
+            course: Object,
             dialogVisible: Boolean
         },
         data() {
@@ -59,12 +64,12 @@
                     .find(schedule => schedule.ssId === this.ssId)
                     .sisSupervisionList
             },
-            scId() {
-                if ('' === this.scId) return
+            course() {
+                if (null == this.course) return
 
                 this.loading = true
                 this.$request.administrator
-                    .getSupervision(this.scId)
+                    .getSupervision(this.course.scId)
                     .then(res => {
                         this.scheduleList = res.data
                         this.scheduleList.forEach(s => s.ssId = s.ssId.toString())
@@ -91,6 +96,9 @@
             },
             getScheduleTimeString(schedule) {
                 return courseUtils.getScheduleTimeString(schedule)
+            },
+            getAttRate(ssvActualNum) {
+                return `${(Math.round((ssvActualNum / this.course.scActSize) * 10000)/100).toFixed(2) + '%'}`
             }
         }
     }

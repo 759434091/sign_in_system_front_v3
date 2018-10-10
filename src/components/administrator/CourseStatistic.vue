@@ -117,13 +117,17 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="督导状态" width="90px">
+                <el-table-column label="督导状态" width="120px">
                     <template slot-scope="scope">
                         <span v-text="getCourseMonitorStatus(scope.row)"></span>
                     </template>
                 </el-table-column>
                 <el-table-column label="课程人数" prop="scActSize" width="80px"></el-table-column>
-                <el-table-column label="总到勤率" prop="scAttRate" width="70px"></el-table-column>
+                <el-table-column label="总到勤率" prop="scAttRate" width="90px">
+                    <template slot-scope="scope">
+                        <span v-text="`${(Math.round(scope.row.scAttRate * 10000)/100).toFixed(2) + '%'}`"></span>
+                    </template>
+                </el-table-column>
                 <el-table-column label="操作" width="120px">
                     <template slot-scope="scope">
                         <el-dropdown>
@@ -138,7 +142,7 @@
                                 <el-dropdown-item @click.native="showStudents(scope.row.scId)">
                                     学生信息
                                 </el-dropdown-item>
-                                <el-dropdown-item @click.native="showSupervision(scope.row.scId)">
+                                <el-dropdown-item @click.native="showSupervision(scope.row)">
                                     历史督导
                                 </el-dropdown-item>
                                 <el-dropdown-item @click.native="showHistorySignIn(scope.row.scId)">
@@ -176,7 +180,7 @@
                        :scId="studentsDialog.scId"
                        @closeDialog="closeStudents"/>
         <SupervisionsDialog :dialogVisible="supervisionsDialog.dialogVisible"
-                            :scId="supervisionsDialog.scId"
+                            :course="supervisionsDialog.course"
                             @closeDialog="closeSupervision"/>
         <HistorySignInDialog :dialogVisible="historySignInDialog.dialogVisible"
                              :scId="historySignInDialog.scId"
@@ -243,7 +247,7 @@
                 },
                 supervisionsDialog: {
                     dialogVisible: false,
-                    scId: ''
+                    course: null
                 },
                 createSignInDialog: {
                     dialogVisible: false,
@@ -361,12 +365,12 @@
                 this.studentsDialog.scId = null;
                 this.studentsDialog.dialogVisible = false
             },
-            showSupervision(scId) {
-                this.supervisionsDialog.scId = scId
+            showSupervision(course) {
+                this.supervisionsDialog.course = course
                 this.supervisionsDialog.dialogVisible = true
             },
             closeSupervision() {
-                this.supervisionsDialog.scId = ''
+                this.supervisionsDialog.course = null
                 this.supervisionsDialog.dialogVisible = false
             },
             showHistorySignIn(scId) {

@@ -34,8 +34,8 @@
             <el-form-item label="教室容量">
                 <span v-text="course.scMaxSize"></span>
             </el-form-item>
-            <el-form-item label="到勤率">
-                <span v-text="course.scAttRate"></span>
+            <el-form-item label="总到勤率">
+                <span v-text="`${(Math.round(course.scAttRate * 10000)/100).toFixed(2) + '%'}`"></span>
             </el-form-item>
         </el-form>
     </el-dialog>

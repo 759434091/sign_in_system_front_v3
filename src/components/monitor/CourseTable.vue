@@ -26,9 +26,9 @@
                 </el-table-column>
                 <el-table-column label="教室容量" prop="scMaxSize" width="80px"></el-table-column>
                 <el-table-column label="课程人数" prop="scActSize" width="80px"></el-table-column>
-                <el-table-column label="到勤率" prop="scAttRate" width="70">
+                <el-table-column label="总到勤率" prop="scAttRate" width="70">
                     <template slot-scope="scope">
-                        <div v-text="null == scope.row.scAttRate ? '无' : scope.row.scAttRate"></div>
+                        <div v-text="null == scope.row.scAttRate ? '无' : `${(Math.round(scope.row.scAttRate * 10000)/100).toFixed(2) + '%'}`"></div>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="200px">

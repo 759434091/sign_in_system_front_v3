@@ -28,7 +28,12 @@
             <el-main>
                 <el-table :data="sisSupervisionList" v-loading="loading">
                     <el-table-column label="督导周" prop="ssvWeek"></el-table-column>
-                    <el-table-column label="实际人数" prop="ssvActualNum"></el-table-column>
+                    <el-table-column label="本次到勤率">
+                        <template slot-scope="scope">
+                            <span v-text="getAttRate(scope.row.ssvActualNum)"></span>
+                        </template>
+                    </el-table-column>
+                    <el-table-column label="实勤人数" prop="ssvActualNum"></el-table-column>
                     <el-table-column label="玩手机人数" prop="ssvMobileNum"></el-table-column>
                     <el-table-column label="睡觉人数" prop="ssvSleepNum"></el-table-column>
                     <el-table-column label="督导备注" prop="ssvRecInfo"></el-table-column>
@@ -135,6 +140,12 @@
                 this.sisSupervisionList = this.scheduleList
                     .find(schedule => schedule.ssId === ssId)
                     .sisSupervisionList
+            },
+            getAttRate(ssvActualNum) {
+                const course = this.courseList.find(c => c.scId === this.form.scId)
+                if (null == course)
+                    return '无'
+                return ssvActualNum / course.scActSize
             }
         }
     }
