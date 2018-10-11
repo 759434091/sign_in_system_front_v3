@@ -1,6 +1,6 @@
 <template>
     <el-dialog :title="getTitle()"
-               width="800px"
+               width="900px"
                :visible="dialogVisible"
                :before-close="closeDialog">
         <el-container>
