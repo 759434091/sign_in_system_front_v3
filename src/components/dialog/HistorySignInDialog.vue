@@ -81,7 +81,7 @@
         },
         watch: {
             course: function (course) {
-                if (null === course) return
+                if (null == course) return
 
                 this.loading = true
                 this.$request.administrator
