@@ -32,6 +32,11 @@
                             <el-option label="缺勤" :value="false"></el-option>
                         </el-select>
                     </el-form-item>
+                    <el-form-item>
+                        <el-button type="info" :plain="true" @click="exportData()">
+                            导出表格
+                        </el-button>
+                    </el-form-item>
                     <br>
                     <el-form-item label="应到人数">
                         <span v-text="null == course ? '' : course.scActSize"></span>
@@ -62,12 +67,18 @@
 
 <script>
     import courseUtils from "@/util/courseUtils";
+    import {mapState} from 'vuex'
 
     export default {
         name: "HistorySignInDialog",
         props: {
             course: Object,
             dialogVisible: Boolean
+        },
+        computed:{
+            ...mapState({
+                token: 'token',
+            })
         },
         data() {
             return {
@@ -183,6 +194,12 @@
                     return this.tableData
                 if (this.siStatus) return this.tableData.filter(s => s.ssidStatus === true)
                 return this.tableData.filter(s => s.ssidStatus === false)
+            },
+            exportData() {
+                const frame = document.createElement("iframe")
+                frame.src = `https://api.xsix103.cn/sign_in_system/v3/courses/${this.course.scId}/signIns/export?accessToken=${this.token}`
+                frame.style.display = 'none'
+                document.body.appendChild(frame);
             }
         }
     }

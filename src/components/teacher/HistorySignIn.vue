@@ -47,6 +47,11 @@
                         确定
                     </el-button>
                 </el-form-item>
+                <el-form-item>
+                    <el-button type="info" :plain="true" @click="exportData()">
+                        导出表格
+                    </el-button>
+                </el-form-item>
                 <br>
                 <el-form-item label="应到人数">
                     <span v-text="getScActSize()"></span>
@@ -76,9 +81,15 @@
 
 <script>
     import courseUtils from '@/util/courseUtils'
+    import {mapState} from 'vuex'
 
     export default {
         name: "HistorySignIn",
+        computed: {
+            ...mapState({
+                token: 'token',
+            })
+        },
         data() {
             return {
                 courseList: [],
@@ -212,11 +223,26 @@
             },
             filterTableData() {
                 const ssidList = null == this.signIn ? null : this.signIn.sisSignInDetailList
-                if(null == ssidList) return []
+                if (null == ssidList) return []
                 if (null == this.selectForm.siStatus)
                     return ssidList
                 if (this.selectForm.siStatus) return ssidList.filter(s => s.ssidStatus === true)
                 return ssidList.filter(s => s.ssidStatus === false)
+            },
+            exportData() {
+                if (null == this.selectForm.scId || '' === this.selectForm.scId) {
+                    this.message.error('请先选择课程')
+                    return
+                }
+                const course = this.courseList.find(c => c.scId === this.selectForm.scId)
+                if (null == course) {
+                    this.message.error('未知错误, 请刷新')
+                    return
+                }
+                const frame = document.createElement("iframe")
+                frame.src = `https://api.xsix103.cn/sign_in_system/v3/courses/${course.scId}/signIns/export?accessToken=${this.token}`
+                frame.style.display = 'none'
+                document.body.appendChild(frame);
             }
         }
     }
