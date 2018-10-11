@@ -4,7 +4,7 @@
             <el-form :inline="true" size="mini" :model="selectForm">
                 <el-form-item label="课程">
                     <el-select v-model="selectForm.scId" @change="clearSsId">
-                        <el-option label="未选择" value=""></el-option>
+                        <el-option label="请先选择" value=""></el-option>
                         <el-option v-for="val in courseList"
                                    :key="val.scId"
                                    :label="`${val.scName} ${val.scId}`"
@@ -15,7 +15,7 @@
                 </el-form-item>
                 <el-form-item label="上课时间">
                     <el-select v-model="selectForm.ssId">
-                        <el-option label="未选择" value=""></el-option>
+                        <el-option label="请先选择" value=""></el-option>
                         <el-option
                                 v-for="val in getScheduleList(selectForm.scId)"
                                 :key="val.ssId"
@@ -26,7 +26,7 @@
                 </el-form-item>
                 <el-form-item label="周">
                     <el-select v-model="selectForm.week" :loading="loading">
-                        <el-option label="未选择" value=""></el-option>
+                        <el-option label="请先选择" value=""></el-option>
                         <el-option
                                 v-for="val in getWeekList(selectForm.ssId)"
                                 :key="val.value"
@@ -35,6 +35,10 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
+                <el-form-item label="应到人数">
+                    <span v-text="getScActSize()"></span>
+                </el-form-item>
+                <el-form-item label=""><!--TODO--></el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="onSure" :loading="loading">
                         确定
@@ -137,7 +141,7 @@
                     return []
                 if (null == this.scheduleWithSignInList)
                     return []
-                const scheduleWithSignIn = this.scheduleWithSignInList.find(schedule => schedule.ssId = ssId)
+                const scheduleWithSignIn = this.scheduleWithSignInList.find(schedule => schedule.ssId === ssId)
                 if (!scheduleWithSignIn)
                     return []
 
@@ -167,11 +171,17 @@
                 this.loading = true
                 const ssId = this.selectForm.ssId;
                 const week = this.selectForm.week;
-                this.signIn = this.scheduleWithSignInList.find(schedule => schedule.ssId = ssId).sisSignInList.find(e => e.ssiWeek === week)
+                this.signIn = this.scheduleWithSignInList.find(schedule => schedule.ssId === ssId).sisSignInList.find(e => e.ssiWeek === parseInt(week))
                 const _this = this
                 setTimeout(() => {
                     _this.loading = false
                 }, 300)
+            },
+            getScActSize() {
+                if ('' === this.selectForm.scId) return ''
+                const course = this.courseList.find(c => c.scId === this.selectForm.scId)
+                if (null == course) return ''
+                return course.scActSize
             }
         }
     }

@@ -25,6 +25,15 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
+                    <el-form-item label="应到人数">
+                        <span v-text="course.scActSize"></span>
+                    </el-form-item>
+                    <el-form-item label="实到人数">
+                        <span v-text="getActSize()"></span>
+                    </el-form-item>
+                    <el-form-item label="本次到勤率">
+                        <span v-text="getAttRate()"></span>
+                    </el-form-item>
                 </el-form>
             </el-header>
             <el-main>
@@ -149,6 +158,16 @@
                     .forEach(t => tchStr += t.suName + ' ')
 
                 return `${this.course.scName} ${this.course.scId} ${tchStr}`
+            },
+            getActSize() {
+                if (null == this.tableData || this.tableData.length <= 0) return ''
+                return this.tableData.filter(s => s.ssidStatus === true).length + ' 人'
+            },
+            getAttRate() {
+                if (null == this.tableData || this.tableData.length <= 0) return ''
+                const a = this.tableData.filter(s => s.ssidStatus === true).length
+                const b = this.course.scActSize
+                return `${(Math.round((a / b) * 10000) / 100).toFixed(2) + '%'}`
             }
         }
     }
