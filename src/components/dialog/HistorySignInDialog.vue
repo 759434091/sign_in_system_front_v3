@@ -26,7 +26,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="应到人数">
-                        <span v-text="course.scActSize"></span>
+                        <span v-text="null == course ? '' : course.scActSize"></span>
                     </el-form-item>
                     <el-form-item label="实到人数">
                         <span v-text="getActSize()"></span>

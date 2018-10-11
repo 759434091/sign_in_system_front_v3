@@ -105,6 +105,7 @@
                 return courseUtils.getScheduleTimeString(schedule)
             },
             getAttRate(ssvActualNum) {
+                if (null == this.course) return ''
                 return `${(Math.round((ssvActualNum / this.course.scActSize) * 10000) / 100).toFixed(2) + '%'}`
             },
             getTitle() {

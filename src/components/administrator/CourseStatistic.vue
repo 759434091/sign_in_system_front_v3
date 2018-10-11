@@ -303,7 +303,7 @@
             },
             onSearch() {
                 if (this.selectForm.remember)
-                    localStorage.setItem('', JSON.stringify(this.selectForm))
+                    localStorage.setItem('cozStatisticForm', JSON.stringify(this.selectForm))
                 this.selectForm.needMonitor = true
                 this.handleCurrentChange(1)
             },
