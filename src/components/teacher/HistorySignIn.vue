@@ -35,6 +35,19 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
+                <el-form-item label="签到状态">
+                    <el-select v-model="selectForm.siStatus">
+                        <el-option label="全部" :value="null"></el-option>
+                        <el-option label="已签到" :value="true"></el-option>
+                        <el-option label="缺勤" :value="false"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" @click="onSure" :loading="loading">
+                        确定
+                    </el-button>
+                </el-form-item>
+                <br>
                 <el-form-item label="应到人数">
                     <span v-text="getScActSize()"></span>
                 </el-form-item>
@@ -44,15 +57,10 @@
                 <el-form-item label="本次到勤率">
                     <span v-text="getAttRate()"></span>
                 </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="onSure" :loading="loading">
-                        确定
-                    </el-button>
-                </el-form-item>
             </el-form>
         </el-header>
         <el-main>
-            <el-table :data="null == signIn ? null : signIn.sisSignInDetailList">
+            <el-table :data="filterTableData()">
                 <el-table-column label="学号" prop="suId"></el-table-column>
                 <el-table-column label="姓名" prop="sisUser.suName"></el-table-column>
                 <el-table-column label="签到状态">
@@ -77,7 +85,8 @@
                 selectForm: {
                     scId: '',
                     ssId: '',
-                    week: ''
+                    week: '',
+                    siStatus: null
                 },
                 loading: false,
                 scheduleWithSignInList: [],
@@ -200,6 +209,14 @@
                 const a = course.scActSize
                 const b = this.signIn.sisSignInDetailList.filter(s => s.ssidStatus === true).length
                 return `${(Math.round((b / a) * 10000) / 100).toFixed(2) + '%'}`
+            },
+            filterTableData() {
+                const ssidList = null == this.signIn ? null : this.signIn.sisSignInDetailList
+                if(null == ssidList) return []
+                if (null == this.selectForm.siStatus)
+                    return ssidList
+                if (this.selectForm.siStatus) return ssidList.filter(s => s.ssidStatus === true)
+                return ssidList.filter(s => s.ssidStatus === false)
             }
         }
     }

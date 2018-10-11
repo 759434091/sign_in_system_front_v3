@@ -97,7 +97,7 @@
                 </el-table-column>
                 <el-table-column prop="scId" label="课程序号" width="110px"/>
                 <el-table-column prop="scName" label="课程名字" width="110px"/>
-                <el-table-column label="任课老师" width="150px">
+                <el-table-column label="任课老师" width="90px">
                     <template slot-scope="scope">
                         <div v-for="val in getTeacherList(scope.row.sisJoinCourseList)"
                              :key="val.suId">
@@ -117,7 +117,7 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column label="督导状态" width="120px">
+                <el-table-column label="督导状态" width="110px">
                     <template slot-scope="scope">
                         <span v-text="getCourseMonitorStatus(scope.row)"></span>
                     </template>

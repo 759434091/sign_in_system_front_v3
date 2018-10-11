@@ -7,7 +7,7 @@
                 <el-form :inline="true" size="mini">
                     <el-form-item label="上课时间">
                         <el-select placeholder="上课时间" v-model="ssId">
-                            <el-option label="未选择" value=""></el-option>
+                            <el-option label="请先选择" value=""></el-option>
                             <el-option v-for="val in scheduleList"
                                        :key="`hsid_${val.ssId}`"
                                        :label="getScheduleTimeString(val)"
@@ -25,6 +25,14 @@
                             </el-option>
                         </el-select>
                     </el-form-item>
+                    <el-form-item label="签到状态">
+                        <el-select v-model="siStatus">
+                            <el-option label="全部" :value="null"></el-option>
+                            <el-option label="已签到" :value="true"></el-option>
+                            <el-option label="缺勤" :value="false"></el-option>
+                        </el-select>
+                    </el-form-item>
+                    <br>
                     <el-form-item label="应到人数">
                         <span v-text="null == course ? '' : course.scActSize"></span>
                     </el-form-item>
@@ -37,7 +45,7 @@
                 </el-form>
             </el-header>
             <el-main>
-                <el-table :data="tableData" v-loading="loading">
+                <el-table :data="filterTableData()" v-loading="loading">
                     <el-table-column label="学号" prop="suId"></el-table-column>
                     <el-table-column label="姓名" prop="sisUser.suName"></el-table-column>
                     <el-table-column label="签到状态" prop="ssidStatus">
@@ -66,6 +74,7 @@
                 loading: false,
                 ssId: '',
                 week: '',
+                siStatus: null,
                 scheduleList: [],
                 tableData: []
             }
@@ -168,6 +177,12 @@
                 const a = this.tableData.filter(s => s.ssidStatus === true).length
                 const b = this.course.scActSize
                 return `${(Math.round((a / b) * 10000) / 100).toFixed(2) + '%'}`
+            },
+            filterTableData() {
+                if (null == this.siStatus)
+                    return this.tableData
+                if (this.siStatus) return this.tableData.filter(s => s.ssidStatus === true)
+                return this.tableData.filter(s => s.ssidStatus === false)
             }
         }
     }
