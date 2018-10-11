@@ -1,9 +1,10 @@
 <template>
     <el-dialog :title="getTitle()"
+               width="800px"
                :visible="dialogVisible"
                :before-close="closeDialog">
         <el-container>
-            <el-header>
+            <el-header height="auto">
                 <el-form :inline="true" size="mini">
                     <el-form-item label="上课时间">
                         <el-select placeholder="上课时间" v-model="ssId">
