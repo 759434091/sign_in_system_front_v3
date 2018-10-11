@@ -38,7 +38,12 @@
                 <el-form-item label="应到人数">
                     <span v-text="getScActSize()"></span>
                 </el-form-item>
-                <el-form-item label=""><!--TODO--></el-form-item>
+                <el-form-item label="实到人数">
+                    <span v-text="getActSize()"></span>
+                </el-form-item>
+                <el-form-item label="本次到勤率">
+                    <span v-text="getAttRate()"></span>
+                </el-form-item>
                 <el-form-item>
                     <el-button type="primary" @click="onSure" :loading="loading">
                         确定
@@ -181,7 +186,20 @@
                 if ('' === this.selectForm.scId) return ''
                 const course = this.courseList.find(c => c.scId === this.selectForm.scId)
                 if (null == course) return ''
-                return course.scActSize
+                return course.scActSize + ' 人'
+            },
+            getActSize() {
+                if (null == this.signIn) return ''
+                return this.signIn.sisSignInDetailList.filter(s => s.ssidStatus === true).length + ' 人'
+            },
+            getAttRate() {
+                if (null == this.signIn) return ''
+                if ('' === this.selectForm.scId) return ''
+                const course = this.courseList.find(c => c.scId === this.selectForm.scId)
+                if (null == course) return ''
+                const a = course.scActSize
+                const b = this.signIn.sisSignInDetailList.filter(s => s.ssidStatus === true).length
+                return `${(Math.round((b / a) * 10000) / 100).toFixed(2) + '%'}`
             }
         }
     }
