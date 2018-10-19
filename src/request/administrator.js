@@ -242,6 +242,9 @@ async function getTchCozTable(tchSuId) {
     })
 }
 
+async function modifySignIns(ssiId, signInDeltailList) {
+    return await axios.put(`/signIns/${ssiId}`, signInDeltailList)
+}
 
 export default {
     getCourse,
@@ -275,5 +278,6 @@ export default {
     getMonitorCourse,
     getLockGrade,
     getTeachers,
-    getTchCozTable
+    getTchCozTable,
+    modifySignIns
 }

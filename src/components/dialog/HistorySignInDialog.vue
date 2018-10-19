@@ -1,6 +1,8 @@
 <template>
     <el-dialog :title="getTitle()"
                width="900px"
+               :close-on-click-modal="!disabled"
+               :close-on-press-escape="!disabled"
                :visible="dialogVisible"
                :before-close="closeDialog">
         <el-container>
@@ -37,8 +39,10 @@
                         <el-button type="info" :plain="true" @click="exportData()">
                             导出表格
                         </el-button>
+                        <el-button v-if="disabled" type="danger" @click="disabled = false">解锁</el-button>
+                        <el-button v-if="!disabled" type="primary" @click="reset">重置</el-button>
+                        <el-button v-if="!disabled" type="danger" @click="update">保存</el-button>
                     </el-form-item>
-                    <br>
                     <el-form-item label="应到人数">
                         <span v-text="null == course ? '' : course.scActSize"></span>
                     </el-form-item>
@@ -56,8 +60,14 @@
                     <el-table-column label="姓名" prop="sisUser.suName"></el-table-column>
                     <el-table-column label="签到状态" prop="ssidStatus">
                         <template slot-scope="scope">
-                            <div v-text="scope.row.ssidStatus ? '已签到' : '缺勤'">
+                            <div v-show="disabled" v-text="scope.row.ssidStatus ? '已签到' : '缺勤'">
                             </div>
+                            <el-switch
+                                    v-show="!disabled"
+                                    v-model="scope.row.ssidStatus"
+                                    active-text="已签到"
+                                    inactive-text="缺勤">
+                            </el-switch>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -76,7 +86,7 @@
             course: Object,
             dialogVisible: Boolean
         },
-        computed:{
+        computed: {
             ...mapState({
                 token: 'token',
             })
@@ -84,6 +94,7 @@
         data() {
             return {
                 loading: false,
+                disabled: true,
                 ssId: '',
                 week: '',
                 siStatus: null,
@@ -121,6 +132,7 @@
                 this.week = ''
                 this.scheduleList = []
                 this.tableData = []
+                this.disabled = true
             },
             getScheduleTimeString(schedule) {
                 return courseUtils.getScheduleTimeString(schedule)
@@ -169,7 +181,7 @@
                 const sisSignIn = schedule.sisSignInList.find(e => e.ssiWeek === parseInt(week))
                 if (null === sisSignIn)
                     return
-                this.tableData = sisSignIn.sisSignInDetailList
+                this.tableData = JSON.parse(JSON.stringify(sisSignIn.sisSignInDetailList))
             },
             getTitle() {
                 if (null == this.course) return '历史签到'
@@ -201,6 +213,40 @@
                 frame.src = `https://api.xsix103.cn/sign_in_system/v3/courses/${this.course.scId}/signIns/export?accessToken=${this.token}`
                 frame.style.display = 'none'
                 document.body.appendChild(frame);
+            },
+            reset() {
+                this.handleWeekSelect(this.week)
+            },
+            update() {
+                this.$confirm('确认保存更改', '变更到勤')
+                    .then(() => {
+                        this.tableData
+                            .forEach(d => delete d.sisUser)
+                        const schedule = this.scheduleList.find(schedule => schedule.ssId === this.ssId)
+                        const sisSignIn = schedule.sisSignInList.find(e => e.ssiWeek === parseInt(this.week))
+                        this.$request.administrator
+                            .modifySignIns(sisSignIn.ssiId, this.tableData)
+                            .then(res => {
+                                if (!res.data.success) {
+                                    this.$message.error("提交失败")
+                                    return
+                                }
+
+                                this.$message.success("操作成功")
+                                this.closeDialog()
+                            })
+                            .catch(err => {
+                                if (!err.response || !err.response.data)
+                                    return
+                                if (!err.response.data.message) {
+                                    this.$message.error(err.response.data)
+                                    return
+                                }
+                                this.$message.error(err.response.data.message)
+                            })
+                    })
+                    .catch(() => {
+                    })
             }
         }
     }
