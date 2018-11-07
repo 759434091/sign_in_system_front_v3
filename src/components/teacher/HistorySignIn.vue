@@ -74,17 +74,30 @@
                         </div>
                     </template>
                 </el-table-column>
+                <el-table-column label="签到凭证" prop="ssidPicture">
+                    <template slot-scope="scope">
+                        <div v-if="null == scope.row.ssidPicture">无</div>
+                        <el-button v-else type="info" size="mini"
+                                   @click="showSignInPictureDialog(scope.row.ssidPicture)">
+                            查看凭证
+                        </el-button>
+                    </template>
+                </el-table-column>
             </el-table>
         </el-main>
+        <SignInPictureDialog :dialog-visible="signInPictureDialog.dialogVisible" :pic-src="signInPictureDialog.picSrc"
+                             @closeDialog="closeSignInPictureDialog"/>
     </el-container>
 </template>
 
 <script>
     import courseUtils from '@/util/courseUtils'
     import {mapState} from 'vuex'
+    import SignInPictureDialog from "@/components/dialog/SignInPictureDialog";
 
     export default {
         name: "HistorySignIn",
+        components: {SignInPictureDialog},
         computed: {
             ...mapState({
                 token: 'token',
@@ -101,7 +114,11 @@
                 },
                 loading: false,
                 scheduleWithSignInList: [],
-                signIn: null
+                signIn: null,
+                signInPictureDialog: {
+                    dialogVisible: false,
+                    picSrc: null
+                }
             }
         },
         created() {
@@ -243,6 +260,18 @@
                 frame.src = `https://api.xsix103.cn/sign_in_system/v3/courses/${course.scId}/signIns/export?accessToken=${this.token}`
                 frame.style.display = 'none'
                 document.body.appendChild(frame);
+            },
+            showSignInPictureDialog(picSrc) {
+                this.signInPictureDialog = {
+                    dialogVisible: true,
+                    picSrc
+                }
+            },
+            closeSignInPictureDialog() {
+                this.signInPictureDialog = {
+                    dialogVisible: false,
+                    picSrc: null
+                }
             }
         }
     }

@@ -70,18 +70,31 @@
                             </el-switch>
                         </template>
                     </el-table-column>
+                    <el-table-column label="签到凭证" prop="ssidPicture">
+                        <template slot-scope="scope">
+                            <div v-if="null == scope.row.ssidPicture">无</div>
+                            <el-button v-else type="info" size="mini"
+                                       @click="showSignInPictureDialog(scope.row.ssidPicture)">
+                                查看凭证
+                            </el-button>
+                        </template>
+                    </el-table-column>
                 </el-table>
             </el-main>
         </el-container>
+        <SignInPictureDialog :dialog-visible="signInPictureDialog.dialogVisible" :pic-src="signInPictureDialog.picSrc"
+                             @closeDialog="closeSignInPictureDialog"/>
     </el-dialog>
 </template>
 
 <script>
     import courseUtils from "@/util/courseUtils";
     import {mapState} from 'vuex'
+    import SignInPictureDialog from "./SignInPictureDialog";
 
     export default {
         name: "HistorySignInDialog",
+        components: {SignInPictureDialog},
         props: {
             course: Object,
             dialogVisible: Boolean
@@ -99,7 +112,11 @@
                 week: '',
                 siStatus: null,
                 scheduleList: [],
-                tableData: []
+                tableData: [],
+                signInPictureDialog: {
+                    dialogVisible: false,
+                    picSrc: null
+                }
             }
         },
         watch: {
@@ -247,6 +264,18 @@
                     })
                     .catch(() => {
                     })
+            },
+            showSignInPictureDialog(picSrc) {
+                this.signInPictureDialog = {
+                    dialogVisible: true,
+                    picSrc
+                }
+            },
+            closeSignInPictureDialog() {
+                this.signInPictureDialog = {
+                    dialogVisible: false,
+                    picSrc: null
+                }
             }
         }
     }
