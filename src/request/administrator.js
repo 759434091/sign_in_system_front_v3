@@ -100,8 +100,10 @@ async function getStudents(page, pageSize, suId, suName, orderByCozLackNum) {
     })
 }
 
-async function createSignIn(ssId) {
-    return await axios.post(`/schedules/${ssId}/signIns`)
+async function createSignIn(ssId, file) {
+    const formData = new FormData();
+    formData.append("picture", file)
+    return await axios.post(`/schedules/${ssId}/signIns`, formData)
 }
 
 async function getSignIns(scId) {

@@ -22,9 +22,12 @@
             <el-form-item label="参照物">
                 <el-upload
                         :limit="1"
+                        drag
+                        list-type="picture"
                         :auto-upload="false"
-                        :file-list="fileList"
+                        :on-change="onChangeFile"
                         action="#">
+                </el-upload>
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="createSignIn" :loading="loading">
@@ -62,7 +65,7 @@
                 loading: false,
                 schedule: null,
                 location: null,
-                fileList: [],
+                file: null,
                 modifyScheduleLocationDialog: {
                     dialogVisible: false,
                     schedule: null
@@ -101,7 +104,7 @@
                     this.$confirm('现在不是课堂时间, 确定发起?', '发起签到')
                         .then(() => {
                             this.loading = true
-                            this.$request.administrator.createSignIn(this.ssId)
+                            this.$request.administrator.createSignIn(this.ssId, this.file)
                                 .then(res => {
                                     if (!res.data.success) {
                                         this.$message.error(res.data.message)
@@ -129,7 +132,7 @@
                     return
                 }
                 this.loading = true
-                this.$request.administrator.createSignIn(this.ssId)
+                this.$request.administrator.createSignIn(this.ssId, this.file)
                     .then(res => {
                         if (!res.data.success) {
                             this.$message.error(res.data.message)
@@ -180,10 +183,9 @@
                 return this.location.slName
             },
             closeModifyScheduleLocationDialog(slId) {
-                debugger
                 if (null != slId) {
                     this.loading = true
-                    this.$request.administrator.createSignIn(parseInt(slId))
+                    this.$request.administrator.createSignIn(parseInt(slId), this.file)
                         .then(res => {
                             if (!res.data.success) {
                                 this.$message.error(res.data.message)
@@ -217,6 +219,9 @@
                     .forEach(t => tchStr += t.suName + ' ')
 
                 return `发起签到 ${this.course.scName} ${this.course.scId} ${tchStr}`
+            },
+            onChangeFile(file) {
+                this.file = file
             }
         }
     }
