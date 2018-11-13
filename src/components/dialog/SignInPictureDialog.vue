@@ -3,7 +3,7 @@
             :append-to-body="true"
             :visible="dialogVisible"
             :before-close="closeDialog">
-        <img v-if="null != picSrc" :src="`data:image/png;base64,${picSrc}`">
+        <img v-if="null != picSrc" :src="picSrc">
     </el-dialog>
 </template>
 
