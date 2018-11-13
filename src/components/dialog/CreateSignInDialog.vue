@@ -19,6 +19,13 @@
             <el-form-item label="地点">
                 <span v-text="getLocation()"></span>
             </el-form-item>
+            <el-form-item label="参照物">
+                <el-upload
+                        :limit="1"
+                        :auto-upload="false"
+                        :file-list="fileList"
+                        action="#">
+            </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="createSignIn" :loading="loading">
                     确定
@@ -55,6 +62,7 @@
                 loading: false,
                 schedule: null,
                 location: null,
+                fileList: [],
                 modifyScheduleLocationDialog: {
                     dialogVisible: false,
                     schedule: null
