@@ -52,6 +52,9 @@
                     <el-form-item label="本次到勤率">
                         <span v-text="getAttRate()"></span>
                     </el-form-item>
+                    <el-form-item>
+                        <el-button size="mini" @click="getRefer">本次参照物</el-button>
+                    </el-form-item>
                 </el-form>
             </el-header>
             <el-main>
@@ -218,6 +221,20 @@
                 const a = this.tableData.filter(s => s.ssidStatus === true).length
                 const b = this.course.scActSize
                 return `${(Math.round((a / b) * 10000) / 100).toFixed(2) + '%'}`
+            },
+            getRefer() {
+                if ('' === this.week)
+                    return
+                const schedule = this.scheduleList.find(schedule => schedule.ssId === this.ssId)
+                if (null == schedule)
+                    return
+
+                const sisSignIn = schedule.sisSignInList.find(e => e.ssiWeek === parseInt(this.week))
+                if (null === sisSignIn)
+                    return
+
+                this.signInPictureDialog.dialogVisible = true
+                this.signInPictureDialog.picSrc = sisSignIn.ssiPicture
             },
             filterTableData() {
                 if (null == this.siStatus)

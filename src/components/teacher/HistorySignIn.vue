@@ -62,6 +62,9 @@
                 <el-form-item label="本次到勤率">
                     <span v-text="getAttRate()"></span>
                 </el-form-item>
+                <el-form-item>
+                    <el-button size="mini" @click="getRefer">本次参照物</el-button>
+                </el-form-item>
             </el-form>
         </el-header>
         <el-main>
@@ -237,6 +240,12 @@
                 const a = course.scActSize
                 const b = this.signIn.sisSignInDetailList.filter(s => s.ssidStatus === true).length
                 return `${(Math.round((b / a) * 10000) / 100).toFixed(2) + '%'}`
+            },
+            getRefer() {
+                if (null == this.signIn) return ''
+
+                this.signInPictureDialog.dialogVisible = true
+                this.signInPictureDialog.picSrc = this.signIn.ssiPicture
             },
             filterTableData() {
                 const ssidList = null == this.signIn ? null : this.signIn.sisSignInDetailList
