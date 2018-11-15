@@ -221,7 +221,7 @@
                 return `发起签到 ${this.course.scName} ${this.course.scId} ${tchStr}`
             },
             onChangeFile(file) {
-                this.file = file
+                this.file = file.raw
             }
         }
     }
