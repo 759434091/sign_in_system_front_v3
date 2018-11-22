@@ -244,7 +244,7 @@
             },
             exportData() {
                 const frame = document.createElement("iframe")
-                frame.src = `https://api.xsix103.cn/sign_in_system/v3/courses/${this.course.scId}/signIns/export?accessToken=${this.token}`
+                frame.src = `https://api.xsix103.cn/sign_in_system/v3/courses/${this.course.scId}/signIns/export?accessToken=${encodeURI(this.token)}`
                 frame.style.display = 'none'
                 document.body.appendChild(frame);
             },
