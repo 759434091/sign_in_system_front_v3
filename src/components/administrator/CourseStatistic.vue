@@ -61,7 +61,8 @@
                     <el-checkbox @keyup.enter.native="onSearch" v-model="selectForm.remember"></el-checkbox>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="onSearch" :loading="loading || disabled" :disabled="loading || disabled">
+                    <el-button type="primary" @click="onSearch" :loading="loading || disabled"
+                               :disabled="loading || disabled">
                         搜索
                     </el-button>
                 </el-form-item>
@@ -91,6 +92,7 @@
         <el-main>
             <el-table v-loading="loading || disabled"
                       :data="courseList"
+                      @sort-change="handleSortChange"
                       @selection-change="handleSelectionChange">
                 <el-table-column type="selection"
                                  width="55">
@@ -123,7 +125,8 @@
                     </template>
                 </el-table-column>
                 <el-table-column label="课程人数" prop="scActSize" width="80px"></el-table-column>
-                <el-table-column label="总到勤率" prop="scAttRate" width="90px">
+                <el-table-column label="总到勤率" prop="scAttRate" width="100px"
+                                 sortable="custom">
                     <template slot-scope="scope">
                         <span v-text="`${(Math.round(scope.row.scAttRate * 10000)/100).toFixed(2) + '%'}`"></span>
                     </template>
@@ -229,7 +232,9 @@
                     },
                     needMonitor: true,
                     hasMonitor: true,
-                    departmentList: []
+                    departmentList: [],
+                    orderCol: null,
+                    order: null
                 },
                 pagination: {
                     currentPage: 1,
@@ -318,7 +323,9 @@
                         '' === this.selectForm.sdId ? null : this.selectForm.sdId,
                         '' === this.selectForm.scGrade ? null : this.selectForm.scGrade,
                         '' === this.selectForm.scId ? null : this.selectForm.scId,
-                        '' === this.selectForm.scName ? null : this.selectForm.scName
+                        '' === this.selectForm.scName ? null : this.selectForm.scName,
+                        this.selectForm.orderCol,
+                        this.selectForm.order
                     )
                     .then(res => {
                         const pageIntro = res.data
@@ -488,6 +495,12 @@
             handleSizeChange(size) {
                 this.pagination.size = size
                 this.onSearch()
+            },
+            handleSortChange({prop, order}) {
+                const orderMap = new Map([['ascending', 'asc'], ['descending', 'desc']])
+                this.selectForm.orderCol = null == prop ? null : prop
+                this.selectForm.order = null == order ? null : orderMap.get(order)
+                this.handleCurrentChange(1)
             }
         }
     }
