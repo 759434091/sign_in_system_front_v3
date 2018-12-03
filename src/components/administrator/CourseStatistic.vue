@@ -128,7 +128,7 @@
                 <el-table-column label="总到勤率" prop="scAttRate" width="100px"
                                  sortable="custom">
                     <template slot-scope="scope">
-                        <span v-text="`${(Math.round(scope.row.scAttRate * 10000)/100).toFixed(2) + '%'}`"></span>
+                        <span v-text="`${null == scope.row.scAttRate ? '无' : (Math.round(scope.row.scAttRate * 10000)/100).toFixed(2) + '%'}`"></span>
                     </template>
                 </el-table-column>
                 <el-table-column label="操作" width="120px">
